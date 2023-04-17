@@ -9,6 +9,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      category_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+      platform_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
       name: {
         type: Sequelize.STRING
       },

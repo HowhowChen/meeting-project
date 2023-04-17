@@ -11,12 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate (models) {
       // define association here
-      Meeting.hasMany(models.Category, { foreignKey: 'meetingId' })
-      Meeting.hasMany(models.Platform, { foreignKey: 'meetingId' })
+      Meeting.belongsTo(models.Category, { foreignKey: 'categoryId' })
+      Meeting.belongsTo(models.Platform, { foreignKey: 'platformId' })
     }
   }
   Meeting.init({
     name: DataTypes.STRING,
+    categoryId: DataTypes.INTEGER,
+    platformId: DataTypes.INTEGER,
     meetingDate: DataTypes.STRING,
     acceptanceDate: DataTypes.STRING,
     organization: DataTypes.STRING,
