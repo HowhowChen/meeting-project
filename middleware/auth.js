@@ -4,7 +4,6 @@ module.exports = {
   authenticated: (req, res, next) => {
     if (helpers.ensureAuthenticated(req)) return next()
     req.flash('warning_messages', 'Please Login!')
-    console.log(123)
     res.redirect('/users/login')
   },
   authenticatedAdmin: (req, res, next) => {
@@ -17,7 +16,15 @@ module.exports = {
   },
   authenticatedFiveClass: (req, res, next) => {
     if (helpers.ensureAuthenticated(req)) {
-      if (helpers.getUser(req)?.group === '5th') return next()
+      if (helpers.getUser(req)?.group === '5th' || helpers.getUser(req)?.role === 'admin') return next()
+      res.redirect('/')
+    } else {
+      res.redirect('/users/login')
+    }
+  },
+  authenticatedSixClass: (req, res, next) => {
+    if (helpers.ensureAuthenticated(req)) {
+      if (helpers.getUser(req)?.group === '6th' || helpers.getUser(req)?.role === 'admin') return next()
       res.redirect('/')
     } else {
       res.redirect('/users/login')

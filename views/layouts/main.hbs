@@ -12,9 +12,13 @@
 
   <body class="d-flex flex-column h-100">
     {{> header}}
-    <div class="container mt-3">
-      {{{ body }}}
-    </div>
+    <main class="flex-shrink-0" role="main">
+      <div class="album container pt-5">
+        <div class="pt-5">
+          {{{body}}}
+        </div>
+      </div>
+    </main>
     {{!-- {{> footer}} --}}
 
     <!--Boostrap.js popper.js-->

@@ -1,0 +1,30 @@
+<table class="table align-middle text-white fs-3">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Account</th>
+      <th scope="col">organization</th>
+      <th scope="col">Role</th>
+      <th scope="col">edit</th>
+    </tr>
+  </thead>  
+  <tbody>
+    {{#each users}}
+      <tr>
+        <th scope="row">{{this.id}}</th>
+        <td>{{this.name}}</td>
+        <td>{{this.account}}</td>
+        <td>{{this.organization}}</td>
+        <td>
+          {{#ifMatch this.role 'admin'}}admin{{else}}user{{/ifMatch}}
+        </td>
+        <td>
+          <button type="button" class="btn btn-outline-primary">
+            <a class="text-decoration-none" href="/admin/users/{{this.id}}/edit">Edit</a>
+          </button>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
