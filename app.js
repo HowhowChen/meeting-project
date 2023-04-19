@@ -7,6 +7,7 @@ const express = require('express')
 const flash = require('connect-flash')
 const session = require('express-session')
 const passport = require('./config/passport')
+const handlebarsHelpers = require('./helpers/handlebars-helpers')
 const routes = require('./routes')
 const { getUser } = require('./helpers/auth-helper')
 
@@ -16,7 +17,7 @@ const PORT = process.env.PORT || 3000
 require('./database/models')
 
 // template engine: express-handlebars
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs', helpers: handlebarsHelpers }))
 app.set('view engine', 'hbs')
 
 // middleware: staic files, body-parser, json
