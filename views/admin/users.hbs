@@ -20,9 +20,7 @@
           {{#ifMatch this.role 'admin'}}admin{{else}}user{{/ifMatch}}
         </td>
         <td>
-          <button type="button" class="btn btn-outline-primary">
-            <a class="text-decoration-none" href="/admin/users/{{this.id}}/edit">Edit</a>
-          </button>
+          <a class="text-decoration-none btn btn-outline-primary" href="/admin/users/{{this.id}}/edit">Edit</a>
         </td>
       </tr>
     {{/each}}

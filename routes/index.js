@@ -14,7 +14,8 @@ router.get('/users/logout', userController.logout)
 
 router.get('/meetings/5th', authenticated, authenticatedFiveClass, meetingController.getFivePage)
 router.get('/meetings/6th', authenticated, authenticatedSixClass, meetingController.getSixPage)
+router.get('/meetings', authenticated, meetingController.getGroupPage)
 
-router.get('/', (req, res) => res.redirect('/meetings/5th'))
+router.get('/', (req, res) => res.redirect('/meetings'))
 
 module.exports = router
