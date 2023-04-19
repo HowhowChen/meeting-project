@@ -16,8 +16,10 @@ require('./database/models')
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
-// static file
+// middleware: staic files, body-parser, json
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 // middleware: routes
 app.use(routes)

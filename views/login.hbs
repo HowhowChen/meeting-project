@@ -1,3 +1,30 @@
-<div class="btn-primary">
-  test
+<div class="login-box">
+  <h2>Login</h2>
+  <form action="/users/login" method="POST">
+    <div class="user-box">
+      <input type="text" name="account" required="">
+      <label>Account</label>
+    </div>
+    <div class="user-box">
+      <input type="password" name="password" required="">
+      <label>Password</label>
+    </div>
+    <div class="d-flex justify-content-around">
+      <button type="submit" class="btn login-submit" >
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          Submit
+      </button>
+      <button type="reset" class="btn login-reset" >
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          Reset
+      </button>
+    </div>
+    
+  </form>
 </div>
