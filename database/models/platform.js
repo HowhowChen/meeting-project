@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate (models) {
       // define association here
-      Platform.hasMany('Meeting', { foreignKey: 'platformId' })
+      Platform.hasMany(models.Meeting, { foreignKey: 'platformId' })
     }
   }
   Platform.init({
