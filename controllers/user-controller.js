@@ -1,4 +1,4 @@
-const { getUser } = require('../helpers/auth-helper')
+const { getUser } = require('../helpers/auth-helpers')
 
 const userController = {
   loginPage: async (req, res) => {
@@ -18,6 +18,7 @@ const userController = {
     }
   },
   logout: (req, res) => {
+    req.flash('success_messages', 'Logout Success!')
     req.logout()
     res.redirect('/users/login')
   }
