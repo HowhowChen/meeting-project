@@ -14,8 +14,11 @@ const adminController = {
   editUser: async (req, res, next) => {
     try {
       const { id } = req.params
-      console.log(id)
-      res.render('admin/userEdit')
+      const user = await User.findByPk(id, {
+        raw: true
+      })
+
+      res.render('admin/userEdit', { user })
     } catch (err) {
       next(err)
     }
