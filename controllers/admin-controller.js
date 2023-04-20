@@ -1,13 +1,34 @@
 const { User } = require('../database/models')
+const bcrypt = require('bcryptjs')
 
 const adminController = {
-  getUsers: async (req, res, next) => {
+  getUsers: async (_, res, next) => {
     try {
       const users = await User.findAll({
         raw: true,
         order: [['id', 'ASC']]
       })
       res.render('admin/users', { users })
+    } catch (err) {
+      next(err)
+    }
+  },
+  getUserPage: async (_, res) => {
+    res.render('admin/userNew')
+  },
+  postUser: async (req, res, next) => {
+    try {
+      const { name, account, organization, group, role } = req.body
+      await User.create({
+        name,
+        account,
+        password: bcrypt.hashSync(process.env.DEFAULT_PASSWORD, bcrypt.genSaltSync(10)),
+        organization,
+        group,
+        role
+      })
+
+      res.redirect('/admin/users')
     } catch (err) {
       next(err)
     }
