@@ -79,6 +79,19 @@ const adminController = {
     } catch (err) {
       next(err)
     }
+  },
+  deleteUser: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const user = await User.findByPk(id)
+      if (!user) throw new Error("User didn't exists!")
+
+      await user.destroy()
+      req.flash('success_messages', 'Success Delete!')
+      res.redirect('/admin/users')
+    } catch (err) {
+      next(err)
+    }
   }
 }
 
