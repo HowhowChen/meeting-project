@@ -1,8 +1,28 @@
 const { getUser } = require('../helpers/auth-helpers')
+const { Meeting, Platform, Category } = require('../database/models')
 
 const meetingController = {
-  getFivePage: (_, res) => {
-    res.render('5th')
+  getFivePage: async (req, res, next) => {
+    try {
+      const meetings = await Meeting.findAll({
+        raw: true,
+        nest: true,
+        include: [
+          {
+            model: Platform,
+            attributes: ['name']
+          },
+          {
+            model: Category,
+            attributes: ['name']
+          }
+        ]
+      })
+      res.locals.layout = 'table.hbs'
+      res.render('5th', { meetings })
+    } catch (err) {
+      next(err)
+    }
   },
   getSixPage: (_, res) => {
     res.render('6th')
