@@ -19,6 +19,9 @@ const adminController = {
   postUser: async (req, res, next) => {
     try {
       const { name, account, organization, group, role } = req.body
+      const checkAccount = await User.findOne({ where: { account } })
+      if (checkAccount) throw new Error('Account alreay exists!')
+
       await User.create({
         name,
         account,
