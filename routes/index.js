@@ -4,6 +4,7 @@ const passport = require('../config/passport')
 const admin = require('./modules/admin')
 const userController = require('../controllers/user-controller')
 const meetingController = require('../controllers/meeting-controller')
+const { generalErrorHandler } = require('../middleware/error-handler')
 const { authenticated, authenticatedAdmin, authenticatedFiveClass, authenticatedSixClass } = require('../middleware/auth')
 
 router.use('/admin', authenticatedAdmin, admin)
@@ -17,5 +18,8 @@ router.get('/meetings/6th', authenticated, authenticatedSixClass, meetingControl
 router.get('/meetings', authenticated, meetingController.getGroupPage)
 
 router.get('/', (req, res) => res.redirect('/meetings'))
+
+// error handler
+router.use('/', generalErrorHandler)
 
 module.exports = router

@@ -49,7 +49,12 @@ const adminController = {
     try {
       const { id } = req.params
       const { name, account, organization, group, role } = req.body
-      const user = await User.findByPk(id)
+      //  check account and user
+      const [checkAccount, user] = await Promise.all([
+        User.findOne({ where: { account } }),
+        User.findByPk(id)
+      ])
+      if (checkAccount) throw new Error('Account alreay exists!')
       if (!user) throw new Error("User didn't exists!")
 
       await user.update({

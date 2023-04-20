@@ -10,12 +10,12 @@
           </h1>
         </div>
 
-        {{!-- {{> message}} --}}
+        {{> messages}}
         
         <div class="row align-items-center mb-5 h3">
           <label for="name" class="col-3 text-white"><span class="text-danger">*</span>Name:</label>
           <div class="col-9">
-            <input id="name" name="name" type="text" class="form-control" required>
+            <input id="name" name="name" type="text" class="form-control" value="{{ name }}" required>
               <div class="valid-feedback">Good!</div>
               <div class="invalid-feedback">This field is required</div>
           </div>
@@ -24,7 +24,7 @@
         <div class="row align-items-center mb-5 h3">
           <label for="account" class="col-3 text-white"><span class="text-danger">*</span>Account:</label>
           <div class="col-9">
-            <input id="account" name="account" type="text" class="form-control"  required>
+            <input id="account" name="account" type="text" class="form-control" value="{{ account }}" required>
               <div class="valid-feedback">Good!</div>
               <div class="invalid-feedback">This field is required</div>
           </div>
@@ -34,8 +34,8 @@
           <label for="organization" class="col-3 text-white"><span class="text-danger">*</span>Organization:</label>
           <div class="col-9">
             <select id="organization" name="organization" list="organizations" class="form-control"  required>
-              <option selected>the 5th class</option>
-              <option >the 6th class</option>
+              <option {{#ifMatch organization 'the 5th class'}}selected{{/ifMatch}}>the 5th class</option>
+              <option {{#ifMatch organization 'the 6th class'}}selected{{/ifMatch}}>the 6th class</option>
             </select>
             <div class="valid-feedback">Good!</div>
             <div class="invalid-feedback">This field is required</div>
@@ -46,8 +46,8 @@
           <label for="group" class="col-3 text-white"><span class="text-danger">*</span>Group:</label>
           <div class="col-9">
             <select id="group" name="group" list="groups" class="form-control"  required>
-              <option selected>5th</option>
-              <option>6th</option>
+              <option {{#ifMatch group '5th'}}selected{{/ifMatch}}>5th</option>
+              <option {{#ifMatch group '6th'}}selected{{/ifMatch}}>6th</option>
             </select>
             <div class="valid-feedback">Good!</div>
             <div class="invalid-feedback">This field is required</div>
@@ -58,8 +58,8 @@
           <label for="role" class="col-3 text-white"><span class="text-danger">*</span>Role:</label>
           <div class="col-9">
             <select id="role" name="role" list="roles" class="form-control"  required>
-              <option selected>user</option>
-              <option>admin</option>
+              <option {{#ifMatch role 'user'}}selected{{/ifMatch}}>user</option>
+              <option {{#ifMatch role 'admin'}}selected{{/ifMatch}}>admin</option>
             </select>
             <div class="valid-feedback">Good!</div>
             <div class="invalid-feedback">This field is required</div>
