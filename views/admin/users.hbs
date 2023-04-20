@@ -7,6 +7,7 @@
       <th scope="col">organization</th>
       <th scope="col">Role</th>
       <th scope="col">edit</th>
+      <th scope="col">Reset</th>
     </tr>
   </thead>  
   <tbody>
@@ -20,7 +21,18 @@
           {{#ifMatch this.role 'admin'}}admin{{else}}user{{/ifMatch}}
         </td>
         <td>
-          <a class="text-decoration-none btn btn-outline-primary" href="/admin/users/{{this.id}}/edit">Edit</a>
+          <form action="/admin/users/{{this.id}}/edit" method="GET" style="display: inline;">
+            <button type="submit" class="btn btn-outline-primary">
+              Edit
+            </button>
+          </form>
+        </td>
+        <td>
+          <form action="/admin/users/{{this.id}}/reset?_method=PATCH" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-outline-danger" onclick="return confirm(`Do you sure reset {{ this.name }}'s password?`)">
+              Reset Password
+            </button>
+          </form>
         </td>
       </tr>
     {{/each}}

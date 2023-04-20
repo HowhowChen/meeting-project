@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 const exphbs = require('express-handlebars')
 const express = require('express')
 const flash = require('connect-flash')
+const methodOverride = require('method-override')
 const session = require('express-session')
 const passport = require('./config/passport')
 const handlebarsHelpers = require('./helpers/handlebars-helpers')
@@ -25,18 +26,18 @@ app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-//  設定session
+//  middleware: session
 app.use(session({
   secret: process.env.SESSION_SECRECT,
   resave: false,
   saveUninitialized: false
 }))
 
-// 設定Passport初始化, 啟用session功能
+// passport intialize, startup session
 app.use(passport.initialize())
 app.use(passport.session())
 
-//  使用flash
+//  middleware:flash
 app.use(flash())
 
 app.use((req, res, next) => {
@@ -46,6 +47,9 @@ app.use((req, res, next) => {
   res.locals.user = getUser(req)
   next()
 })
+
+//  middleware: method-override
+app.use(methodOverride('_method'))
 
 // middleware: routes
 app.use(routes)
