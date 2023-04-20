@@ -24,11 +24,32 @@ const adminController = {
       next(err)
     }
   },
+  putUser: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const { name, account, organization, group, role } = req.body
+      const user = await User.findByPk(id)
+      if (!user) throw new Error("User didn't exists!")
+
+      await user.update({
+        name,
+        account,
+        organization,
+        group,
+        role
+      })
+      req.flash('success_messages', `${name}'s profile is already edited!`)
+      res.redirect('/admin/users')
+    } catch (err) {
+      next(err)
+    }
+  },
   patchUser: async (req, res, next) => {
     try {
       const { id } = req.params
       const user = await User.findByPk(id)
       if (!user) throw new Error("User didn't exists!")
+
       await user.update({
         password: process.env.DEFAULT_PASSWORD
       })

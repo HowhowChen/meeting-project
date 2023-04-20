@@ -1,4 +1,4 @@
-<form novalidate id="form" action="/records/new" method="POST">
+<form novalidate id="form" action="/admin/users/{{ user.id }}?_method=PUT" method="POST">
   <div class="row mt-5">
       <div class="">
         <div class="row align-items-center mb-5">
@@ -35,8 +35,8 @@
           <label for="organization" class="col-3 text-white"><span class="text-danger">*</span>Organization:</label>
           <div class="col-9">
             <select id="organization" name="organization" list="organizations" class="form-control"  required>
-              <option {{#ifMatch user.organization 'the 5 class'}}selected{{/ifMatch}}>the 5 class</option>
-              <option {{#ifMatch user.organization 'the 6 class'}}selected{{/ifMatch}}>the 6 class</option>
+              <option {{#ifMatch user.organization 'the 5th class'}}selected{{/ifMatch}}>the 5th class</option>
+              <option {{#ifMatch user.organization 'the 6th class'}}selected{{/ifMatch}}>the 6th class</option>
             </select>
             <div class="valid-feedback">Good!</div>
             <div class="invalid-feedback">This field is required</div>
@@ -66,10 +66,16 @@
             <div class="invalid-feedback">This field is required</div>
           </div>
         </div>
-          
-        <div class="d-flex justify-content-center">
-          <button type="reset" class="btn btn-danger">重設</button>&nbsp
-          <button id="submitButton" type="submit" class="btn btn-primary">送出</button>
+        <div class="row align-items-center mb-5 h3">
+          <div class="col-3 ">
+            <a class="btn btn-secondary" href="javascript:history.back()">back to last page</a>
+          </div>
+          <div class="col-9">
+            <div class="d-flex justify-content-center">
+              <button type="reset" class="btn btn-danger">重設</button>&nbsp
+              <button id="submitButton" type="submit" class="btn btn-primary">送出</button>
+            </div>
+          </div>
         </div>
 
       </div>
