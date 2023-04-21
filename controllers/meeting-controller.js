@@ -1,4 +1,7 @@
 const dayjs = require('dayjs')
+const EmlParser = require('eml-parser')
+const fs = require('fs')
+const path = require('path')
 const { getUser } = require('../helpers/auth-helpers')
 const { Meeting, Platform, Category } = require('../database/models')
 
@@ -46,6 +49,18 @@ const meetingController = {
         break
       default:
         res.redirect('/meetings/5th')
+    }
+  },
+  getFileContent: async (req, res, next) => {
+    try {
+      const { fileName } = req.params
+      const emailFile = fs.createReadStream(path.resolve(process.env.FILE_PATH, `${fileName}.eml`))
+      const content = await new EmlParser(emailFile).parseEml({ ignoreEmbedded: true })
+
+      res.locals.layout = 'email.hbs'
+      res.render('emlFile', { content })
+    } catch (err) {
+      next(err)
     }
   }
 }

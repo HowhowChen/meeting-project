@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html class="h-100">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Analysis Platform</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css">
+    <!-- Table CSS -->
+    <link rel="stylesheet" href="/stylesheets/email.css">
+  </head>
+
+  <body class="d-flex flex-column h-100">
+    {{> header}}
+    <main class="flex-shrink-0 pb-5" role="main">
+      <div class="album container pt-5">
+        <div class="pt-5">
+          {{{body}}}
+        </div>
+      </div>
+    </main>
+    {{> footer}}
+
+    <!--Boostrap.js popper.js-->
+    <script src="/javascripts/bootstrap.js"></script>
+    <script src="/javascripts/popper.js"></script>
+
+    <!-- Form validation.js -->
+    <script src="/javascripts/form-validation.js"></script>
+  </body>
+</html>
