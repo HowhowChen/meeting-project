@@ -3,7 +3,7 @@ const EmlParser = require('eml-parser')
 const fs = require('fs')
 const path = require('path')
 const { getUser } = require('../helpers/auth-helpers')
-const { Meeting, Platform, Category } = require('../database/models')
+const { Meeting, Platform, Category, Country } = require('../database/models')
 
 const meetingController = {
   getFivePage: async (req, res, next) => {
@@ -18,6 +18,10 @@ const meetingController = {
           },
           {
             model: Category,
+            attributes: ['name']
+          },
+          {
+            model: Country,
             attributes: ['name']
           }
         ]
