@@ -20,6 +20,8 @@ module.exports = {
       length: 10
     }, (_, i) => ({
       name: faker.lorem.sentences(1),
+      sender: faker.internet.email(),
+      receiver: faker.internet.email(),
       category_id: categories[Math.floor(Math.random() * categories.length)].id,
       platform_id: platforms[Math.floor(Math.random() * platforms.length)].id,
       country_id: countries[Math.floor(Math.random() * countries.length)].id,

@@ -18,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Meeting.init({
     name: DataTypes.STRING,
+    sender: DataTypes.STRING,
+    receiver: DataTypes.STRING,
     categoryId: DataTypes.INTEGER,
     platformId: DataTypes.INTEGER,
     countryId: DataTypes.INTEGER,

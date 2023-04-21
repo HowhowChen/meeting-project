@@ -24,6 +24,12 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+      sender: {
+        type: Sequelize.STRING
+      },
+      receiver: {
+        type: Sequelize.STRING
+      },
       meeting_date: {
         type: Sequelize.STRING
       },
