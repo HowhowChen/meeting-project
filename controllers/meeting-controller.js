@@ -1,3 +1,4 @@
+const dayjs = require('dayjs')
 const { getUser } = require('../helpers/auth-helpers')
 const { Meeting, Platform, Category } = require('../database/models')
 
@@ -18,8 +19,15 @@ const meetingController = {
           }
         ]
       })
+      // convert date format
+      const newMeetings = meetings.map(meeting => ({
+        ...meeting,
+        meetingDate: dayjs(meeting.meetingDate).format('YYYY-MM-DD'),
+        acceptanceDate: dayjs(meeting.acceptanceDate).format('YYYY-MM-DD')
+      }))
+
       res.locals.layout = 'table.hbs'
-      res.render('5th', { meetings })
+      res.render('5th', { meetings: newMeetings })
     } catch (err) {
       next(err)
     }

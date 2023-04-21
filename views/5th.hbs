@@ -23,7 +23,9 @@
 				<td class="AutoNewline">{{this.acceptanceDate}}</td>
 				<td class="AutoNewline">{{this.link}}</td>
 				<td class="AutoNewline">{{this.password}}</td>
-				<td class="AutoNewline">{{this.value}}</td>
+				<td class="AutoNewline">
+					{{#ifMatch this.value true}}V{{/ifMatch}}
+				</td>
 			</tr>
 		{{/each}}
 	</tbody>
