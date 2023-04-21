@@ -13,17 +13,20 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Meeting.belongsTo(models.Category, { foreignKey: 'categoryId' })
       Meeting.belongsTo(models.Platform, { foreignKey: 'platformId' })
+      Meeting.belongsTo(models.Country, { foreignKey: 'countryId' })
     }
   }
   Meeting.init({
     name: DataTypes.STRING,
     categoryId: DataTypes.INTEGER,
     platformId: DataTypes.INTEGER,
+    countryId: DataTypes.INTEGER,
     meetingDate: DataTypes.STRING,
     acceptanceDate: DataTypes.STRING,
     organization: DataTypes.STRING,
     link: DataTypes.STRING,
     password: DataTypes.STRING,
+    fileName: DataTypes.STRING,
     value: DataTypes.BOOLEAN
   }, {
     sequelize,

@@ -10,6 +10,7 @@
 			<th><h1>Link<h1></th>
 			<th><h1>Password</h1></th>
 			<th><h1>Value</h1></th>
+			<th><h1>Detail</h1></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -25,6 +26,9 @@
 				<td class="AutoNewline">{{this.password}}</td>
 				<td class="AutoNewline">
 					{{#ifMatch this.value true}}V{{/ifMatch}}
+				</td>
+				<td class="AutoNewline">
+					<a href="/meetings/{{this.acceptanceDate}}/{{this.fileName}}" target="_blank">file</a>
 				</td>
 			</tr>
 		{{/each}}

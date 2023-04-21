@@ -17,6 +17,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
+      country_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
       name: {
         type: Sequelize.STRING
       },
@@ -33,6 +37,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       password: {
+        type: Sequelize.STRING
+      },
+      file_name: {
         type: Sequelize.STRING
       },
       value: {

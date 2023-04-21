@@ -13,7 +13,7 @@ router.get('/users/login', userController.loginPage)
 router.post('/users/login', passport.authenticate('local', { failureRedirect: '/users/login', failureFlash: true }), userController.login)
 router.get('/users/logout', userController.logout)
 
-router.get('/meetings/files/:fileName', authenticated, meetingController.getFileContent)
+router.get('/meetings/:fileDate/:fileName', authenticated, meetingController.getFileContent)
 router.get('/meetings/5th', authenticated, authenticatedFiveClass, meetingController.getFivePage)
 router.get('/meetings/6th', authenticated, authenticatedSixClass, meetingController.getSixPage)
 router.get('/meetings', authenticated, meetingController.getGroupPage)
