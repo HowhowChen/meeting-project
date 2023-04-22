@@ -13,26 +13,40 @@ const meetingController = {
       const page = Number(req.query.page) || 1
       const limit = Number(req.query.limit) || DEFAULT_LIMIT
       const offset = getOffset(limit, page)
-      const meetings = await Meeting.findAndCountAll({
-        raw: true,
-        nest: true,
-        include: [
-          {
-            model: Platform,
-            attributes: ['name']
+      const categoryId = Number(req.query.categoryId) || ''
+      const platformId = Number(req.query.platformId) || ''
+      const countryId = Number(req.query.countryId) || ''
+      const [meetings, categories, platforms, countries] = await Promise.all([
+        Meeting.findAndCountAll({
+          raw: true,
+          nest: true,
+          where: {
+            ...categoryId ? { categoryId } : {},
+            ...platformId ? { platformId } : {},
+            ...countryId ? { countryId } : {}
           },
-          {
-            model: Category,
-            attributes: ['name']
-          },
-          {
-            model: Country,
-            attributes: ['name']
-          }
-        ],
-        limit,
-        offset
-      })
+          include: [
+            {
+              model: Platform,
+              attributes: ['name']
+            },
+            {
+              model: Category,
+              attributes: ['name']
+            },
+            {
+              model: Country,
+              attributes: ['name']
+            }
+          ],
+          limit,
+          offset
+        }),
+        Category.findAll({ raw: true }),
+        Platform.findAll({ raw: true }),
+        Country.findAll({ raw: true })
+      ])
+
       // convert date format
       const newMeetings = meetings.rows.map(meeting => ({
         ...meeting,
@@ -43,6 +57,12 @@ const meetingController = {
       res.locals.layout = 'table.hbs'
       res.render('5th', {
         meetings: newMeetings,
+        categories,
+        categoryId,
+        platforms,
+        platformId,
+        countries,
+        countryId,
         pagination: getPagination(limit, page, meetings.count)
       })
     } catch (err) {

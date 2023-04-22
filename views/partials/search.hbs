@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="col-sm-8 m-auto">
+    <form action="/meetings/5th" method="GET">
+      <div class="row mt-5">
+        <div class="col">
+          <select class="rounded bg-light form-select" name="categoryId" onchange="form.submit()">
+            <option selected>Category(All)</option>
+            {{#each categories}}
+              <option value="{{this.id}}" {{#ifMatch this.id ../categoryId}}selected{{/ifMatch}}>{{this.name}}</option>
+            {{/each}}
+          </select>
+        </div>
+
+        <div class="col">
+          <select class="rounded bg-light form-select" name="platformId" onchange="form.submit()">
+            <option selected>Platform(All)</option>
+            {{#each platforms}}
+              <option value="{{this.id}}" {{#ifMatch this.id ../platformId}}selected{{/ifMatch}}>{{this.name}}</option>
+            {{/each}}
+          </select>
+        </div>
+
+        <div class="col">
+          <select class="rounded bg-light form-select" name="countryId" onchange="form.submit()">
+            <option selected>Country(All)</option>
+            {{#each countries}}
+              <option value="{{this.id}}" {{#ifMatch this.id ../countryId}}selected{{/ifMatch}}>{{this.name}}</option>
+            {{/each}}
+          </select>
+        </div>
+        
+        {{!-- <div class="col">
+          <select class="rounded bg-light form-select" name="sort" onchange="form.submit()">
+            <option value="" selected>排序方式</option>
+            <option value="amountDesc" {{#ifMatch pagination.sort 'amountDesc'}}selected{{/ifMatch}}>💰大->小</option>
+            <option value="amountAsc" {{#ifMatch pagination.sort 'amountAsc'}}selected{{/ifMatch}}>💰小->大</option>
+            <option value="dateDesc" {{#ifMatch pagination.sort 'dateDesc'}}selected{{/ifMatch}}>📆大->小</option>
+            <option value="dateAsc" {{#ifMatch pagination.sort 'dateAsc'}}selected{{/ifMatch}}>📆小->大</option>
+          </select>
+        </div>
+        
+        <div class="col">
+          <select class="rounded bg-light form-select" name="limit" onchange="form.submit()">
+            <option value="" selected>顯示幾項</option>
+            <option value="3" {{#ifMatch pagination.limit 3}}selected{{/ifMatch}}>3</option>
+            <option value="5" {{#ifMatch pagination.limit 5}}selected{{/ifMatch}}>5</option>
+            <option value="10" {{#ifMatch pagination.limit 10}}selected{{/ifMatch}}>10</option>
+            <option value="20" {{#ifMatch pagination.limit 20}}selected{{/ifMatch}}>20</option>
+          </select>
+        </div>
+      </div> --}}
+
+      <div class="mt-4 d-flex  justify-content-around  flex-wrap align-content-center fs-5">
+        <div class="mb-4">
+          <label for="startDate" class="mr-3">開始📆</label>&nbsp
+          <span><input name="startDate" id="startDate" type="date" onchange="form.submit()" value="{{pagination.startDate}}" />
+        </div>
+        <div class="mb-4">
+          <label for="endDate">結束📆</label>&nbsp
+          <span><input name="endDate" id="endDate" type="date" onchange="form.submit()" value="{{pagination.endDate}}" /></span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
