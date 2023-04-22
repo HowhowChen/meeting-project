@@ -17,10 +17,12 @@ const userController = {
         res.redirect('/meetings/5th')
     }
   },
-  logout: (req, res) => {
-    req.flash('success_messages', 'Logout Success!')
-    req.logout()
-    res.redirect('/users/login')
+  logout: (req, res, next) => {
+    req.logout(err => {
+      if (err) return next(err)
+      req.flash('success_messages', 'Logout Success!')
+      res.redirect('/users/login')
+    })
   }
 }
 
