@@ -8,6 +8,7 @@ const adminController = {
         raw: true,
         order: [['id', 'ASC']]
       })
+
       res.render('admin/users', { users })
     } catch (err) {
       next(err)

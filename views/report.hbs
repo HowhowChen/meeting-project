@@ -1,4 +1,4 @@
-{{> meeting-tabs route="index" }}
+{{> meeting-tabs route="report" }}
 <table class="table-5th table-striped">
 	<thead>
 		<tr>
@@ -41,27 +41,3 @@
 		{{/each}}
 	</tbody>
 </table>
-
-<nav class="mt-5 d-flex justify-content-center fs-4 " aria-label="page navigation">
-  <ul class="pagination">
-    <li class="page-item {{#ifMatch pagination.currentPage 1}}disabled{{/ifMatch}}">
-      <a class="page-link" href="/meetings/5th?page={{pagination.prev}}" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    {{#each pagination.pages}}
-      {{#ifMatch this.page  ../pagination.currentPage}}
-        <li class="page-item active"><a class="page-link" href="#">{{this.page }}</a></li>
-      {{else}}
-        <li class="page-item">
-          <a class="page-link" href="/meetings/5th?page={{this.page }}">{{this.page }}</a>
-        </li>
-      {{/ifMatch}}
-    {{/each}}
-    <li class="page-item {{#ifMatch pagination.currentPage pagination.totalPage}}disabled{{/ifMatch}}">
-      <a class="page-link" href="/meetings/5th?page={{pagination.next}}" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
