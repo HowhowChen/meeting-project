@@ -110,7 +110,7 @@ h2 a {
 
 .AutoNewline {
   word-break: break-all;/*必須*/
-  width: 100px;
+  width: 200px;
 }
 
 @media (max-width: 800px) {

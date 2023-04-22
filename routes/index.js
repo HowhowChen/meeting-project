@@ -20,6 +20,12 @@ router.get('/meetings', authenticated, meetingController.getGroupPage)
 
 router.get('/', (req, res) => res.redirect('/meetings'))
 
+//  get a 404 page
+router.use('*', (req, res) => {
+  res.locals.layout = 'error.hbs'
+  res.status(404).render('error/404')
+})
+
 // error handler
 router.use('/', generalErrorHandler)
 
