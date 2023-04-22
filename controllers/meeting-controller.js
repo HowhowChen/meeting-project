@@ -2,6 +2,7 @@ const dayjs = require('dayjs')
 const EmlParser = require('eml-parser')
 const fs = require('fs')
 const path = require('path')
+const { Op } = require('sequelize')
 const { getUser } = require('../helpers/auth-helpers')
 const { getOffset, getPagination } = require('../helpers/pagination-helper')
 const { Meeting, Platform, Category, Country } = require('../database/models')
@@ -16,6 +17,9 @@ const meetingController = {
       const categoryId = Number(req.query.categoryId) || ''
       const platformId = Number(req.query.platformId) || ''
       const countryId = Number(req.query.countryId) || ''
+      const startDate = req.query.startDate || dayjs().format('YYYY-MM-DD')
+      const endDate = req.query.endDate || dayjs().format('YYYY-MM-DD')
+
       const [meetings, categories, platforms, countries] = await Promise.all([
         Meeting.findAndCountAll({
           raw: true,
@@ -23,7 +27,13 @@ const meetingController = {
           where: {
             ...categoryId ? { categoryId } : {},
             ...platformId ? { platformId } : {},
-            ...countryId ? { countryId } : {}
+            ...countryId ? { countryId } : {},
+            meetingDate: {
+              [Op.and]: {
+                [Op.gte]: startDate,
+                [Op.lte]: endDate
+              }
+            }
           },
           include: [
             {
@@ -63,6 +73,8 @@ const meetingController = {
         platformId,
         countries,
         countryId,
+        startDate,
+        endDate,
         pagination: getPagination(limit, page, meetings.count)
       })
     } catch (err) {

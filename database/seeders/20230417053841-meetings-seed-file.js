@@ -1,5 +1,7 @@
 'use strict'
+const dayjs = require('dayjs')
 const faker = require('faker')
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
@@ -17,7 +19,7 @@ module.exports = {
     )
 
     await queryInterface.bulkInsert('Meetings', Array.from({
-      length: 10
+      length: 50
     }, (_, i) => ({
       name: faker.lorem.sentences(1),
       sender: faker.internet.email(),
@@ -25,8 +27,8 @@ module.exports = {
       category_id: categories[Math.floor(Math.random() * categories.length)].id,
       platform_id: platforms[Math.floor(Math.random() * platforms.length)].id,
       country_id: countries[Math.floor(Math.random() * countries.length)].id,
-      meeting_date: new Date(),
-      acceptance_date: new Date(),
+      meeting_date: dayjs().format('YYYY-MM-DD'),
+      acceptance_date: dayjs().format('YYYY-MM-DD'),
       organization: 'NSA',
       link: 'https://example.com',
       password: '12345678',

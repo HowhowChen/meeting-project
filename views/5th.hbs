@@ -1,5 +1,5 @@
 {{> meeting-tabs route="index" }}
-{{> search}}
+{{> search-5th}}
 <table class="table-5th table-striped">
 	<thead>
 		<tr>
@@ -36,33 +36,35 @@
 					{{#ifMatch this.value true}}V{{/ifMatch}}
 				</td>
 				<td class="AutoNewline">
-					<a href="/meetings/{{this.acceptanceDate}}/{{this.fileName}}" target="_blank">file</a>
+					<a href="/files/{{this.acceptanceDate}}/{{this.fileName}}" target="_blank">file</a>
 				</td>
 			</tr>
 		{{/each}}
 	</tbody>
 </table>
 
-<nav class="mt-5 d-flex justify-content-center fs-4 " aria-label="page navigation">
-  <ul class="pagination">
-    <li class="page-item {{#ifMatch pagination.currentPage 1}}disabled{{/ifMatch}}">
-      <a class="page-link" href="/meetings/5th?page={{pagination.prev}}" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    {{#each pagination.pages}}
-      {{#ifMatch this.page  ../pagination.currentPage}}
-        <li class="page-item active"><a class="page-link" href="#">{{this.page }}</a></li>
-      {{else}}
-        <li class="page-item">
-          <a class="page-link" href="/meetings/5th?page={{this.page }}">{{this.page }}</a>
-        </li>
-      {{/ifMatch}}
-    {{/each}}
-    <li class="page-item {{#ifMatch pagination.currentPage pagination.totalPage}}disabled{{/ifMatch}}">
-      <a class="page-link" href="/meetings/5th?page={{pagination.next}}" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
+{{#if pagination.pages}}
+	<nav class="mt-5 d-flex justify-content-center fs-4 " aria-label="page navigation">
+		<ul class="pagination">
+			<li class="page-item {{#ifMatch pagination.currentPage 1}}disabled{{/ifMatch}}">
+				<a class="page-link" href="/meetings/5th?page={{pagination.prev}}&categoryId={{categoryId}}&platformId={{platformId}}&countryId={{countryId}}&startDate={{startDate}}&endDate={{endDate}}" aria-label="Previous">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+			</li>
+			{{#each pagination.pages}}
+				{{#ifMatch this.page  ../pagination.currentPage}}
+					<li class="page-item active"><a class="page-link" href="#">{{this.page }}</a></li>
+				{{else}}
+					<li class="page-item">
+						<a class="page-link" href="/meetings/5th?page={{this.page }}&categoryId={{../categoryId}}&platformId={{../platformId}}&countryId={{../countryId}}&startDate={{../startDate}}&endDate={{../endDate}}">{{this.page }}</a>
+					</li>
+				{{/ifMatch}}
+			{{/each}}
+			<li class="page-item {{#ifMatch pagination.currentPage pagination.totalPage}}disabled{{/ifMatch}}">
+				<a class="page-link" href="/meetings/5th?page={{pagination.next}}&categoryId={{categoryId}}&platformId={{platformId}}&countryId={{countryId}}&startDate={{startDate}}&endDate={{endDate}}" aria-label="Next">
+					<span aria-hidden="true">&raquo;</span>
+				</a>
+			</li>
+		</ul>
+	</nav>
+{{/if}}
