@@ -135,10 +135,11 @@ const meetingController = {
       const { fileDate, fileName } = req.params
       const emailFile = fs.createReadStream(path.resolve(process.env.FILE_PATH, dayjs(fileDate).format('YYYYMMDD'), `${fileName}.eml`))
       const content = await new EmlParser(emailFile).parseEml({ ignoreEmbedded: true })
-
+      console.log(emailFile, content)
       res.locals.layout = 'email.hbs'
       res.render('emlFile', { content })
     } catch (err) {
+      console.log(err)
       next(err)
     }
   }
