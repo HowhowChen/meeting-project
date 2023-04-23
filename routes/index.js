@@ -14,6 +14,7 @@ router.post('/users/login', passport.authenticate('local', { failureRedirect: '/
 router.get('/users/logout', userController.logout)
 
 router.get('/meetings/files/:fileDate/:fileName', authenticated, meetingController.getFileContent)
+router.post('/meetings/value/:id', authenticated, meetingController.postValue)
 router.get('/meetings/5th/report', authenticated, authenticatedFiveClass, meetingController.getFiveReport)
 router.get('/meetings/5th', authenticated, authenticatedFiveClass, meetingController.getFivePage)
 router.get('/meetings/6th', authenticated, authenticatedSixClass, meetingController.getSixPage)

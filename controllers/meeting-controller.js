@@ -114,8 +114,38 @@ const meetingController = {
       next(err)
     }
   },
-  getSixPage: (_, res) => {
-    res.render('6th')
+  getSixPage: async (req, res, next) => {
+    try {
+      const meetings = await Meeting.findAll({
+        raw: true,
+        nest: true,
+        include: [
+          {
+            model: Platform,
+            attributes: ['name']
+          },
+          {
+            model: Category,
+            attributes: ['name']
+          },
+          {
+            model: Country,
+            attributes: ['name']
+          }
+        ]
+      })
+      // convert date format
+      const newMeetings = meetings.map(meeting => ({
+        ...meeting,
+        meetingDate: dayjs(meeting.meetingDate).format('YYYY-MM-DD'),
+        acceptanceDate: dayjs(meeting.acceptanceDate).format('YYYY-MM-DD')
+      }))
+
+      res.locals.layout = 'table.hbs'
+      res.render('6th', { meetings: newMeetings })
+    } catch (err) {
+      next(err)
+    }
   },
   getGroupPage: (req, res) => {
     const { group } = getUser(req)
@@ -135,11 +165,23 @@ const meetingController = {
       const { fileDate, fileName } = req.params
       const emailFile = fs.createReadStream(path.resolve(process.env.FILE_PATH, dayjs(fileDate).format('YYYYMMDD'), `${fileName}.eml`))
       const content = await new EmlParser(emailFile).parseEml({ ignoreEmbedded: true })
-      console.log(emailFile, content)
+
       res.locals.layout = 'email.hbs'
       res.render('emlFile', { content })
     } catch (err) {
-      console.log(err)
+      next(err)
+    }
+  },
+  postValue: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const meeting = await Meeting.findByPk(id)
+      if (!meeting) throw new Error("Meeting didn't exists!")
+      await meeting.update({
+        value: true
+      })
+      res.redirect('back')
+    } catch (err) {
       next(err)
     }
   }

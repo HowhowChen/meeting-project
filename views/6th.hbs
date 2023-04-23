@@ -1,3 +1,50 @@
-<div>
-  6th!!!!!!!!!!!!!!!!!!!!!
-</div>
+
+<table class="table-5th table-striped">
+	<thead>
+		<tr>
+			<th><h1>Name</h1></th>
+			<th><h1>Platform</h1></th>
+			<th><h1>Category</h1></th>
+			<th><h1>Country</h1></th>
+			<th><h1>Organization</h1></th>
+			<th><h1>Meeting Date</h1></th>
+			<th><h1>Acceptance Date</h1></th>
+			<th><h1>Sender</h1></th>
+			<th><h1>Receiver</h1></th>
+			<th><h1>Link<h1></th>
+			<th><h1>Password</h1></th>
+			<th><h1>Value</h1></th>
+			<th><h1>Detail</h1></th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each meetings}}
+			<tr>
+				<td class="AutoNewline">{{this.name}}</td>
+				<td class="AutoNewline">{{this.Platform.name}}</td>
+				<td class="AutoNewline">{{this.Category.name}}</td>
+				<td class="AutoNewline">{{this.Country.name}}</td>
+				<td class="AutoNewline">{{this.organization}}</td>
+				<td class="AutoNewline">{{this.meetingDate}}</td>
+				<td class="AutoNewline">{{this.acceptanceDate}}</td>
+				<td class="AutoNewline">{{this.sender}}</td>
+				<td class="AutoNewline">{{this.receiver}}</td>
+				<td class="AutoNewline">{{this.link}}</td>
+				<td class="AutoNewline">{{this.password}}</td>
+				<td class="AutoNewline">
+					{{#ifMatch this.value true}}V{{/ifMatch}}
+          {{#ifMatch this.value false}}
+          <form action="/meetings/value/{{this.id}}" method="POST">
+            <button type="submit" class="btn btn-outline-success" onclick="return confirm(`Do you sure {{ this.name }} is hight value?`)">
+              isValue
+            </button>
+          </form>
+          {{/ifMatch}}
+				</td>
+				<td class="AutoNewline">
+					<a href="/meetings/{{this.acceptanceDate}}/{{this.fileName}}" target="_blank">file</a>
+				</td>
+			</tr>
+		{{/each}}
+	</tbody>
+</table>
