@@ -17,7 +17,8 @@ passport.use(new LocalStrategy(
     const user = await User.findOne({ where: { account } })
     if (!user) return callback(null, false, req.flash('error_messages', 'account or password error!'))
     // password can not match
-    const isMatch = bcrypt.compare(password, req.body.password)
+    const isMatch = await bcrypt.compare(password, user.password)
+
     if (!isMatch) return callback(null, false, req.flash('error_messages', 'account or password error!'))
     // no error
     callback(null, user)
