@@ -176,8 +176,17 @@ const meetingController = {
   postValue: async (req, res, next) => {
     try {
       const { id } = req.params
-      const meeting = await Meeting.findByPk(id)
+      const [meeting, meetingValue] = await Promise.all([
+        Meeting.findByPk(id),
+        Meeting.findOne({
+          where: {
+            value: false
+          }
+        })
+      ])
       if (!meeting) throw new Error("Meeting didn't exists!")
+      if (!meetingValue) throw new Error('Meeting is already setted value')
+
       await meeting.update({
         value: true
       })
@@ -189,8 +198,17 @@ const meetingController = {
   deleteValue: async (req, res, next) => {
     try {
       const { id } = req.params
-      const meeting = await Meeting.findByPk(id)
+      const [meeting, meetingValue] = await Promise.all([
+        Meeting.findByPk(id),
+        Meeting.findOne({
+          where: {
+            value: true
+          }
+        })
+      ])
       if (!meeting) throw new Error("Meeting didn't exists!")
+      if (!meetingValue) throw new Error("Meeting didn't be setted value")
+
       await meeting.update({
         value: false
       })
