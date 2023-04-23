@@ -1,4 +1,5 @@
 const { getUser } = require('../helpers/auth-helpers')
+const { User } = require('../database/models')
 
 const userController = {
   loginPage: async (req, res) => {
@@ -23,6 +24,18 @@ const userController = {
       req.flash('success_messages', 'Logout Success!')
       res.redirect('/users/login')
     })
+  },
+  editUser: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const user = await User.findByPk(id, {
+        raw: true
+      })
+      if (!user) throw new Error("User doesn't exist.")
+      res.render('users/edit', { user })
+    } catch (err) {
+      next(err)
+    }
   }
 }
 
