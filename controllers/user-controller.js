@@ -48,7 +48,8 @@ const userController = {
       await user.update({
         password: bcrypt.hashSync(password, bcrypt.genSaltSync(10))
       })
-      res.redirect('back')
+      req.flash('success_messages', 'The password is setted findished')
+      res.redirect(`/users/${id}`)
     } catch (err) {
       next(err)
     }

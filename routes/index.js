@@ -6,6 +6,7 @@ const userController = require('../controllers/user-controller')
 const meetingController = require('../controllers/meeting-controller')
 const { generalErrorHandler } = require('../middleware/error-handler')
 const { authenticated, authenticatedAdmin, authenticatedFiveClass, authenticatedSixClass, authenticatedUser } = require('../middleware/auth')
+const { putUserValidator } = require('../middleware/validator-handler')
 
 router.use('/admin', authenticatedAdmin, admin)
 
@@ -13,7 +14,7 @@ router.get('/users/login', userController.loginPage)
 router.post('/users/login', passport.authenticate('local', { failureRedirect: '/users/login', failureFlash: true }), userController.login)
 router.get('/users/logout', userController.logout)
 router.get('/users/:id/edit', authenticatedUser, userController.editUser)
-router.put('/users/:id', authenticatedUser, userController.putUser)
+router.put('/users/:id', authenticatedUser, putUserValidator, userController.putUser)
 
 router.get('/meetings/files/:fileDate/:fileName', authenticated, meetingController.getFileContent)
 router.post('/meetings/value/:id', authenticated, meetingController.postValue)
