@@ -49,7 +49,7 @@ const userController = {
         password: bcrypt.hashSync(password, bcrypt.genSaltSync(10))
       })
       req.flash('success_messages', 'The password is setted findished')
-      res.redirect(`/users/${id}`)
+      res.redirect(`/users/${id}/edit`)
     } catch (err) {
       next(err)
     }

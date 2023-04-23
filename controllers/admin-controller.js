@@ -81,7 +81,7 @@ const adminController = {
       if (!user) throw new Error("User didn't exists!")
 
       await user.update({
-        password: process.env.DEFAULT_PASSWORD
+        password: bcrypt.hashSync(process.env.DEFAULT_PASSWORD, bcrypt.genSaltSync(10))
       })
       req.flash('success_messages', 'password already reset!')
       res.redirect('/admin/users')
