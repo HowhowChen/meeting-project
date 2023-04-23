@@ -32,13 +32,19 @@
 				<td class="AutoNewline">{{this.link}}</td>
 				<td class="AutoNewline">{{this.password}}</td>
 				<td class="AutoNewline">
-					{{#ifMatch this.value true}}V{{/ifMatch}}
+					{{#ifMatch this.value true}}
+            <form action="/meetings/value/{{this.id}}?_method=DELETE" method="POST">
+              <button type="submit" class="btn btn-outline-danger" onclick="return confirm(`Do you sure delete {{ this.name }}'s hight value?`)">
+                取消價值
+              </button>
+            </form>
+          {{/ifMatch}}
           {{#ifMatch this.value false}}
-          <form action="/meetings/value/{{this.id}}" method="POST">
-            <button type="submit" class="btn btn-outline-success" onclick="return confirm(`Do you sure {{ this.name }} is hight value?`)">
-              isValue
-            </button>
-          </form>
+            <form action="/meetings/value/{{this.id}}" method="POST">
+              <button type="submit" class="btn btn-outline-success" style="width:100px;" onclick="return confirm(`Do you sure {{ this.name }} is hight value?`)">
+                新增價值
+              </button>
+            </form>
           {{/ifMatch}}
 				</td>
 				<td class="AutoNewline">

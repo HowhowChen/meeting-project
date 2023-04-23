@@ -132,7 +132,8 @@ const meetingController = {
             model: Country,
             attributes: ['name']
           }
-        ]
+        ],
+        order: [['meetingDate', 'DESC']]
       })
       // convert date format
       const newMeetings = meetings.map(meeting => ({
@@ -179,6 +180,19 @@ const meetingController = {
       if (!meeting) throw new Error("Meeting didn't exists!")
       await meeting.update({
         value: true
+      })
+      res.redirect('back')
+    } catch (err) {
+      next(err)
+    }
+  },
+  deleteValue: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const meeting = await Meeting.findByPk(id)
+      if (!meeting) throw new Error("Meeting didn't exists!")
+      await meeting.update({
+        value: false
       })
       res.redirect('back')
     } catch (err) {
