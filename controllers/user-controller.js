@@ -1,5 +1,6 @@
 const { getUser } = require('../helpers/auth-helpers')
 const { User } = require('../database/models')
+const bcrypt = require('bcryptjs')
 
 const userController = {
   loginPage: async (req, res) => {
@@ -33,6 +34,21 @@ const userController = {
       })
       if (!user) throw new Error("User doesn't exist.")
       res.render('users/edit', { user })
+    } catch (err) {
+      next(err)
+    }
+  },
+  putUser: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const { password } = req.body
+      const user = await User.findByPk(id)
+      if (!user) throw new Error("User doesn't exist.")
+
+      await user.update({
+        password: bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+      })
+      res.redirect('back')
     } catch (err) {
       next(err)
     }
