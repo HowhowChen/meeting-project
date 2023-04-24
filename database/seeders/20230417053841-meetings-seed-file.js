@@ -30,7 +30,7 @@ module.exports = {
       meeting_date: dayjs().format('YYYY-MM-DD'),
       acceptance_date: dayjs().format('YYYY-MM-DD'),
       import_date: i % 2 === 0 ? dayjs().format('YYYY-MM-DD') : '',
-      export_date: i % 2 === 0 ? dayjs().format('YYYY-MM-DD') : '',
+      export_date: i % 2 === 0 && i < 30 ? dayjs().format('YYYY-MM-DD') : '',
       organization: 'NSA',
       link: 'https://example.com',
       password: '12345678',

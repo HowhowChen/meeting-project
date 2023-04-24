@@ -84,9 +84,19 @@ const meetingController = {
   },
   getFiveReport: async (req, res, next) => {
     try {
+      const startDate = req.query.startDate || dayjs().format('YYYY-MM-DD')
+      const endDate = req.query.endDate || dayjs().format('YYYY-MM-DD')
       const meetings = await Meeting.findAll({
         raw: true,
         nest: true,
+        where: {
+          importDate: {
+            [Op.and]: {
+              [Op.gte]: startDate,
+              [Op.lte]: endDate
+            }
+          }
+        },
         include: [
           {
             model: Platform,
@@ -110,7 +120,11 @@ const meetingController = {
       }))
 
       res.locals.layout = 'table.hbs'
-      res.render('report', { meetings: newMeetings })
+      res.render('report', {
+        meetings: newMeetings,
+        startDate,
+        endDate
+      })
     } catch (err) {
       next(err)
     }
