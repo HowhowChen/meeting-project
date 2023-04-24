@@ -105,7 +105,10 @@ const adminController = {
   getCategories: async (req, res, next) => {
     try {
       const [categories, category] = await Promise.all([
-        Category.findAll({ raw: true }),
+        Category.findAll({
+          raw: true,
+          order: [['id', 'ASC']]
+        }),
         req.params.id ? Category.findByPk(req.params.id, { raw: true }) : null
       ])
 
@@ -113,6 +116,40 @@ const adminController = {
     } catch (err) {
       next(err)
     }
+  },
+  postCategory: async (req, res, next) => {
+    try {
+      const { name } = req.body
+
+      await Category.create({ name })
+      req.flash('success_messages', 'Success Create!')
+      res.redirect('/admin/categories')
+    } catch (err) {
+      next(err)
+    }
+  },
+  putCategory: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const { name } = req.body
+      const category = await Category.findByPk(id)
+      if (!category) throw new Error("Category didn't exists!")
+
+      await category.update({ name })
+      req.flash('success_messages', 'Success Update!')
+      res.redirect('/admin/categories')
+    } catch (err) {
+      next(err)
+    }
+  },
+  deleteCategory: async (req, res, next) => {
+    const { id } = req.params
+    const category = await Category.findByPk(id)
+    if (!category) throw new Error("Category didn't exists!")
+
+    await category.destroy()
+    req.flash('success_messages', 'Success Delete!')
+    res.redirect('/admin/categories')
   }
 }
 
