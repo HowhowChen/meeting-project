@@ -49,6 +49,7 @@ const meetingController = {
               attributes: ['name']
             }
           ],
+          order: [['meetingDate', 'DESC']],
           limit,
           offset
         }),
