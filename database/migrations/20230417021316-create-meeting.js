@@ -36,6 +36,12 @@ module.exports = {
       acceptance_date: {
         type: Sequelize.STRING
       },
+      import_date: {
+        type: Sequelize.STRING
+      },
+      export_date: {
+        type: Sequelize.STRING
+      },
       organization: {
         type: Sequelize.STRING
       },

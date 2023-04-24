@@ -25,6 +25,8 @@ module.exports = (sequelize, DataTypes) => {
     countryId: DataTypes.INTEGER,
     meetingDate: DataTypes.STRING,
     acceptanceDate: DataTypes.STRING,
+    importDate: DataTypes.STRING,
+    exportDate: DataTypes.STRING,
     organization: DataTypes.STRING,
     link: DataTypes.STRING,
     password: DataTypes.STRING,
