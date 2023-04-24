@@ -1,52 +1,56 @@
-<table class="table align-middle text-white fs-3">
-  {{> messages}}
-    <a class="btn btn-outline-info" href="/admin/users/new">
-      Add New User
-    </a>
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Name</th>
-      <th scope="col">Account</th>
-      <th scope="col">organization</th>
-      <th scope="col">Role</th>
-      <th scope="col">edit</th>
-      <th scope="col">Reset</th>
-      <th scope="col">Delete</th>
-    </tr>
-  </thead>  
-  <tbody>
-    {{#each users}}
+{{> admin-tabs route="users" }}
+<div class="mt-5">
+    <table class="table align-middle text-white fs-3">
+    {{> messages}}
+      <a class="btn btn-outline-info" href="/admin/users/new">
+        Add New User
+      </a>
+    <thead class="thead-light">
       <tr>
-        <th scope="row">{{this.id}}</th>
-        <td>{{this.name}}</td>
-        <td>{{this.account}}</td>
-        <td>{{this.organization}}</td>
-        <td>
-          {{#ifMatch this.role 'admin'}}admin{{else}}user{{/ifMatch}}
-        </td>
-        <td>
-          <form action="/admin/users/{{this.id}}/edit" method="GET" style="display: inline;">
-            <button type="submit" class="btn btn-outline-primary">
-              Edit
-            </button>
-          </form>
-        </td>
-        <td>
-          <form action="/admin/users/{{this.id}}?_method=PATCH" method="POST" style="display: inline;">
-            <button type="submit" class="btn btn-outline-warning" onclick="return confirm(`Do you sure reset {{ this.name }}'s password?`)">
-              Reset Password
-            </button>
-          </form>
-        </td>
-        <td>
-          <form action="/admin/users/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-            <button type="submit" class="btn btn-outline-danger" onclick="return confirm(`Do you sure delete {{ this.name }}'s data?`)">
-              Delete User
-            </button>
-          </form>
-        </td>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Account</th>
+        <th scope="col">organization</th>
+        <th scope="col">Role</th>
+        <th scope="col">edit</th>
+        <th scope="col">Reset</th>
+        <th scope="col">Delete</th>
       </tr>
-    {{/each}}
-  </tbody>
-</table>
+    </thead>  
+    <tbody>
+      {{#each users}}
+        <tr>
+          <th scope="row">{{this.id}}</th>
+          <td>{{this.name}}</td>
+          <td>{{this.account}}</td>
+          <td>{{this.organization}}</td>
+          <td>
+            {{#ifMatch this.role 'admin'}}admin{{else}}user{{/ifMatch}}
+          </td>
+          <td>
+            <form action="/admin/users/{{this.id}}/edit" method="GET" style="display: inline;">
+              <button type="submit" class="btn btn-outline-primary">
+                Edit
+              </button>
+            </form>
+          </td>
+          <td>
+            <form action="/admin/users/{{this.id}}?_method=PATCH" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-outline-warning" onclick="return confirm(`Do you sure reset {{ this.name }}'s password?`)">
+                Reset Password
+              </button>
+            </form>
+          </td>
+          <td>
+            <form action="/admin/users/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-outline-danger" onclick="return confirm(`Do you sure delete {{ this.name }}'s data?`)">
+                Delete User
+              </button>
+            </form>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
