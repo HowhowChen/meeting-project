@@ -165,6 +165,44 @@ const adminController = {
     } catch (err) {
       next(err)
     }
+  },
+  postPlatform: async (req, res, next) => {
+    try {
+      const { name } = req.body
+
+      await Platform.create({ name })
+      req.flash('success_messages', 'Success Create!')
+      res.redirect('/admin/platforms')
+    } catch (err) {
+      next(err)
+    }
+  },
+  putPlatform: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const { name } = req.body
+      const platfrom = await Platform.findByPk(id)
+      if (!platfrom) throw new Error("Platform didn't exists!")
+
+      await platfrom.update({ name })
+      req.flash('success_messages', 'Success Update!')
+      res.redirect('/admin/platforms')
+    } catch (err) {
+      next(err)
+    }
+  },
+  deletePlatform: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const platform = await Platform.findByPk(id)
+      if (!platform) throw new Error("Platform didn't exists!")
+
+      await platform.destroy()
+      req.flash('success_messages', 'Success Delete!')
+      res.redirect('/admin/platforms')
+    } catch (err) {
+      next(err)
+    }
   }
 }
 
