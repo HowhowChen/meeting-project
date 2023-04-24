@@ -11,4 +11,7 @@ router.get('/users', adminController.getUsers)
 router.post('/users', addUserValidator, adminController.postUser)
 router.get('/users/new', adminController.getUserPage)
 
+router.get('/categories/:id', adminController.getCategories)
+router.get('/categories', adminController.getCategories)
+
 module.exports = router

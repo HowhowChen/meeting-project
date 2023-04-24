@@ -1,4 +1,4 @@
-const { User } = require('../database/models')
+const { User, Category } = require('../database/models')
 const bcrypt = require('bcryptjs')
 
 const adminController = {
@@ -15,7 +15,7 @@ const adminController = {
     }
   },
   getUserPage: async (_, res) => {
-    res.render('admin/userNew')
+    res.render('admin/user-new')
   },
   postUser: async (req, res, next) => {
     try {
@@ -44,7 +44,7 @@ const adminController = {
         raw: true
       })
 
-      res.render('admin/userEdit', { user })
+      res.render('admin/user-edit', { user })
     } catch (err) {
       next(err)
     }
@@ -98,6 +98,18 @@ const adminController = {
       await user.destroy()
       req.flash('success_messages', 'Success Delete!')
       res.redirect('/admin/users')
+    } catch (err) {
+      next(err)
+    }
+  },
+  getCategories: async (req, res, next) => {
+    try {
+      const [categories, category] = await Promise.all([
+        Category.findAll({ raw: true }),
+        req.params.id ? Category.findByPk(req.params.id, { raw: true }) : null
+      ])
+
+      res.render('admin/meeting-category', { categories, category })
     } catch (err) {
       next(err)
     }
