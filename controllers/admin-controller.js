@@ -1,4 +1,4 @@
-const { User, Category } = require('../database/models')
+const { User, Category, Platform } = require('../database/models')
 const bcrypt = require('bcryptjs')
 
 const adminController = {
@@ -150,6 +150,21 @@ const adminController = {
     await category.destroy()
     req.flash('success_messages', 'Success Delete!')
     res.redirect('/admin/categories')
+  },
+  getPlatforms: async (req, res, next) => {
+    try {
+      const [platforms, platform] = await Promise.all([
+        Platform.findAll({
+          raw: true,
+          order: [['id', 'ASC']]
+        }),
+        req.params.id ? Platform.findByPk(req.params.id, { raw: true }) : null
+      ])
+
+      res.render('admin/meeting-platform', { platforms, platform })
+    } catch (err) {
+      next(err)
+    }
   }
 }
 

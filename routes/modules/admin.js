@@ -17,4 +17,7 @@ router.delete('/categories/:id', adminController.deleteCategory)
 router.post('/categories', adminController.postCategory)
 router.get('/categories', adminController.getCategories)
 
+router.get('/platforms/:id', adminController.getPlatforms)
+router.get('/platforms', adminController.getPlatforms)
+
 module.exports = router
