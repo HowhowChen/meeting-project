@@ -20,11 +20,14 @@ const userController = {
     }
   },
   logout: (req, res, next) => {
-    req.logout(err => {
-      if (err) return next(err)
-      req.flash('success_messages', 'Logout Success!')
-      res.redirect('/users/login')
-    })
+    // req.logout(err => {
+    //   if (err) return next(err)
+    //   req.flash('success_messages', 'Logout Success!')
+    //   res.redirect('/users/login')
+    // })
+    req.logOut()
+    req.flash('success_messages', 'Logout Success!')
+    res.redirect('/users/login')
   },
   editUser: async (req, res, next) => {
     try {

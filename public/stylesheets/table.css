@@ -4,6 +4,9 @@ Table Responsive
 Author: https://github.com/pablorgarcia
 */
 
+body {
+  background: linear-gradient(#141e30, #243b55);
+}
 
 main {
   font-family: 'Open Sans', sans-serif;
