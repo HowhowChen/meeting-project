@@ -1,4 +1,4 @@
-const { User, Category, Platform } = require('../database/models')
+const { User, Category, Platform, Country } = require('../database/models')
 const bcrypt = require('bcryptjs')
 
 const adminController = {
@@ -200,6 +200,59 @@ const adminController = {
       await platform.destroy()
       req.flash('success_messages', 'Success Delete!')
       res.redirect('/admin/platforms')
+    } catch (err) {
+      next(err)
+    }
+  },
+  getCountries: async (req, res, next) => {
+    try {
+      const [countries, country] = await Promise.all([
+        Country.findAll({
+          raw: true,
+          order: [['id', 'ASC']]
+        }),
+        req.params.id ? Country.findByPk(req.params.id, { raw: true }) : null
+      ])
+
+      res.render('admin/meeting-country', { countries, country })
+    } catch (err) {
+      next(err)
+    }
+  },
+  postCountry: async (req, res, next) => {
+    try {
+      const { name } = req.body
+
+      await Country.create({ name })
+      req.flash('success_messages', 'Success Create!')
+      res.redirect('/admin/countries')
+    } catch (err) {
+      next(err)
+    }
+  },
+  putCountry: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const { name } = req.body
+      const country = await Country.findByPk(id)
+      if (!country) throw new Error("Country didn't exists!")
+
+      await country.update({ name })
+      req.flash('success_messages', 'Success Update!')
+      res.redirect('/admin/countries')
+    } catch (err) {
+      next(err)
+    }
+  },
+  deleteCountry: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const country = await Country.findByPk(id)
+      if (!country) throw new Error("Country didn't exists!")
+
+      await country.destroy()
+      req.flash('success_messages', 'Success Delete!')
+      res.redirect('/admin/countries')
     } catch (err) {
       next(err)
     }

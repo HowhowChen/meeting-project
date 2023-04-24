@@ -23,4 +23,10 @@ router.delete('/platforms/:id', adminController.deletePlatform)
 router.post('/platforms', adminController.postPlatform)
 router.get('/platforms', adminController.getPlatforms)
 
+router.get('/countries/:id', adminController.getCountries)
+router.put('/countries/:id', adminController.putCountry)
+router.delete('/countries/:id', adminController.deleteCountry)
+router.post('/countries', adminController.postCountry)
+router.get('/countries', adminController.getCountries)
+
 module.exports = router
