@@ -157,7 +157,7 @@ const meetingController = {
             include: [{ model: User, attributes: ['name'] }]
           }
         ],
-        order: [['meetingDate', 'DESC']]
+        order: [['id', 'DESC']]
       })
       // convert date format
       const newMeetings = meetings.map(meeting => ({
@@ -201,6 +201,41 @@ const meetingController = {
       if (!meeting) throw new Error("User didn't exist!")
 
       res.render('meeting-6th', { meeting })
+    } catch (err) {
+      next(err)
+    }
+  },
+  putSixMeeting: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const uuid = req.body.uuid.trim()
+      const content = req.body.comment.trim()
+      const userId = Number(getUser(req).id)
+      const [meeting, comment] = await Promise.all([
+        Meeting.findByPk(id),
+        Comment.findOne({ where: { meetingId: id } })
+      ])
+      if (!meeting) throw new Error("User didn't exist!")
+      if (!comment) {
+        await Promise.all([
+          meeting.update({ uuid }),
+          Comment.create({
+            userId,
+            meetingId: id,
+            content
+          })
+        ])
+      } else {
+        await Promise.all([
+          meeting.update({ uuid }),
+          comment.update({
+            userId,
+            meetingId: id,
+            content
+          })
+        ])
+      }
+      res.redirect('/meetings/6th')
     } catch (err) {
       next(err)
     }
