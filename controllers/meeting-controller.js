@@ -172,6 +172,39 @@ const meetingController = {
       next(err)
     }
   },
+  getSixMeeting: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const meeting = await Meeting.findOne({
+        raw: true,
+        nest: true,
+        where: { id },
+        include: [
+          {
+            model: Platform,
+            attributes: ['name']
+          },
+          {
+            model: Category,
+            attributes: ['name']
+          },
+          {
+            model: Country,
+            attributes: ['name']
+          },
+          {
+            model: Comment,
+            attributes: ['content']
+          }
+        ]
+      })
+      if (!meeting) throw new Error("User didn't exist!")
+
+      res.render('meeting-6th', { meeting })
+    } catch (err) {
+      next(err)
+    }
+  },
   getGroupPage: (req, res) => {
     const { group } = getUser(req)
     switch (group) {

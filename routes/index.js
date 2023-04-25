@@ -21,6 +21,7 @@ router.post('/meetings/value/:id', authenticated, meetingController.postValue)
 router.delete('/meetings/value/:id', authenticated, meetingController.deleteValue)
 router.get('/meetings/5th/report', authenticated, authenticatedFiveClass, meetingController.getFiveReport)
 router.get('/meetings/5th', authenticated, authenticatedFiveClass, meetingController.getFivePage)
+router.get('/meetings/6th/:id', authenticated, authenticatedSixClass, meetingController.getSixMeeting)
 router.get('/meetings/6th', authenticated, authenticatedSixClass, meetingController.getSixPage)
 router.get('/meetings', authenticated, meetingController.getGroupPage)
 

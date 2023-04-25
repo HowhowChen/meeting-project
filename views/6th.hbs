@@ -3,6 +3,7 @@
 	<thead>
 		<tr>
 			<th><h1>Meeting Date</h1></th>
+			<th><h1>UUID</h1></th>
 			<th><h1>Country</h1></th>
 			<th><h1>Platfrom</h1></th>
 			<th><h1>Name</h1></th>
@@ -12,12 +13,14 @@
 			<th><h1>Category<h1></th>
 			<th><h1>Value</h1></th>
 			<th><h1>Comment</h1></th>
+			<th><h1>Edit</h1></th>
 		</tr>
 	</thead>
 	<tbody>
 		{{#each meetings}}
 			<tr>
 				<td class="AutoNewline">{{this.meetingDate}}</td>
+				<td class="AutoNewline">{{this.uuid}}</td>
 				<td class="AutoNewline">{{this.Country.name}}</td>
 				<td class="AutoNewline">{{this.Platform.name}}</td>
 				<td class="AutoNewline">{{this.name}}</td>
@@ -42,6 +45,9 @@
           {{/ifMatch}}
 				</td>
 				<td class="AutoNewline">{{this.Comments.content}}</td>
+				<td class="AutoNewline">
+					<a href="/meetings/6th/{{this.id}}">edit</a>
+				</td>
 			</tr>
 		{{/each}}
 	</tbody>
