@@ -1,0 +1,153 @@
+<form novalidate id="form" action="/meetings/5th/{{ meeting.id }}?_method=PUT" method="POST">
+  <div class="row mt-5">
+      <div class="">
+        <div class="row align-items-center mb-5">
+          <div class="col-3 text-danger">
+            *Required Input
+          </div>
+          <h1 class="col-9 text-center text-secondary">
+            Edit Meeting
+          </h1>
+        </div>
+
+        {{> messages}}
+        
+        <div class="row align-items-center mb-5 h3">
+          <label for="name" class="col-3 text-white">Name:</label>
+          <div class="col-9">
+            <input id="content" name="name" type="text" class="form-control" value="{{ meeting.name }}">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="content" class="col-3 text-white">Content:</label>
+          <div class="col-9">
+            <textarea class="form-control" id="content" name="content" rows="3">{{ meeting.content }}</textarea>
+          </div>
+        </div>
+        
+        <div class="row align-items-center mb-5 h3">
+          <label for="organization" class="col-3 text-white">Organization:</label>
+          <div class="col-9">
+            <input id="organization" name="organization" type="text" class="form-control" value="{{ meeting.organization }}">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="sender" class="col-3 text-white">Sender:</label>
+          <div class="col-9">
+            <input id="sender" name="sender" type="text" class="form-control" value="{{ meeting.sender }}">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="receiver" class="col-3 text-white">Receiver:</label>
+          <div class="col-9">
+            <textarea class="form-control" id="receiver" name="receiver" rows="3">{{ meeting.receiver }}</textarea>
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="meetingDate" class="col-3 text-white">Meeting Date:</label>
+          <div class="col-9">
+            <input id="meetingDate" name="meetingDate" type="date" class="form-control" value="{{ meeting.meetingDate }}">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="acceptanceDate" class="col-3 text-white">Acceptance Date:</label>
+          <div class="col-9">
+            <input id="acceptanceDate" name="acceptanceDate" type="date" class="form-control" value="{{ meeting.acceptanceDate }}">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="importDate" class="col-3 text-white">Import Date:</label>
+          <div class="col-9">
+            <input id="importDate" name="importDate" type="date" class="form-control" value="{{ meeting.importDate }}">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="exportDate" class="col-3 text-white">Export Date:</label>
+          <div class="col-9">
+            <input id="exportDate" name="exportDate" type="date" class="form-control" value="{{ meeting.exportDate }}">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="link" class="col-3 text-white">Link:</label>
+          <div class="col-9">
+            <input id="link" name="link" type="text" class="form-control" value="{{ meeting.link }}">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="password" class="col-3 text-white">Password:</label>
+          <div class="col-9">
+            <input id="password" name="password" type="text" class="form-control" value="{{ meeting.password }}">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="fileName" class="col-3 text-white">File Name:</label>
+          <div class="col-9">
+            <input id="fileName" name="fileName" type="text" class="form-control" value="{{ meeting.fileName }}">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="category" class="col-3 text-white"><span class="text-danger">*</span>Category:</label>
+          <div class="col-9">
+            <select id="category" name="category" list="categories" class="form-control"  required>
+              {{#each categories}}
+                <option {{#ifMatch this.name ../meeting.Category.name}}selected{{/ifMatch}}>{{this.name}}</option>
+              {{/each}}
+            </select>
+            <div class="valid-feedback">Good!</div>
+            <div class="invalid-feedback">This field is required</div>
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="platform" class="col-3 text-white"><span class="text-danger">*</span>Platform:</label>
+          <div class="col-9">
+            <select id="platform" name="platform" list="platfroms" class="form-control"  required>
+              {{#each platforms}}
+                <option {{#ifMatch this.name ../meeting.Platform.name}}selected{{/ifMatch}}>{{this.name}}</option>
+              {{/each}}
+            </select>
+            <div class="valid-feedback">Good!</div>
+            <div class="invalid-feedback">This field is required</div>
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="country" class="col-3 text-white"><span class="text-danger">*</span>Country:</label>
+          <div class="col-9">
+            <select id="country" name="country" list="countries" class="form-control"  required>
+              {{#each countries}}
+                <option {{#ifMatch this.name ../meeting.Country.name}}selected{{/ifMatch}}>{{this.name}}</option>
+              {{/each}}
+            </select>
+            <div class="valid-feedback">Good!</div>
+            <div class="invalid-feedback">This field is required</div>
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <div class="col-3 ">
+            <a class="btn btn-secondary" href="javascript:history.back()">back to last page</a>
+          </div>
+          <div class="col-9">
+            <div class="d-flex justify-content-center">
+              <button type="reset" class="btn btn-danger">重設</button>&nbsp
+              <button id="submitButton" type="submit" class="btn btn-primary">送出</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>

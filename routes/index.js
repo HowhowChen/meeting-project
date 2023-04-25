@@ -20,6 +20,7 @@ router.get('/meetings/files/:fileDate/:fileName', authenticated, meetingControll
 router.post('/meetings/value/:id', authenticated, meetingController.postValue)
 router.delete('/meetings/value/:id', authenticated, meetingController.deleteValue)
 router.get('/meetings/5th/report', authenticated, authenticatedFiveClass, meetingController.getFiveReport)
+router.get('/meetings/5th/:id', authenticated, authenticatedFiveClass, meetingController.getFiveMeeting)
 router.get('/meetings/5th', authenticated, authenticatedFiveClass, meetingController.getFivePage)
 router.get('/meetings/6th/:id', authenticated, authenticatedSixClass, meetingController.getSixMeeting)
 router.put('/meetings/6th/:id', authenticated, authenticatedSixClass, meetingController.putSixMeeting)

@@ -81,6 +81,50 @@ const meetingController = {
       next(err)
     }
   },
+  getFiveMeeting: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const [meeting, categories, platforms, countries] = await Promise.all([
+        Meeting.findOne({
+          raw: true,
+          nest: true,
+          where: { id },
+          include: [
+            {
+              model: Platform,
+              attributes: ['name']
+            },
+            {
+              model: Category,
+              attributes: ['name']
+            },
+            {
+              model: Country,
+              attributes: ['name']
+            },
+            {
+              model: Comment,
+              attributes: ['content']
+            }
+          ]
+        }),
+        Category.findAll({ raw: true }),
+        Platform.findAll({ raw: true }),
+        Country.findAll({ raw: true })
+      ])
+
+      if (!meeting) throw new Error("Meeting didn't exist!")
+
+      res.render('meeting-5th', {
+        meeting,
+        categories,
+        platforms,
+        countries
+      })
+    } catch (err) {
+      next(err)
+    }
+  },
   getFiveReport: async (req, res, next) => {
     try {
       const startDate = req.query.startDate || dayjs().format('YYYY-MM-DD')
@@ -198,7 +242,7 @@ const meetingController = {
           }
         ]
       })
-      if (!meeting) throw new Error("User didn't exist!")
+      if (!meeting) throw new Error("Meeting didn't exist!")
 
       res.render('meeting-6th', { meeting })
     } catch (err) {
