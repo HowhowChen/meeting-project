@@ -7,7 +7,7 @@ module.exports = {
     const user = await queryInterface.sequelize.query(
       'SELECT "id" FROM "Users" WHERE "name" = $1;',
       {
-        bind: ['user1'],
+        bind: ['user2'],
         type: queryInterface.sequelize.QueryTypes.SELECT
       }
     )

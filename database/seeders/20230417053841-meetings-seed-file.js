@@ -22,6 +22,8 @@ module.exports = {
       length: 50
     }, (_, i) => ({
       name: faker.lorem.sentences(1),
+      content: faker.lorem.sentences(2),
+      uuid: 'VM000' + faker.random.alphaNumeric(4, { casing: 'upper' }).toUpperCase(),
       sender: faker.internet.email(),
       receiver: faker.internet.email(),
       category_id: categories[Math.floor(Math.random() * categories.length)].id,

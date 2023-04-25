@@ -19,6 +19,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   Meeting.init({
     name: DataTypes.STRING,
+    content: DataTypes.STRING,
+    uuid: DataTypes.STRING,
     sender: DataTypes.STRING,
     receiver: DataTypes.STRING,
     categoryId: DataTypes.INTEGER,
