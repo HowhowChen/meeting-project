@@ -5,7 +5,7 @@ const path = require('path')
 const { Op } = require('sequelize')
 const { getUser } = require('../helpers/auth-helpers')
 const { getOffset, getPagination } = require('../helpers/pagination-helper')
-const { Meeting, Platform, Category, Country } = require('../database/models')
+const { Meeting, Platform, Category, Country, Comment, User } = require('../database/models')
 
 const meetingController = {
   getFivePage: async (req, res, next) => {
@@ -57,7 +57,6 @@ const meetingController = {
         Platform.findAll({ raw: true }),
         Country.findAll({ raw: true })
       ])
-
       // convert date format
       const newMeetings = meetings.rows.map(meeting => ({
         ...meeting,
@@ -109,6 +108,11 @@ const meetingController = {
           {
             model: Country,
             attributes: ['name']
+          },
+          {
+            model: Comment,
+            attributes: ['content'],
+            include: [{ model: User, attributes: ['name'] }]
           }
         ]
       })
@@ -146,6 +150,11 @@ const meetingController = {
           {
             model: Country,
             attributes: ['name']
+          },
+          {
+            model: Comment,
+            attributes: ['content'],
+            include: [{ model: User, attributes: ['name'] }]
           }
         ],
         order: [['meetingDate', 'DESC']]
@@ -184,6 +193,14 @@ const meetingController = {
 
       res.locals.layout = 'email.hbs'
       res.render('emlFile', { content })
+    } catch (err) {
+      next(err)
+    }
+  },
+  getFileDownload: (req, res, next) => {
+    try {
+      const { fileDate, fileName } = req.params
+      res.download(path.resolve(process.env.FILE_PATH, dayjs(fileDate).format('YYYYMMDD'), `${fileName}.eml`))
     } catch (err) {
       next(err)
     }

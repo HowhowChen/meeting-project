@@ -16,7 +16,7 @@ router.get('/users/logout', userController.logout)
 router.get('/users/:id/edit', authenticatedUser, userController.editUser)
 router.put('/users/:id', authenticatedUser, putUserValidator, userController.putUser)
 
-router.get('/meetings/files/:fileDate/:fileName', authenticated, meetingController.getFileContent)
+router.get('/meetings/files/:fileDate/:fileName', authenticated, meetingController.getFileDownload)
 router.post('/meetings/value/:id', authenticated, meetingController.postValue)
 router.delete('/meetings/value/:id', authenticated, meetingController.deleteValue)
 router.get('/meetings/5th/report', authenticated, authenticatedFiveClass, meetingController.getFiveReport)

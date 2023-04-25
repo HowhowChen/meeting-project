@@ -12,6 +12,7 @@
 			<th><h1>Organization</h1></th>
 			<th><h1>Value</h1></th>
 			<th><h1>Export Date</h1></th>
+			<th><h1>Comment</h1></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -28,6 +29,7 @@
 					{{#ifMatch this.value true}}V{{/ifMatch}}
 				</td>
 				<td class="AutoNewline">{{this.exportDate}}</td>
+				<td class="AutoNewline">{{this.Comments.content}}</td>
 			</tr>
 		{{/each}}
 	</tbody>
