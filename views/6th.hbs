@@ -37,7 +37,7 @@
 				<td class="AutoNewline">{{this.receiver}}</td>
 				<td class="AutoNewline">{{this.Category.name}}</td>
 				<td class="AutoNewline">
-					{{#ifMatch this.Values.isValue true}}
+					{{!-- {{#ifMatch this.Values.isValue true}}
             <form action="/meetings/value/{{this.id}}?_method=DELETE" method="POST">
               <button type="submit" class="btn btn-outline-danger" onclick="return confirm(`Do you sure delete {{ this.name }}'s hight value?`)">
                 取消價值
@@ -50,7 +50,23 @@
                 新增價值
               </button>
             </form>
-          {{/ifMatch}}
+          {{/ifMatch}} --}}
+					<div class="d-flex justify-content-around">
+						<form action="/meetings/value/{{this.id}}" method="POST">
+							<div class="checkbox-wrapper-42">
+								<input id="yes{{this.id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`Do you sure {{ this.name }} is hight value?`)" {{#ifMatch this.Values.isValue true}}checked{{/ifMatch}}/>
+								<label class="cbx" for="yes{{this.id}}"></label>
+								<label class="lbl" for="yes{{this.id}}">是</label>
+							</div>
+						</form>
+						<form action="/meetings/value/{{this.id}}?_method=DELETE" method="POST">
+								<div class="checkbox-wrapper-42">
+									<input id="{{this.id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`Do you sure delete {{ this.name }}'s hight value?`)" {{#ifMatch this.Values.isValue null}}checked{{/ifMatch}}/>
+									<label class="cbx" for="{{this.id}}"></label>
+									<label class="lbl" for="{{this.id}}">否</label>
+								</div>
+						</form>
+					</div>
 				</td>
 				<td class="AutoNewline">{{this.Comments.content}}</td>
 				<td class="AutoNewline">
