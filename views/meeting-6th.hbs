@@ -6,35 +6,35 @@
             *Required Input
           </div>
           <h1 class="col-9 text-center text-secondary">
-            Edit Meeting
+            編輯會議內容
           </h1>
         </div>
 
         {{> messages}}
         
         <div class="row align-items-center mb-5 h3">
-          <label for="name" class="col-3 text-white">Name:</label>
+          <label for="name" class="col-3 text-white">會議主旨:</label>
           <div class="col-9">
             <input id="content" name="name" type="name" class="form-control" value="{{ meeting.name }}" disabled>
           </div>
         </div>
 
         <div class="row align-items-center mb-5 h3">
-          <label for="content" class="col-3 text-white">Content:</label>
+          <label for="content" class="col-3 text-white">會議內容:</label>
           <div class="col-9">
             <textarea class="form-control" id="content" name="content" rows="3" disabled>{{ meeting.content }}</textarea>
           </div>
         </div>
 
         <div class="row align-items-center mb-5 h3">
-          <label for="uuid" class="col-3 text-white"><span class="text-danger">*</span>UUID:</label>
+          <label for="uuid" class="col-3 text-white"><span class="text-danger">*</span>報號/來源:</label>
           <div class="col-9">
             <input id="uuid" name="uuid" type="text" class="form-control" value="{{ meeting.uuid }}">
           </div>
         </div>
 
         <div class="row align-items-center mb-5 h3">
-          <label for="comment" class="col-3 text-white"><span class="text-danger">*</span>Comment:</label>
+          <label for="comment" class="col-3 text-white"><span class="text-danger">*</span>備註(符合情蒐):</label>
           <div class="col-9">
             <textarea class="form-control" id="comment" name="comment" rows="3">{{ meeting.Comments.content }}</textarea>
           </div>

@@ -11,22 +11,22 @@
 <table class="table-5th table-striped">
 	<thead>
 		<tr>
-			<th><h1>Value</h1></th>
-			<th><h1>Acceptance Date</h1></th>
-			<th><h1>Meeting Date</h1></th>
-			<th><h1>Platform</h1></th>
-			<th><h1>Name</h1></th>
-			<th><h1>Organization</h1></th>
-			<th><h1>Link</h1></th>
-			<th><h1>Password</h1></th>
-			<th><h1>Download</h1></th>
-			<th><h1>Edit</h1></th>
+			<th><h1>評估是否具產情價值</h1></th>
+			<th><h1>來料日期</h1></th>
+			<th><h1>會議日期</h1></th>
+			<th><h1>會議平台</h1></th>
+			<th><h1>會議主旨</h1></th>
+			<th><h1>會議單位</h1></th>
+			<th><h1>會議連結</h1></th>
+			<th><h1>會議密碼</h1></th>
+			<th><h1>原件下載</h1></th>
+			<th><h1>編輯</h1></th>
 		</tr>
 	</thead>
 	<tbody>
 		{{#each meetings}}
 			<tr>
-				<td class="AutoNewline">
+				<td class="AutoNewline text-center">
 					{{#ifMatch this.Values.isValue true}}V{{/ifMatch}}
 				</td>
 				<td class="AutoNewline">{{this.acceptanceDate}}</td>
