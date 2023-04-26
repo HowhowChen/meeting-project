@@ -1,6 +1,12 @@
+{{> search-6th}}
 <div class="mx-auto" style="width:90%;">
 	{{> messages}}
 </div>
+
+<div class="text-primary text-secondary text-end mb-1 mx-auto fs-5" style="width:90%;">
+    頁數<span id="current-page">{{pagination.currentPage}}</span>/{{pagination.totalPage}}
+</div>
+
 <table class="table-5th table-striped">
 	<thead>
 		<tr>
@@ -54,3 +60,29 @@
 		{{/each}}
 	</tbody>
 </table>
+
+{{#if pagination.pages}}
+	<nav class="mt-5 d-flex justify-content-center fs-4 " aria-label="page navigation">
+		<ul class="pagination">
+			<li class="page-item {{#ifMatch pagination.currentPage 1}}disabled{{/ifMatch}}">
+				<a class="page-link" href="/meetings/6th?page={{pagination.prev}}&categoryId={{categoryId}}&platformId={{platformId}}&countryId={{countryId}}&startDate={{startDate}}&endDate={{endDate}}" aria-label="Previous">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+			</li>
+			{{#each pagination.pages}}
+				{{#ifMatch this.page  ../pagination.currentPage}}
+					<li class="page-item active"><a class="page-link" href="#">{{this.page }}</a></li>
+				{{else}}
+					<li class="page-item">
+						<a class="page-link" href="/meetings/6th?page={{this.page }}&categoryId={{../categoryId}}&platformId={{../platformId}}&countryId={{../countryId}}&startDate={{../startDate}}&endDate={{../endDate}}">{{this.page }}</a>
+					</li>
+				{{/ifMatch}}
+			{{/each}}
+			<li class="page-item {{#ifMatch pagination.currentPage pagination.totalPage}}disabled{{/ifMatch}}">
+				<a class="page-link" href="/meetings/6th?page={{pagination.next}}&categoryId={{categoryId}}&platformId={{platformId}}&countryId={{countryId}}&startDate={{startDate}}&endDate={{endDate}}" aria-label="Next">
+					<span aria-hidden="true">&raquo;</span>
+				</a>
+			</li>
+		</ul>
+	</nav>
+{{/if}}

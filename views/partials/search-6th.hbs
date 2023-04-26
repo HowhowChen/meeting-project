@@ -1,0 +1,44 @@
+<div class="row mx-auto">
+  <div class="col-sm-8 m-auto">
+    <form action="/meetings/6th" method="GET">
+      <div class="row mt-5">
+        <div class="col">
+          <select class="rounded bg-light form-select" name="categoryId" onchange="form.submit()">
+            <option selected>會議類型(All)</option>
+            {{#each categories}}
+              <option value="{{this.id}}" {{#ifMatch this.id ../categoryId}}selected{{/ifMatch}}>{{this.name}}</option>
+            {{/each}}
+          </select>
+        </div>
+
+        <div class="col">
+          <select class="rounded bg-light form-select" name="platformId" onchange="form.submit()">
+            <option selected>會議平台(All)</option>
+            {{#each platforms}}
+              <option value="{{this.id}}" {{#ifMatch this.id ../platformId}}selected{{/ifMatch}}>{{this.name}}</option>
+            {{/each}}
+          </select>
+        </div>
+
+        <div class="col">
+          <select class="rounded bg-light form-select" name="countryId" onchange="form.submit()">
+            <option selected>國別(All)</option>
+            {{#each countries}}
+              <option value="{{this.id}}" {{#ifMatch this.id ../countryId}}selected{{/ifMatch}}>{{this.name}}</option>
+            {{/each}}
+          </select>
+        </div>
+        
+      <div class="mt-4 d-flex  justify-content-around  flex-wrap align-content-center fs-5">
+        <div class="mb-4">
+          <label for="startDate" class="mr-3">會議日期(起)📆</label>&nbsp
+          <span><input name="startDate" id="startDate" type="date" onchange="form.submit()" value="{{startDate}}" />
+        </div>
+        <div class="mb-4">
+          <label for="endDate">會議日期(迄)📆</label>&nbsp
+          <span><input name="endDate" id="endDate" type="date" onchange="form.submit()" value="{{endDate}}" /></span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

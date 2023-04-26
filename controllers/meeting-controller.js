@@ -53,7 +53,7 @@ const meetingController = {
               attributes: ['isValue']
             }
           ],
-          order: [['id', 'DESC']],
+          order: [['meetingDate', 'DESC']],
           limit,
           offset
         }),
@@ -217,44 +217,81 @@ const meetingController = {
   },
   getSixPage: async (req, res, next) => {
     try {
-      const meetings = await Meeting.findAll({
-        raw: true,
-        nest: true,
-        include: [
-          {
-            model: Platform,
-            attributes: ['name']
+      const page = Number(req.query.page) || 1
+      const limit = Number(req.query.limit) || DEFAULT_LIMIT
+      const offset = getOffset(limit, page)
+      const categoryId = Number(req.query.categoryId) || ''
+      const platformId = Number(req.query.platformId) || ''
+      const countryId = Number(req.query.countryId) || ''
+      const startDate = req.query.startDate || dayjs().format('YYYY-MM-DD')
+      const endDate = req.query.endDate || dayjs().format('YYYY-MM-DD')
+      const [meetings, categories, platforms, countries] = await Promise.all([
+        Meeting.findAndCountAll({
+          raw: true,
+          nest: true,
+          where: {
+            ...categoryId ? { categoryId } : {},
+            ...platformId ? { platformId } : {},
+            ...countryId ? { countryId } : {},
+            meetingDate: {
+              [Op.and]: {
+                [Op.gte]: startDate,
+                [Op.lte]: endDate
+              }
+            }
           },
-          {
-            model: Category,
-            attributes: ['name']
-          },
-          {
-            model: Country,
-            attributes: ['name']
-          },
-          {
-            model: Comment,
-            attributes: ['content'],
-            include: [{ model: User, attributes: ['name'] }]
-          },
-          {
-            model: Value,
-            attributes: ['isValue'],
-            include: [{ model: User, attributes: ['name'] }]
-          }
-        ],
-        order: [['id', 'DESC']]
-      })
+          include: [
+            {
+              model: Platform,
+              attributes: ['name']
+            },
+            {
+              model: Category,
+              attributes: ['name']
+            },
+            {
+              model: Country,
+              attributes: ['name']
+            },
+            {
+              model: Comment,
+              attributes: ['content'],
+              include: [{ model: User, attributes: ['name'] }]
+            },
+            {
+              model: Value,
+              attributes: ['isValue'],
+              include: [{ model: User, attributes: ['name'] }]
+            }
+          ],
+          offset,
+          limit,
+          order: [['meetingDate', 'DESC']]
+        }),
+        Category.findAll({ raw: true }),
+        Platform.findAll({ raw: true }),
+        Country.findAll({ raw: true })
+      ])
       // convert date format
-      const newMeetings = meetings.map(meeting => ({
+      const newMeetings = meetings.rows.map(meeting => ({
         ...meeting,
         meetingDate: dayjs(meeting.meetingDate).format('YYYY-MM-DD'),
         acceptanceDate: dayjs(meeting.acceptanceDate).format('YYYY-MM-DD')
       }))
 
       res.locals.layout = 'table.hbs'
-      res.render('6th', { meetings: newMeetings })
+      res.render('6th', {
+        meetings: newMeetings,
+        categories,
+        categoryId,
+        platforms,
+        platformId,
+        countries,
+        countryId,
+        startDate,
+        endDate,
+        pagination: getPagination(limit, page, meetings.count)
+      })
     } catch (err) {
       next(err)
     }
