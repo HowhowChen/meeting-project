@@ -114,7 +114,7 @@ const meetingController = {
       ])
 
       if (!meeting) throw new Error("Meeting didn't exist!")
-
+      res.locals.layout = 'meeting-update.hbs'
       res.render('meeting-5th', {
         meeting,
         categories,
