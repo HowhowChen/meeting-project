@@ -101,7 +101,7 @@
           <div class="col-9">
             <select id="category" name="category" list="categories" class="form-control"  required>
               {{#each categories}}
-                <option {{#ifMatch this.name ../meeting.Category.name}}selected{{/ifMatch}}>{{this.name}}</option>
+                <option value="{{this.id}}" {{#ifMatch this.name ../meeting.Category.name}}selected{{/ifMatch}}>{{this.name}}</option>
               {{/each}}
             </select>
             <div class="valid-feedback">Good!</div>
@@ -114,7 +114,7 @@
           <div class="col-9">
             <select id="platform" name="platform" list="platfroms" class="form-control"  required>
               {{#each platforms}}
-                <option {{#ifMatch this.name ../meeting.Platform.name}}selected{{/ifMatch}}>{{this.name}}</option>
+                <option value="{{this.id}}" {{#ifMatch this.name ../meeting.Platform.name}}selected{{/ifMatch}}>{{this.name}}</option>
               {{/each}}
             </select>
             <div class="valid-feedback">Good!</div>
@@ -127,7 +127,7 @@
           <div class="col-9">
             <select id="country" name="country" list="countries" class="form-control"  required>
               {{#each countries}}
-                <option {{#ifMatch this.name ../meeting.Country.name}}selected{{/ifMatch}}>{{this.name}}</option>
+                <option value="{{this.id}}" {{#ifMatch this.name ../meeting.Country.name}}selected{{/ifMatch}}>{{this.name}}</option>
               {{/each}}
             </select>
             <div class="valid-feedback">Good!</div>

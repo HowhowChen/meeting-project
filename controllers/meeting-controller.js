@@ -49,7 +49,7 @@ const meetingController = {
               attributes: ['name']
             }
           ],
-          order: [['meetingDate', 'DESC']],
+          order: [['id', 'DESC']],
           limit,
           offset
         }),
@@ -121,6 +121,29 @@ const meetingController = {
         platforms,
         countries
       })
+    } catch (err) {
+      next(err)
+    }
+  },
+  putFiveMeeting: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const {
+        category,
+        platform,
+        country
+      } = req.body
+      const meeting = await Meeting.findByPk(id)
+      if (!meeting) throw new Error("Meeting can't find!")
+
+      await meeting.update({
+        ...req.body,
+        categoryId: category,
+        platformId: platform,
+        countryId: country
+      })
+      req.flash('success_messages', 'Success Update!')
+      res.redirect(`/meetings/5th/${id}`)
     } catch (err) {
       next(err)
     }
