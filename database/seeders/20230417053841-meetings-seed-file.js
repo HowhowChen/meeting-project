@@ -37,7 +37,6 @@ module.exports = {
       link: 'https://example.com',
       password: '12345678',
       file_name: 'test',
-      value: i % 2 === 0,
       created_at: new Date(),
       updated_at: new Date()
     })))

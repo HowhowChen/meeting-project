@@ -5,7 +5,7 @@ const path = require('path')
 const { Op } = require('sequelize')
 const { getUser } = require('../helpers/auth-helpers')
 const { getOffset, getPagination } = require('../helpers/pagination-helper')
-const { Meeting, Platform, Category, Country, Comment, User } = require('../database/models')
+const { Meeting, Platform, Category, Country, Comment, User, Value } = require('../database/models')
 const DEFAULT_LIMIT = 7
 
 const meetingController = {
@@ -47,6 +47,10 @@ const meetingController = {
             {
               model: Country,
               attributes: ['name']
+            },
+            {
+              model: Value,
+              attributes: ['isValue']
             }
           ],
           order: [['id', 'DESC']],
@@ -183,6 +187,10 @@ const meetingController = {
             model: Comment,
             attributes: ['content'],
             include: [{ model: User, attributes: ['name'] }]
+          },
+          {
+            model: Value,
+            attributes: ['isValue']
           }
         ],
         limit,
@@ -228,6 +236,11 @@ const meetingController = {
           {
             model: Comment,
             attributes: ['content'],
+            include: [{ model: User, attributes: ['name'] }]
+          },
+          {
+            model: Value,
+            attributes: ['isValue'],
             include: [{ model: User, attributes: ['name'] }]
           }
         ],
@@ -350,19 +363,21 @@ const meetingController = {
   postValue: async (req, res, next) => {
     try {
       const { id } = req.params
+      const userId = Number(getUser(req).id)
       const [meeting, meetingValue] = await Promise.all([
         Meeting.findByPk(id),
-        Meeting.findOne({
-          where: {
-            value: false
-          }
+        Value.findOne({
+          where: { meetingId: Number(id) }
         })
       ])
-      if (!meeting) throw new Error("Meeting didn't exists!")
-      if (!meetingValue) throw new Error('Meeting is already setted value')
 
-      await meeting.update({
-        value: true
+      if (!meeting) throw new Error("Meeting didn't exists!")
+      if (meetingValue) throw new Error('Meeting is already setted value')
+
+      await Value.create({
+        userId,
+        meetingId: Number(id),
+        isValue: true
       })
       res.redirect('back')
     } catch (err) {
@@ -374,18 +389,17 @@ const meetingController = {
       const { id } = req.params
       const [meeting, meetingValue] = await Promise.all([
         Meeting.findByPk(id),
-        Meeting.findOne({
+        Value.findOne({
           where: {
-            value: true
+            meetingId: Number(id),
+            isValue: true
           }
         })
       ])
       if (!meeting) throw new Error("Meeting didn't exists!")
       if (!meetingValue) throw new Error("Meeting didn't be setted value")
 
-      await meeting.update({
-        value: false
-      })
+      await meetingValue.destroy()
       res.redirect('back')
     } catch (err) {
       next(err)

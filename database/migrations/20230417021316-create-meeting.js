@@ -60,9 +60,6 @@ module.exports = {
       file_name: {
         type: Sequelize.STRING
       },
-      value: {
-        type: Sequelize.BOOLEAN
-      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

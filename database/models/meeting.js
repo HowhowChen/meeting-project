@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       Meeting.belongsTo(models.Platform, { foreignKey: 'platformId' })
       Meeting.belongsTo(models.Country, { foreignKey: 'countryId' })
       Meeting.hasMany(models.Comment, { foreignKey: 'meetingId' })
+      Meeting.hasMany(models.Value, { foreignKey: 'meetingId' })
     }
   }
   Meeting.init({
@@ -33,8 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     organization: DataTypes.STRING,
     link: DataTypes.STRING,
     password: DataTypes.STRING,
-    fileName: DataTypes.STRING,
-    value: DataTypes.BOOLEAN
+    fileName: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Meeting',

@@ -27,7 +27,7 @@
 		{{#each meetings}}
 			<tr>
 				<td class="AutoNewline">
-					{{#ifMatch this.value true}}V{{/ifMatch}}
+					{{#ifMatch this.Values.isValue true}}V{{/ifMatch}}
 				</td>
 				<td class="AutoNewline">{{this.acceptanceDate}}</td>
 				<td class="AutoNewline">{{this.meetingDate}}</td>

@@ -31,14 +31,14 @@
 				<td class="AutoNewline">{{this.receiver}}</td>
 				<td class="AutoNewline">{{this.Category.name}}</td>
 				<td class="AutoNewline">
-					{{#ifMatch this.value true}}
+					{{#ifMatch this.Values.isValue true}}
             <form action="/meetings/value/{{this.id}}?_method=DELETE" method="POST">
               <button type="submit" class="btn btn-outline-danger" onclick="return confirm(`Do you sure delete {{ this.name }}'s hight value?`)">
                 取消價值
               </button>
             </form>
           {{/ifMatch}}
-          {{#ifMatch this.value false}}
+          {{#ifMatch this.Values.isValue null}}
             <form action="/meetings/value/{{this.id}}" method="POST">
               <button type="submit" class="btn btn-outline-success" style="width:100px;" onclick="return confirm(`Do you sure {{ this.name }} is hight value?`)">
                 新增價值
