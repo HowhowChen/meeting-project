@@ -1,6 +1,6 @@
 From node:19.4
 
-ENV DEV_DATABASE_URL="postgres://admin:password@postgressql/dev_db" \
+ENV DEV_DATABASE_URL="postgres://admin:password@postgressql/meeting_dev" \
     TEST_DATABASE_URL="" \
     DATABASE_URL="" 
 

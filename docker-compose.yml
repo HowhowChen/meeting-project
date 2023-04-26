@@ -28,19 +28,19 @@ services:
     depends_on:             
       - postgressql
 
-  # web:
-  #   image: howhowchen/postgresweb
-  #   build: ./
-  #   container_name: postgreweb
-  #   restart: "always"
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     - DEV_DATABASE_URL=postgres://admin:password@postgressql/dev_db
-  #   networks:
-  #     - app-net
-  #   depends_on:             
-  #     - postgressql
+  web:
+    image: howhowchen/meetingweb
+    build: ./
+    container_name: meetingweb
+    restart: "always"
+    ports:
+      - "3000:3000"
+    environment:
+      - DEV_DATABASE_URL=postgres://admin:password@postgressql/meeting_dev
+    networks:
+      - app-net
+    depends_on:             
+      - postgressql
 
 volumes:
   postgressql:
