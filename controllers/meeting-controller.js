@@ -6,11 +6,11 @@ const { Op } = require('sequelize')
 const { getUser } = require('../helpers/auth-helpers')
 const { getOffset, getPagination } = require('../helpers/pagination-helper')
 const { Meeting, Platform, Category, Country, Comment, User } = require('../database/models')
+const DEFAULT_LIMIT = 7
 
 const meetingController = {
   getFivePage: async (req, res, next) => {
     try {
-      const DEFAULT_LIMIT = 7
       const page = Number(req.query.page) || 1
       const limit = Number(req.query.limit) || DEFAULT_LIMIT
       const offset = getOffset(limit, page)
@@ -150,9 +150,12 @@ const meetingController = {
   },
   getFiveReport: async (req, res, next) => {
     try {
+      const page = Number(req.query.page) || 1
+      const limit = Number(req.query.limit) || DEFAULT_LIMIT
+      const offset = getOffset(limit, page)
       const startDate = req.query.startDate || dayjs().format('YYYY-MM-DD')
       const endDate = req.query.endDate || dayjs().format('YYYY-MM-DD')
-      const meetings = await Meeting.findAll({
+      const meetings = await Meeting.findAndCountAll({
         raw: true,
         nest: true,
         where: {
@@ -181,10 +184,13 @@ const meetingController = {
             attributes: ['content'],
             include: [{ model: User, attributes: ['name'] }]
           }
-        ]
+        ],
+        limit,
+        offset,
+        order: [['importDate', 'DESC']]
       })
       // convert date format
-      const newMeetings = meetings.map(meeting => ({
+      const newMeetings = meetings.rows.map(meeting => ({
         ...meeting,
         meetingDate: dayjs(meeting.meetingDate).format('YYYY-MM-DD'),
         acceptanceDate: dayjs(meeting.acceptanceDate).format('YYYY-MM-DD')
@@ -194,7 +200,8 @@ const meetingController = {
       res.render('report', {
         meetings: newMeetings,
         startDate,
-        endDate
+        endDate,
+        pagination: getPagination(limit, page, meetings.count)
       })
     } catch (err) {
       next(err)
