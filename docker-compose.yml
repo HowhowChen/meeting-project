@@ -32,6 +32,10 @@ services:
     image: howhowchen/meetingweb
     build: ./
     container_name: meetingweb
+    volumes:
+      - type: bind
+        source: /home/howhow/Documents/files
+        target: /home/howhow/Documents/files
     restart: "always"
     ports:
       - "3000:3000"
