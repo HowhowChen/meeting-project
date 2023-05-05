@@ -149,10 +149,11 @@
         <div class="row align-items-center mb-5 h3">
           <label for="issue" class="col-3 text-white">Issue:</label>
           <div class="col-9">
-            <input list="issue-category" id="issue" name="issueId">
+            <input type="hidden" id="issueId" name="issueId">
+            <input list="issue-category" id="issue">
             <datalist id="issue-category">
               {{#each issues}}
-                <option value="{{this.id}}" {{#ifMatch this.id ../meeting.MeetingIssues.Issue.id}}selected{{/ifMatch}}>{{this.name}}</option>
+                <option value="{{this.id}}" data-value="{{this.id}}">{{this.name}}</option>
               {{/each}}
             </datalist>
           </div>
