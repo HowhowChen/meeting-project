@@ -5,7 +5,7 @@ const path = require('path')
 const { Op } = require('sequelize')
 const { getUser } = require('../helpers/auth-helpers')
 const { getOffset, getPagination } = require('../helpers/pagination-helper')
-const { Meeting, Platform, Category, Country, Comment, User, Value } = require('../database/models')
+const { Meeting, Platform, Category, Country, Comment, User, Value, Issue, MeetingIssue } = require('../database/models')
 const DEFAULT_LIMIT = 7
 
 const meetingController = {
@@ -88,7 +88,7 @@ const meetingController = {
   getFiveMeeting: async (req, res, next) => {
     try {
       const { id } = req.params
-      const [meeting, categories, platforms, countries] = await Promise.all([
+      const [meeting, categories, platforms, countries, issues] = await Promise.all([
         Meeting.findOne({
           raw: true,
           nest: true,
@@ -109,12 +109,17 @@ const meetingController = {
             {
               model: Comment,
               attributes: ['content']
+            },
+            {
+              model: MeetingIssue,
+              include: [Issue]
             }
           ]
         }),
         Category.findAll({ raw: true }),
         Platform.findAll({ raw: true }),
-        Country.findAll({ raw: true })
+        Country.findAll({ raw: true }),
+        Issue.findAll({ raw: true })
       ])
 
       if (!meeting) throw new Error("Meeting didn't exist!")
@@ -123,7 +128,8 @@ const meetingController = {
         meeting,
         categories,
         platforms,
-        countries
+        countries,
+        issues
       })
     } catch (err) {
       next(err)
@@ -132,20 +138,52 @@ const meetingController = {
   putFiveMeeting: async (req, res, next) => {
     try {
       const { id } = req.params
+      const issueId = Number(req.body.issueId)
       const {
         category,
         platform,
         country
       } = req.body
-      const meeting = await Meeting.findByPk(id)
-      if (!meeting) throw new Error("Meeting can't find!")
+      const [meeting, issue, meetingIssue] = await Promise.all([
+        Meeting.findByPk(id),
+        Issue.findByPk(issueId),
+        MeetingIssue.findOne({
+          where: {
+            meetingId: id
+          }
+        })
+      ])
 
-      await meeting.update({
-        ...req.body,
-        categoryId: category,
-        platformId: platform,
-        countryId: country
-      })
+      if (!meeting) throw new Error("Meeting can't find!")
+      if (!issue) throw new Error("Issue can't find!")
+      if (!meetingIssue) {
+        await Promise.all([
+          meeting.update({
+            ...req.body,
+            categoryId: category,
+            platformId: platform,
+            countryId: country
+          }),
+          MeetingIssue.create({
+            meetingId: id,
+            issueId
+          })
+        ])
+      } else {
+        await Promise.all([
+          meeting.update({
+            ...req.body,
+            categoryId: category,
+            platformId: platform,
+            countryId: country
+          }),
+          meetingIssue.update({
+            meetingId: id,
+            issueId
+          })
+        ])
+      }
+
       req.flash('success_messages', 'Success Update!')
       res.redirect(`/meetings/5th/${id}`)
     } catch (err) {

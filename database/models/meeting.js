@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       Meeting.belongsTo(models.Country, { foreignKey: 'countryId' })
       Meeting.hasMany(models.Comment, { foreignKey: 'meetingId' })
       Meeting.hasMany(models.Value, { foreignKey: 'meetingId' })
-      // Meeting.hasMany(models.MeetingIssue, { foreignKey: 'meetingId' })
+      Meeting.hasMany(models.MeetingIssue, { foreignKey: 'meetingId' })
     }
   }
   Meeting.init({
