@@ -1,4 +1,4 @@
-const { User, Category, Platform, Country } = require('../database/models')
+const { User, Category, Platform, Country, Issue } = require('../database/models')
 const bcrypt = require('bcryptjs')
 
 const adminController = {
@@ -253,6 +253,59 @@ const adminController = {
       await country.destroy()
       req.flash('success_messages', 'Success Delete!')
       res.redirect('/admin/countries')
+    } catch (err) {
+      next(err)
+    }
+  },
+  getIssues: async (req, res, next) => {
+    try {
+      const [issues, issue] = await Promise.all([
+        Issue.findAll({
+          raw: true,
+          order: [['id', 'ASC']]
+        }),
+        req.params.id ? Issue.findByPk(req.params.id, { raw: true }) : null
+      ])
+
+      res.render('admin/meeting-issue', { issues, issue })
+    } catch (err) {
+      next(err)
+    }
+  },
+  postIssue: async (req, res, next) => {
+    try {
+      const { name } = req.body
+
+      await Issue.create({ name })
+      req.flash('success_messages', 'Success Create!')
+      res.redirect('/admin/issues')
+    } catch (err) {
+      next(err)
+    }
+  },
+  putIssue: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const { name } = req.body
+      const issue = await Issue.findByPk(id)
+      if (!issue) throw new Error("Issue didn't exists!")
+
+      await issue.update({ name })
+      req.flash('success_messages', 'Success Update!')
+      res.redirect('/admin/issues')
+    } catch (err) {
+      next(err)
+    }
+  },
+  deleteIssue: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const issue = await Issue.findByPk(id)
+      if (!issue) throw new Error("Issue didn't exists!")
+
+      await issue.destroy()
+      req.flash('success_messages', 'Success Delete!')
+      res.redirect('/admin/issues')
     } catch (err) {
       next(err)
     }

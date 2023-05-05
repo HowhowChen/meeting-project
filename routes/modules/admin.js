@@ -29,4 +29,10 @@ router.delete('/countries/:id', adminController.deleteCountry)
 router.post('/countries', adminController.postCountry)
 router.get('/countries', adminController.getCountries)
 
+router.get('/issues/:id', adminController.getIssues)
+router.put('/issues/:id', adminController.putIssue)
+router.delete('/issues/:id', adminController.deleteIssue)
+router.post('/issues', adminController.postIssue)
+router.get('/issues', adminController.getIssues)
+
 module.exports = router
