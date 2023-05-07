@@ -150,10 +150,11 @@
           <label for="issue" class="col-3 text-white">Issue:</label>
           <div class="col-9">
             <input type="hidden" id="issueId" name="issueId">
-            <input list="issue-category" id="issue">
+            <input list="issue-category" id="issue" value="{{meeting.MeetingIssues.Issue.name}}">
+            <span id="issue-message"></span>
             <datalist id="issue-category">
               {{#each issues}}
-                <option value="{{this.id}}" data-value="{{this.id}}">{{this.name}}</option>
+                <option value="{{this.name}}" data-value="{{this.id}}">{{this.name}}</option>
               {{/each}}
             </datalist>
           </div>
