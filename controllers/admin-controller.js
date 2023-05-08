@@ -1,4 +1,4 @@
-const { User, Category, Platform, Country, Issue } = require('../database/models')
+const { User, Meeting, Category, Platform, Country, Issue } = require('../database/models')
 const bcrypt = require('bcryptjs')
 
 const adminController = {
@@ -143,13 +143,24 @@ const adminController = {
     }
   },
   deleteCategory: async (req, res, next) => {
-    const { id } = req.params
-    const category = await Category.findByPk(id)
-    if (!category) throw new Error("Category didn't exists!")
+    try {
+      const { id } = req.params
+      const [category, meeting] = await Promise.all([
+        Category.findByPk(id),
+        Meeting.findOne({
+          where: { categoryId: Number(id) }
+        })
+      ])
 
-    await category.destroy()
-    req.flash('success_messages', 'Success Delete!')
-    res.redirect('/admin/categories')
+      if (!category) throw new Error("Category didn't exists!")
+      if (meeting) throw new Error('Category is already used by meeting!')
+
+      await category.destroy()
+      req.flash('success_messages', 'Success Delete!')
+      res.redirect('/admin/categories')
+    } catch (err) {
+      next(err)
+    }
   },
   getPlatforms: async (req, res, next) => {
     try {
@@ -194,8 +205,14 @@ const adminController = {
   deletePlatform: async (req, res, next) => {
     try {
       const { id } = req.params
-      const platform = await Platform.findByPk(id)
+      const [platform, meeting] = await Promise.all([
+        Platform.findByPk(id),
+        Meeting.findOne({
+          where: { platformId: Number(id) }
+        })
+      ])
       if (!platform) throw new Error("Platform didn't exists!")
+      if (meeting) throw new Error('Platform is already used by meeting!')
 
       await platform.destroy()
       req.flash('success_messages', 'Success Delete!')
@@ -247,8 +264,14 @@ const adminController = {
   deleteCountry: async (req, res, next) => {
     try {
       const { id } = req.params
-      const country = await Country.findByPk(id)
+      const [country, meeting] = await Promise.all([
+        Country.findByPk(id),
+        Meeting.findOne({
+          where: { platformId: Number(id) }
+        })
+      ])
       if (!country) throw new Error("Country didn't exists!")
+      if (meeting) throw new Error('Country is already used by meeting!')
 
       await country.destroy()
       req.flash('success_messages', 'Success Delete!')
