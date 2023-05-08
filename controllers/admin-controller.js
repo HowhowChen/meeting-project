@@ -1,4 +1,4 @@
-const { User, Meeting, Category, Platform, Country, Issue } = require('../database/models')
+const { User, Meeting, Category, Platform, Country, Issue, MeetingIssue } = require('../database/models')
 const bcrypt = require('bcryptjs')
 
 const adminController = {
@@ -323,8 +323,14 @@ const adminController = {
   deleteIssue: async (req, res, next) => {
     try {
       const { id } = req.params
-      const issue = await Issue.findByPk(id)
+      const [issue, meetingIssue] = await Promise.all([
+        Issue.findByPk(id),
+        MeetingIssue.findOne({
+          where: { issueId: Number(id) }
+        })
+      ])
       if (!issue) throw new Error("Issue didn't exists!")
+      if (meetingIssue) throw new Error('Issue is already used by meeting!')
 
       await issue.destroy()
       req.flash('success_messages', 'Success Delete!')
