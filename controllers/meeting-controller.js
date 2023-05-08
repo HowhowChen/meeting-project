@@ -5,7 +5,7 @@ const path = require('path')
 const { Op } = require('sequelize')
 const { getUser } = require('../helpers/auth-helpers')
 const { getOffset, getPagination } = require('../helpers/pagination-helper')
-const { Meeting, Platform, Category, Country, Comment, User, Value, Issue, MeetingIssue } = require('../database/models')
+const { Meeting, Platform, Category, Country, Comment, User, Value, Issue, MeetingIssue, sequelize } = require('../database/models')
 const DEFAULT_LIMIT = 7
 
 const meetingController = {
@@ -476,6 +476,31 @@ const meetingController = {
 
       await meetingValue.destroy()
       res.redirect('back')
+    } catch (err) {
+      next(err)
+    }
+  },
+  getMeetingIssues: async (req, res, next) => {
+    try {
+      const meetingIssues = await MeetingIssue.findAll({
+        raw: true,
+        nest: true,
+        attributes: [
+          'id',
+          [sequelize.literal('(SELECT "meeting_date" FROM "Meetings" WHERE "Meetings"."id" = "MeetingIssue"."meeting_id")'), 'meetingDate'],
+          [sequelize.literal('(SELECT "name" FROM "Issues" WHERE "Issues"."id" = "MeetingIssue"."issue_id")'), 'issueName']
+        ],
+        include: [
+          {
+            model: Meeting
+          }
+        ],
+        order: [
+          ['meetingDate', 'DESC'],
+          ['issueName', 'DESC']
+        ]
+      })
+      console.log(meetingIssues)
     } catch (err) {
       next(err)
     }
