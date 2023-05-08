@@ -10,9 +10,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       meeting_id: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       issue_id: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       created_at: {

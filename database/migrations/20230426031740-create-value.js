@@ -10,9 +10,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       user_id: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       meeting_id: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       is_value: {
