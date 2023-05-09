@@ -278,6 +278,9 @@ const meetingController = {
               }
             }
           },
+          attributes: [
+            'id', 'meetingDate', 'uuid', 'name', 'organization', 'sender', 'receiver'
+          ],
           include: [
             {
               model: Platform,
@@ -488,11 +491,19 @@ const meetingController = {
         attributes: [
           'id',
           [sequelize.literal('(SELECT "meeting_date" FROM "Meetings" WHERE "Meetings"."id" = "MeetingIssue"."meeting_id")'), 'meetingDate'],
-          [sequelize.literal('(SELECT "name" FROM "Issues" WHERE "Issues"."id" = "MeetingIssue"."issue_id")'), 'issueName']
+          [sequelize.literal('(SELECT "name" FROM "Issues" WHERE "Issues"."id" = "MeetingIssue"."issue_id")'), 'issueName'],
+          [sequelize.literal('(SELECT "id" FROM "Issues" WHERE "Issues"."id" = "MeetingIssue"."issue_id")'), 'issueId']
         ],
         include: [
           {
-            model: Meeting
+            model: Meeting,
+            include: [
+              {
+                model: Value,
+                attributes: ['isValue'],
+                include: [{ model: User, attributes: ['name'] }]
+              }
+            ]
           }
         ],
         order: [

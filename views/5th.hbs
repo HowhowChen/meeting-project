@@ -37,10 +37,10 @@
 				<td class="AutoNewline">{{this.link}}</td>
 				<td class="AutoNewline">{{this.password}}</td>
 				<td class="AutoNewline">
-					<a href="/meetings/files/{{this.acceptanceDate}}/{{this.fileName}}" target="_blank">file</a>
+					<a class="btn btn-outline-info" href="/meetings/files/{{this.acceptanceDate}}/{{this.fileName}}" target="_blank">📧Download</a>
 				</td>
 				<td class="AutoNewline">
-					<a href="/meetings/5th/{{this.id}}">edit</a>
+					<a class="btn btn-outline-warning" href="/meetings/5th/{{this.id}}">✍Edit</a>
 				</td>
 			</tr>
 		{{/each}}
