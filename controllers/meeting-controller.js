@@ -485,31 +485,97 @@ const meetingController = {
   },
   getMeetingIssues: async (req, res, next) => {
     try {
-      const issues = await sequelize.query(
-        `
-        SELECT "id", "name", 
-        ( 
-          SELECT
-            (
-              SELECT "meeting_date"
-              FROM "Meetings" AS M
-              WHERE M."id" = MI."meeting_id"
-              LIMIT 1
-            )
-          FROM "MeetingIssues" AS MI 
-          WHERE I."id" = MI."id"
-        ) 
-        FROM "Issues" AS I
-        ORDER BY "meeting_date" DESC
-        `,
-        {
-          type: QueryTypes.SELECT
-        }
-      )
+      const page = Number(req.query.page) || 1
+      const limit = Number(req.query.limit) || DEFAULT_LIMIT
+      const offset = getOffset(limit, page)
+      const startDate = req.query.startDate || dayjs().format('YYYY-MM-DD')
+      const endDate = req.query.endDate || dayjs().format('YYYY-MM-DD')
+      const issue = req.query?.issue ? `%${req.query?.issue}%` : '%%'
+
+      const [issues, issueCount] = await Promise.all([
+        sequelize.query(
+          `
+          SELECT "id", "name", 
+          ( 
+            SELECT
+              (
+                SELECT "meeting_date"
+                FROM "Meetings" AS M
+                WHERE M."id" = MI."meeting_id"
+                LIMIT 1
+              )
+            FROM "MeetingIssues" AS MI 
+            WHERE I."id" = MI."id"
+          ) 
+          FROM "Issues" AS I
+          WHERE I."name" LIKE :issue
+          AND 
+          ( 
+            SELECT
+              (
+                SELECT "meeting_date"
+                FROM "Meetings" AS M
+                WHERE M."id" = MI."meeting_id"
+                AND M."meeting_date" >= :startDate
+                AND M."meeting_date" <= :endDate
+                LIMIT 1
+              )
+            FROM "MeetingIssues" AS MI 
+            WHERE I."id" = MI."id"
+          ) IS NOT NULL
+          LIMIT  :limit
+          OFFSET :offset
+          
+          `,
+          {
+            replacements: {
+              issue: issue,
+              startDate: startDate,
+              endDate: endDate,
+              limit: limit,
+              offset: offset
+            },
+            type: QueryTypes.SELECT
+          }
+        ),
+        sequelize.query(
+          `
+          SELECT COUNT("id")
+          FROM "Issues" AS I
+          WHERE I."name" LIKE :issue
+          AND 
+          ( 
+            SELECT
+              (
+                SELECT "meeting_date"
+                FROM "Meetings" AS M
+                WHERE M."id" = MI."meeting_id"
+                AND M."meeting_date" >= :startDate
+                AND M."meeting_date" <= :endDate
+                LIMIT 1
+              )
+            FROM "MeetingIssues" AS MI 
+            WHERE I."id" = MI."id"
+          ) IS NOT NULL
+          `,
+          {
+            replacements: {
+              issue: issue,
+              startDate: startDate,
+              endDate: endDate
+            },
+            type: QueryTypes.SELECT
+          }
+        )
+      ])
 
       res.locals.layout = 'table.hbs'
       res.render('meeting-issues', {
-        issues
+        issues,
+        startDate,
+        endDate,
+        issue: req.query.issue,
+        pagination: getPagination(limit, page, issueCount[0].count)
       })
     } catch (err) {
       next(err)

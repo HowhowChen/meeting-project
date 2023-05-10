@@ -1,0 +1,23 @@
+<div class="row mx-auto">
+  <div class="col-sm-8 m-auto">
+    <form action="/meetings/6th/meetingissue" method="GET">
+      <div class="mt-4 d-flex  justify-content-around  flex-wrap align-content-center fs-5">
+        <div class="mb-4">
+          <label for="startDate" class="mr-3">會議日期(起)📆</label>&nbsp
+          <span><input name="startDate" id="startDate" type="date"  value="{{startDate}}" />
+        </div>
+        <div class="mb-4">
+          <label for="endDate">會議日期(迄)📆</label>&nbsp
+          <span><input name="endDate" id="endDate" type="date"  value="{{endDate}}" /></span>
+        </div>
+        <div class="mb-4">
+          <label for="issue">主旨</label>&nbsp
+          <span><input name="issue" id="issue" type="text" value="{{issue}}"/></span>
+        </div>
+        <div class="mb-4">
+          <button id="submitButton" type="submit" class="btn btn-outline-primary">送出</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
