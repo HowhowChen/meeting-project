@@ -492,14 +492,14 @@ const meetingController = {
           SELECT
             (
               SELECT "meeting_date"
-              FROM "Meetings" AS C
-              WHERE C."id" = B."meeting_id"
+              FROM "Meetings" AS M
+              WHERE M."id" = MI."meeting_id"
               LIMIT 1
             )
-          FROM "MeetingIssues" AS B 
-          WHERE A."id" = B."id"
+          FROM "MeetingIssues" AS MI 
+          WHERE I."id" = MI."id"
         ) 
-        FROM "Issues" AS A
+        FROM "Issues" AS I
         ORDER BY "meeting_date" DESC
         `,
         {
@@ -518,20 +518,25 @@ const meetingController = {
   getMeetingIssue: async (req, res, next) => {
     try {
       const issueId = Number(req.params.id)
-      const meetingIssue = await MeetingIssue.findAll({
-        raw: true,
-        nest: true,
-        where: { issueId },
-        attributes: [
-          'id',
-          [sequelize.literal('(SELECT "name" FROM "Issues" WHERE "Issues"."id" = "MeetingIssue"."issue_id")'), 'issueName']
-        ],
-        include: [
-          {
-            model: Meeting
-          }
-        ]
-      })
+      const meetingIssue = await sequelize.query(
+        `
+        SELECT *,
+        (
+          SELECT "name"
+          FROM "Issues"
+          WHERE "Issues"."id" = "MeetingIssues"."issue_id"
+        )AS issue_name
+        FROM "MeetingIssues"
+        INNER JOIN "Meetings"
+        ON "MeetingIssues"."meeting_id" = "Meetings"."id"
+        WHERE "MeetingIssues"."issue_id" = $1
+        ORDER BY "meeting_date" DESC
+        `,
+        {
+          bind: [issueId],
+          type: QueryTypes.SELECT
+        }
+      )
       console.log(meetingIssue)
     } catch (err) {
       next(err)
