@@ -499,9 +499,16 @@ const meetingController = {
             model: Meeting,
             include: [
               {
-                model: Value,
-                attributes: ['isValue'],
-                include: [{ model: User, attributes: ['name'] }]
+                model: Category,
+                attributes: ['name']
+              },
+              {
+                model: Platform,
+                attributes: ['name']
+              },
+              {
+                model: Country,
+                attributes: ['name']
               }
             ]
           }
@@ -511,7 +518,11 @@ const meetingController = {
           ['issueName', 'DESC']
         ]
       })
-      console.log(meetingIssues)
+
+      res.locals.layout = 'table.hbs'
+      res.render('meeting-issues', {
+        meetingIssues
+      })
     } catch (err) {
       next(err)
     }

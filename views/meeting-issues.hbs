@@ -1,0 +1,34 @@
+{{> meeting-6th-tabs route="issue" }}
+{{> search-6th}}
+<div class="mx-auto" style="width:90%;">
+	{{> messages}}
+</div>
+
+<table class="table-5th table-striped">
+	<thead>
+		<tr>
+			<th><h1>會議日期</h1></th>
+			<th><h1>併報主旨</h1></th>
+			<th><h1>國別</h1></th>
+			<th><h1>會議平台</h1></th>
+			<th><h1>會議類型</h1></th>
+			<th><h1>會議單位</h1></th>
+			<th><h1>併報內容</h1></th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each meetingIssues}}
+			<tr>
+				<td class="AutoNewline">{{this.meetingDate}}</td>
+				<td class="AutoNewline">{{this.issueName}}</td>
+				<td class="AutoNewline">{{this.Meeting.Country.name}}</td>
+				<td class="AutoNewline">{{this.Meeting.Platform.name}}</td>
+				<td class="AutoNewline">{{this.Meeting.Category.name}}</td>
+        <td class="AutoNewline">{{this.Meeting.organization}}</td>
+				<td class="AutoNewline">
+          <a class="btn btn-outline-warning" href="/meetings/6th/meetingissue/{{this.issueId}}">🕵Review</a>
+        </td>
+			</tr>
+		{{/each}}
+	</tbody>
+</table>
