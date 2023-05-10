@@ -1,0 +1,46 @@
+{{!-- {{> meeting-6th-tabs route="issue" }} --}}
+{{!-- {{> search-6th}} --}}
+<div class="mx-auto" style="width:90%;">
+	{{> messages}}
+</div>
+
+<table class="table-5th table-striped">
+	<thead>
+		<tr>
+			<th><h1>會議日期</h1></th>
+			<th><h1>併報主旨</h1></th>
+			<th><h1>會議主旨</h1></th>
+      <th><h1>會議主內容</h1></th>
+      <th><h1>評估是否錄存</h1></th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each meetingIssue}}
+			<tr>
+				<td class="AutoNewline">{{this.meeting_date}}</td>
+				<td class="AutoNewline">{{this.issue_name}}</td>
+        <td class="AutoNewline">{{this.name}}</td>
+        <td class="AutoNewline">{{this.content}}</td>
+        <td class="AutoNewline">
+          <div class="d-flex justify-content-left">
+						<form action="/meetings/value/{{this.meeting_id}}" method="POST">
+							<div class="checkbox-wrapper-42">
+								<input id="yes{{this.meeting_id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`Do you sure {{ this.name }} is hight value?`)" {{#ifMatch this.is_value true}}checked{{/ifMatch}}/>
+								<label class="cbx" for="yes{{this.meeting_id}}"></label>
+								<label class="lbl" for="yes{{this.meeting_id}}">是</label>
+							</div>
+						</form>
+            &nbsp;&nbsp;
+						<form action="/meetings/value/{{this.meeting_id}}?_method=DELETE" method="POST">
+								<div class="checkbox-wrapper-42">
+									<input id="{{this.meeting_id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`Do you sure delete {{ this.name }}'s hight value?`)" {{#ifMatch this.is_value null}}checked{{/ifMatch}}/>
+									<label class="cbx" for="{{this.meeting_id}}"></label>
+									<label class="lbl" for="{{this.meeting_id}}">否</label>
+								</div>
+						</form>
+					</div>
+        </td>
+			</tr>
+		{{/each}}
+	</tbody>
+</table>

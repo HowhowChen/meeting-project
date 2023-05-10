@@ -525,7 +525,12 @@ const meetingController = {
           SELECT "name"
           FROM "Issues"
           WHERE "Issues"."id" = "MeetingIssues"."issue_id"
-        )AS issue_name
+        )AS issue_name,
+        (
+          SELECT "is_value"
+          FROM "Values"
+          WHERE "Values"."meeting_id" = "Meetings"."id"
+        )
         FROM "MeetingIssues"
         INNER JOIN "Meetings"
         ON "MeetingIssues"."meeting_id" = "Meetings"."id"
@@ -537,7 +542,11 @@ const meetingController = {
           type: QueryTypes.SELECT
         }
       )
-      console.log(meetingIssue)
+
+      res.locals.layout = 'table.hbs'
+      res.render('meeting-issue', {
+        meetingIssue
+      })
     } catch (err) {
       next(err)
     }
