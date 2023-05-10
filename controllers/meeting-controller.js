@@ -2,7 +2,7 @@ const dayjs = require('dayjs')
 const EmlParser = require('eml-parser')
 const fs = require('fs')
 const path = require('path')
-const { Op } = require('sequelize')
+const { Op, QueryTypes } = require('sequelize')
 const { getUser } = require('../helpers/auth-helpers')
 const { getOffset, getPagination } = require('../helpers/pagination-helper')
 const { Meeting, Platform, Category, Country, Comment, User, Value, Issue, MeetingIssue, sequelize } = require('../database/models')
@@ -485,44 +485,54 @@ const meetingController = {
   },
   getMeetingIssues: async (req, res, next) => {
     try {
-      const meetingIssues = await MeetingIssue.findAll({
-        raw: true,
-        nest: true,
-        attributes: [
-          'id',
-          [sequelize.literal('(SELECT "meeting_date" FROM "Meetings" WHERE "Meetings"."id" = "MeetingIssue"."meeting_id")'), 'meetingDate'],
-          [sequelize.literal('(SELECT "name" FROM "Issues" WHERE "Issues"."id" = "MeetingIssue"."issue_id")'), 'issueName'],
-          [sequelize.literal('(SELECT "id" FROM "Issues" WHERE "Issues"."id" = "MeetingIssue"."issue_id")'), 'issueId']
-        ],
-        include: [
-          {
-            model: Meeting,
-            include: [
-              {
-                model: Category,
-                attributes: ['name']
-              },
-              {
-                model: Platform,
-                attributes: ['name']
-              },
-              {
-                model: Country,
-                attributes: ['name']
-              }
-            ]
-          }
-        ],
-        order: [
-          ['meetingDate', 'DESC'],
-          ['issueName', 'DESC']
-        ]
-      })
+      const issues = await sequelize.query(
+        `
+        SELECT "id", "name", 
+        ( 
+          SELECT
+            (
+              SELECT "meeting_date"
+              FROM "Meetings" AS C
+              WHERE C."id" = B."meeting_id"
+              LIMIT 1
+            )
+          FROM "MeetingIssues" AS B 
+          WHERE A."id" = B."id"
+        ) 
+        FROM "Issues" AS A
+        ORDER BY "meeting_date" DESC
+        `,
+        {
+          type: QueryTypes.SELECT
+        }
+      )
 
       res.locals.layout = 'table.hbs'
       res.render('meeting-issues', {
-        meetingIssues
+        issues
       })
+    } catch (err) {
+      next(err)
+    }
+  },
+  getMeetingIssue: async (req, res, next) => {
+    try {
+      const issueId = Number(req.params.id)
+      const meetingIssue = await MeetingIssue.findAll({
+        raw: true,
+        nest: true,
+        where: { issueId },
+        attributes: [
+          'id',
+          [sequelize.literal('(SELECT "name" FROM "Issues" WHERE "Issues"."id" = "MeetingIssue"."issue_id")'), 'issueName']
+        ],
+        include: [
+          {
+            model: Meeting
+          }
+        ]
+      })
+      console.log(meetingIssue)
     } catch (err) {
       next(err)
     }
