@@ -340,32 +340,27 @@ const meetingController = {
   getSixMeeting: async (req, res, next) => {
     try {
       const { id } = req.params
-      const meeting = await Meeting.findOne({
-        raw: true,
-        nest: true,
-        where: { id },
-        include: [
-          {
-            model: Platform,
-            attributes: ['name']
-          },
-          {
-            model: Category,
-            attributes: ['name']
-          },
-          {
-            model: Country,
-            attributes: ['name']
-          },
-          {
-            model: Comment,
-            attributes: ['content']
-          }
-        ]
-      })
-      if (!meeting) throw new Error("Meeting didn't exist!")
+      const meeting = await sequelize.query(
+        `
+        SELECT
+          M."id",
+          M."name",
+          M."uuid",
+          M."content" AS meeting_content, 
+          C."content" AS comment_content 
+        FROM "Meetings" AS M
+          LEFT JOIN "Comments" AS C
+          ON C."meeting_id" = M."id"
+        WHERE M."id" = :id
+        `,
+        {
+          replacements: { id: id },
+          type: QueryTypes.SELECT
+        }
+      )
+      if (!meeting.length) throw new Error("Meeting didn't exist!")
 
-      res.render('meeting-6th', { meeting })
+      res.render('meeting-6th', { meeting: meeting[0] })
     } catch (err) {
       next(err)
     }

@@ -22,7 +22,7 @@
         <div class="row align-items-center mb-5 h3">
           <label for="content" class="col-3 text-white">會議內容:</label>
           <div class="col-9">
-            <textarea class="form-control" id="content" name="content" rows="3" disabled>{{ meeting.content }}</textarea>
+            <textarea class="form-control" id="content" name="content" rows="3" disabled>{{ meeting.meeting_content }}</textarea>
           </div>
         </div>
 
@@ -36,7 +36,7 @@
         <div class="row align-items-center mb-5 h3">
           <label for="comment" class="col-3 text-white"><span class="text-danger">*</span>備註(符合情蒐):</label>
           <div class="col-9">
-            <textarea class="form-control" id="comment" name="comment" rows="3">{{ meeting.Comments.content }}</textarea>
+            <textarea class="form-control" id="comment" name="comment" rows="3">{{ meeting.comment_content }}</textarea>
           </div>
         </div>
 
