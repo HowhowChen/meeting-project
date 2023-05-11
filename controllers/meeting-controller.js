@@ -14,58 +14,174 @@ const meetingController = {
       const page = Number(req.query.page) || 1
       const limit = Number(req.query.limit) || DEFAULT_LIMIT
       const offset = getOffset(limit, page)
-      const categoryId = Number(req.query.categoryId) || ''
-      const platformId = Number(req.query.platformId) || ''
-      const countryId = Number(req.query.countryId) || ''
+      const categoryId = Number(req.query.categoryId) || null
+      const platformId = Number(req.query.platformId) || null
+      const countryId = Number(req.query.countryId) || null
       const startDate = req.query.startDate || dayjs().format('YYYY-MM-DD')
       const endDate = req.query.endDate || dayjs().format('YYYY-MM-DD')
 
-      const [meetings, categories, platforms, countries] = await Promise.all([
-        Meeting.findAndCountAll({
-          raw: true,
-          nest: true,
-          where: {
-            ...categoryId ? { categoryId } : {},
-            ...platformId ? { platformId } : {},
-            ...countryId ? { countryId } : {},
-            meetingDate: {
-              [Op.and]: {
-                [Op.gte]: startDate,
-                [Op.lte]: endDate
-              }
-            }
-          },
-          include: [
-            {
-              model: Platform,
-              attributes: ['name']
+      const [meetings, meetingCount, categories, platforms, countries] = await Promise.all([
+        sequelize.query(
+          `
+          SELECT 
+            M."id",
+            V."is_value",
+            M."acceptance_date",
+            M."meeting_date",
+            P."name" AS platform_name,
+            M."name",
+            M."organization",
+            M."link",
+            M."password",
+            M."file_name"
+          FROM "Meetings" AS M
+          LEFT JOIN "Values" AS V
+            ON V."meeting_id" = M."id"
+          LEFT JOIN "Platforms" AS P
+            ON P."id" = M."platform_id"
+          WHERE M."meeting_date" >= :startDate
+          AND M."meeting_date" <= :endDate
+          AND
+            (
+              CASE
+                WHEN :categoryId IS NOT NULL
+                THEN M."category_id" = :categoryId
+                ELSE M."category_id" in
+                (
+                  SELECT "id"
+                  FROM "Categories"
+                )
+              END
+            )
+          AND 
+            (
+              CASE
+                WHEN :platformId IS NOT NULL 
+                  THEN M."platform_id" = :platformId
+                  ELSE M."platform_id" in 
+                  (
+                  SELECT "id"
+                  FROM "Platforms"
+                )
+                END
+            )
+          AND
+            (
+              CASE
+                WHEN :countryId IS NOT NULL
+                THEN M."country_id" = :countryId
+                ELSE M."country_id" in
+                (
+                  SELECT "id"
+                  FROM "Countries"
+                )
+              END
+            )
+          ORDER BY M."meeting_date" DESC
+          LIMIT  :limit
+          OFFSET :offset
+          `,
+          {
+            replacements: {
+              startDate: startDate,
+              endDate: endDate,
+              categoryId: categoryId,
+              platformId: platformId,
+              countryId: countryId,
+              limit: limit,
+              offset: offset
             },
-            {
-              model: Category,
-              attributes: ['name']
+            type: QueryTypes.SELECT
+          }
+        ),
+        sequelize.query(
+          `
+          SELECT COUNT(M."id")
+          FROM "Meetings" AS M
+          WHERE M."meeting_date" >= :startDate
+          AND M."meeting_date" <= :endDate
+          AND
+            (
+              CASE
+                WHEN :categoryId IS NOT NULL
+                THEN M."category_id" = :categoryId
+                ELSE M."category_id" in
+                (
+                  SELECT "id"
+                  FROM "Categories"
+                )
+              END
+            )
+          AND 
+            (
+              CASE
+                WHEN :platformId IS NOT NULL 
+                  THEN M."platform_id" = :platformId
+                  ELSE M."platform_id" in 
+                  (
+                  SELECT "id"
+                  FROM "Platforms"
+                )
+                END
+            )
+          AND
+            (
+              CASE
+                WHEN :countryId IS NOT NULL
+                THEN M."country_id" = :countryId
+                ELSE M."country_id" in
+                (
+                  SELECT "id"
+                  FROM "Countries"
+                )
+              END
+            )
+          `,
+          {
+            replacements: {
+              startDate: startDate,
+              endDate: endDate,
+              categoryId: categoryId,
+              platformId: platformId,
+              countryId: countryId
             },
-            {
-              model: Country,
-              attributes: ['name']
-            },
-            {
-              model: Value,
-              attributes: ['isValue']
-            }
-          ],
-          order: [['meetingDate', 'DESC']],
-          limit,
-          offset
-        }),
-        Category.findAll({ raw: true }),
-        Platform.findAll({ raw: true }),
-        Country.findAll({ raw: true })
+            type: QueryTypes.SELECT
+          }
+        ),
+        sequelize.query(
+          `
+          SELECT "id", "name"
+          FROM "Categories"
+          `,
+          {
+            type: QueryTypes.SELECT
+          }
+        ),
+        sequelize.query(
+          `
+          SELECT "id", "name"
+          FROM "Platforms"
+          `,
+          {
+            type: QueryTypes.SELECT
+          }
+        ),
+        sequelize.query(
+          `
+          SELECT "id", "name"
+          FROM "Countries"
+          `,
+          {
+            type: QueryTypes.SELECT
+          }
+        )
       ])
+
       // convert date format
-      const newMeetings = meetings.rows.map(meeting => ({
+      const newMeetings = meetings.map(meeting => ({
         ...meeting,
-        meetingDate: dayjs(meeting.meetingDate).format('YYYY-MM-DD'),
-        acceptanceDate: dayjs(meeting.acceptanceDate).format('YYYY-MM-DD')
+        meeting_date: dayjs(meeting.meeting_date).format('YYYY-MM-DD'),
+        acceptance_date: dayjs(meeting.acceptance_date).format('YYYY-MM-DD')
       }))
 
       res.locals.layout = 'table.hbs'
@@ -79,7 +195,7 @@ const meetingController = {
         countryId,
         startDate,
         endDate,
-        pagination: getPagination(limit, page, meetings.count)
+        pagination: getPagination(limit, page, meetingCount[0].count)
       })
     } catch (err) {
       next(err)
