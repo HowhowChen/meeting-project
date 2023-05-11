@@ -23,18 +23,18 @@
 	<tbody>
 		{{#each meetings}}
 			<tr>
-				<td class="AutoNewline">{{this.importDate}}</td>
-				<td class="AutoNewline">{{this.acceptanceDate}}</td>
-				<td class="AutoNewline">{{this.meetingDate}}</td>
-				<td class="AutoNewline">{{this.Country.name}}</td>
-				<td class="AutoNewline">{{this.Platform.name}}</td>
+				<td class="AutoNewline">{{this.import_date}}</td>
+				<td class="AutoNewline">{{this.acceptance_date}}</td>
+				<td class="AutoNewline">{{this.meeting_date}}</td>
+				<td class="AutoNewline">{{this.country_name}}</td>
+				<td class="AutoNewline">{{this.platform_name}}</td>
 				<td class="AutoNewline">{{this.name}}</td>
 				<td class="AutoNewline">{{this.organization}}</td>
 				<td class="AutoNewline">
-					{{#ifMatch this.Values.isValue true}}V{{/ifMatch}}
+					{{#ifMatch this.is_value true}}V{{/ifMatch}}
 				</td>
-				<td class="AutoNewline">{{this.exportDate}}</td>
-				<td class="AutoNewline">{{this.Comments.content}}</td>
+				<td class="AutoNewline">{{this.export_date}}</td>
+				<td class="AutoNewline">{{this.comment_content}}</td>
 			</tr>
 		{{/each}}
 	</tbody>

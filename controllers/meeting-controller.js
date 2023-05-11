@@ -197,49 +197,73 @@ const meetingController = {
       const offset = getOffset(limit, page)
       const startDate = req.query.startDate || dayjs().format('YYYY-MM-DD')
       const endDate = req.query.endDate || dayjs().format('YYYY-MM-DD')
-      const meetings = await Meeting.findAndCountAll({
-        raw: true,
-        nest: true,
-        where: {
-          importDate: {
-            [Op.and]: {
-              [Op.gte]: startDate,
-              [Op.lte]: endDate
-            }
+
+      const [meetings, meetingCount] = await Promise.all([
+        sequelize.query(
+          `
+          SELECT 
+            M."import_date",
+            M."export_date",
+            M."acceptance_date",
+            M."meeting_date",
+            M."name",
+            M."organization",
+            C."name" AS country_name,
+            P."name" AS platform_name,
+            V."is_value",
+            (
+              SELECT CM."content"
+              FROM "Comments" AS CM
+              RIGHT JOIN "Users" AS U
+              ON U."id" = CM."user_id"
+              WHERE CM."meeting_id" = M."id"
+            ) AS comment_content
+          FROM "Meetings" AS M
+          LEFT JOIN "Values" AS V
+            ON V."meeting_id" = M."id"
+          LEFT JOIN "Countries" AS C
+            ON C."id" = M."country_id"
+          LEFT JOIN "Platforms" AS P
+            ON P."id" = M."platform_id"
+          WHERE 
+            M."import_date" >= :startDate
+            AND M."import_date" <= :endDate
+          ORDER BY M."import_date" DESC
+          LIMIT  :limit
+          OFFSET :offset
+          `,
+          {
+            replacements: {
+              startDate: startDate,
+              endDate: endDate,
+              limit: limit,
+              offset: offset
+            },
+            type: QueryTypes.SELECT
           }
-        },
-        include: [
+        ),
+        sequelize.query(
+          `
+          SELECT COUNT(*)
+          FROM "Meetings" AS M
+          WHERE 
+            M."import_date" >= :startDate AND
+            M."import_date" <= :endDate
+          `,
           {
-            model: Platform,
-            attributes: ['name']
-          },
-          {
-            model: Category,
-            attributes: ['name']
-          },
-          {
-            model: Country,
-            attributes: ['name']
-          },
-          {
-            model: Comment,
-            attributes: ['content'],
-            include: [{ model: User, attributes: ['name'] }]
-          },
-          {
-            model: Value,
-            attributes: ['isValue']
+            replacements: {
+              startDate: startDate,
+              endDate: endDate
+            },
+            type: QueryTypes.SELECT
           }
-        ],
-        limit,
-        offset,
-        order: [['importDate', 'DESC']]
-      })
+        )
+      ])
       // convert date format
-      const newMeetings = meetings.rows.map(meeting => ({
+      const newMeetings = meetings.map(meeting => ({
         ...meeting,
-        meetingDate: dayjs(meeting.meetingDate).format('YYYY-MM-DD'),
-        acceptanceDate: dayjs(meeting.acceptanceDate).format('YYYY-MM-DD')
+        meeting_date: dayjs(meeting.meeting_date).format('YYYY-MM-DD'),
+        acceptance_date: dayjs(meeting.acceptance_date).format('YYYY-MM-DD')
       }))
 
       res.locals.layout = 'table.hbs'
@@ -247,7 +271,7 @@ const meetingController = {
         meetings: newMeetings,
         startDate,
         endDate,
-        pagination: getPagination(limit, page, meetings.count)
+        pagination: getPagination(limit, page, meetingCount[0].count)
       })
     } catch (err) {
       next(err)
@@ -520,7 +544,6 @@ const meetingController = {
           ) IS NOT NULL
           LIMIT  :limit
           OFFSET :offset
-          
           `,
           {
             replacements: {
