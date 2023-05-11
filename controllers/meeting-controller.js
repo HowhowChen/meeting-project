@@ -155,7 +155,16 @@ const meetingController = {
       ])
 
       if (!meeting) throw new Error("Meeting can't find!")
-      if (!issue) throw new Error("Issue can't find!")
+      if (!issue) {
+        await meeting.update({
+          ...req.body,
+          categoryId: category,
+          platformId: platform,
+          countryId: country
+        })
+        req.flash('success_messages', 'Success Update!')
+        return res.redirect(`/meetings/5th/${id}`)
+      }
       if (!meetingIssue) {
         await Promise.all([
           meeting.update({
