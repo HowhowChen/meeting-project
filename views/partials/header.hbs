@@ -9,19 +9,19 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-            {{#ifMatch user.role 'admin'}}
-              <li class="nav-item">
-                <a href="/admin/users" class="nav-link">Admin Control</a>
-              </li>
-            {{/ifMatch}}
             <li class="nav-item d-inline-flex align-items-center">
               <span class="text-white nav-link">{{ user.organization }}, {{ user.name }}</span>
             </li>
+            {{#ifMatch user.role 'admin'}}
+              <li class="nav-item">
+                <a href="/admin/users" class="btn btn-outline-success me-2">Admin Control</a>
+              </li>
+            {{/ifMatch}}
             <li class="nav-item">
-              <a href="/users/{{ user.id }}/edit" class="nav-link me-2">Profile</a>
+              <a href="/users/{{ user.id }}/edit" class="btn btn-outline-warning my-sm-0 me-2">Profile</a>
             </li>
             <li class="nav-item">
-              <a href="/users/logout"><button class="btn btn-outline-success my-sm-0 my-2">Logout</button></a>
+              <a href="/users/logout"><button class="btn btn-outline-danger my-sm-0 my-2">Logout</button></a>
             </li>
           </ul>
         </div>
