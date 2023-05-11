@@ -15,11 +15,11 @@ passport.use(new LocalStrategy(
   async (req, account, password, callback) => {
     //  account or password error
     const user = await User.findOne({ where: { account } })
-    if (!user) return callback(null, false, req.flash('error_messages', 'account or password error!'))
+    if (!user) return callback(null, false, req.flash('error_messages', 'Account or Password is wrong!'))
     // password can not match
     const isMatch = await bcrypt.compare(password, user.password)
 
-    if (!isMatch) return callback(null, false, req.flash('error_messages', 'account or password error!'))
+    if (!isMatch) return callback(null, false, req.flash('error_messages', 'Account or Password is wrong!'))
     // no error
     callback(null, user)
   }
