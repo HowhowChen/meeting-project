@@ -596,11 +596,23 @@ const meetingController = {
       if (!meeting) throw new Error("Meeting didn't exists!")
       if (meetingValue) throw new Error('Meeting is already setted value')
 
-      await Value.create({
-        userId,
-        meetingId: Number(id),
-        isValue: true
-      })
+      await sequelize.query(
+        `
+        INSERT INTO "Values"
+          ("user_id", "meeting_id", "is_value", "created_at", "updated_at")
+        VALUES (:userId, :meetingId, :isValue, :createdAt, :updatedAt)
+        `,
+        {
+          replacements: {
+            userId: userId,
+            meetingId: id,
+            isValue: true,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          },
+          type: QueryTypes.INSERT
+        }
+      )
       res.redirect('back')
     } catch (err) {
       next(err)
