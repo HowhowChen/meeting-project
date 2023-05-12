@@ -586,15 +586,33 @@ const meetingController = {
     try {
       const { id } = req.params
       const userId = Number(getUser(req).id)
-      const [meeting, meetingValue] = await Promise.all([
-        Meeting.findByPk(id),
-        Value.findOne({
-          where: { meetingId: Number(id) }
-        })
-      ])
 
-      if (!meeting) throw new Error("Meeting didn't exists!")
-      if (meetingValue) throw new Error('Meeting is already setted value')
+      const [meeting, meetingValue] = await Promise.all([
+        sequelize.query(
+          `
+          SELECT "id"
+          FROM "Meetings"
+          `,
+          {
+            type: QueryTypes.SELECT
+          }
+        ),
+        sequelize.query(
+          `
+          SELECT "id"
+          FROM "Values"
+          WHERE "meeting_id" = :meetingId
+          `,
+          {
+            replacements: {
+              meetingId: Number(id)
+            },
+            type: QueryTypes.SELECT
+          }
+        )
+      ])
+      if (!meeting.length) throw new Error("Meeting didn't exists!")
+      if (meetingValue.length) throw new Error('Meeting is already setted value')
 
       await sequelize.query(
         `
