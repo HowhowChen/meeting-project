@@ -402,6 +402,79 @@ const meetingController = {
       next(err)
     }
   },
+  getFiveAnalysis: async (req, res, next) => {
+    try {
+      const meetings = await sequelize.query(
+        `
+        SELECT C."name" AS country_name, COUNT(M."id") AS total,
+          (
+            SELECT COUNT(M1."id")
+            FROM "Meetings" AS M1
+            WHERE M1."platform_id" = 1
+            AND M1."country_id" = C."id"
+          ) AS zoom,
+          (
+            SELECT COUNT(M1."id")
+            FROM "Meetings" AS M1
+            WHERE M1."platform_id" = 1
+            AND M1."country_id" = C."id"
+            AND M1."sender" LIKE '%gov%'
+          ) AS zoom_specify,
+          (
+            SELECT COUNT(M2."id")
+            FROM "Meetings" AS M2
+            WHERE M2."platform_id" = 2
+            AND M2."country_id" = C."id"
+          ) AS webex,
+          (
+            SELECT COUNT(M2."id")
+            FROM "Meetings" AS M2
+            WHERE M2."platform_id" = 2
+            AND M2."country_id" = C."id"
+            AND M2."sender" LIKE '%gov%'
+          ) AS webex_specify,
+          (
+            SELECT COUNT(M3."id")
+            FROM "Meetings" AS M3
+            WHERE M3."platform_id" = 3
+            AND M3."country_id" = C."id"
+          ) AS tencent,
+          (
+            SELECT COUNT(M3."id")
+            FROM "Meetings" AS M3
+            WHERE M3."platform_id" = 3
+            AND M3."country_id" = C."id"
+            AND M3."sender" LIKE '%gov%'
+          ) AS tencent_specify,
+          (
+            SELECT COUNT(M4."sender")
+            FROM "Meetings" AS M4
+            WHERE M4."country_id" = C."id"
+            AND M4."sender" LIKE '%gov%'
+          ) AS total_gov
+        FROM "Meetings" AS M
+        LEFT JOIN "Countries" AS C
+          ON C."id" = M."country_id"
+        WHERE M."country_id" IN
+          (
+            SELECT "id" 
+            FROM "Countries"
+          )
+          AND M."meeting_date" >= '2023-05-11'
+          AND M."meeting_date" <= '2023-05-13'
+        GROUP BY c."id" 
+        `,
+        {
+          type: QueryTypes.SELECT
+        }
+      )
+
+      res.locals.layout = 'table.hbs'
+      res.render('analysis', { meetings })
+    } catch (err) {
+      next(err)
+    }
+  },
   getSixPage: async (req, res, next) => {
     try {
       const page = Number(req.query.page) || 1

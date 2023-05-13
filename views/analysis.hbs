@@ -1,0 +1,28 @@
+{{> meeting-5th-tabs route="analysis" }}
+
+<div class="mx-auto" style="width:90%;">
+	{{> messages}}
+</div>
+
+<table class="table-5th table-striped">
+	<thead>
+		<tr>
+			<th><h1>國別</h1></th>
+			<th><h1>電郵總數</h1></th>
+			<th><h1>Zoom</h1></th>
+      <th><h1>Webex</h1></th>
+      <th><h1>Tencent</h1></th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each meetings}}
+			<tr>
+				<td class="AutoNewline">{{this.country_name}}</td>
+				<td class="AutoNewline">{{this.total}}</td>
+        <td class="AutoNewline">{{this.zoom}}</td>
+        <td class="AutoNewline">{{this.webex}}</td>
+        <td class="AutoNewline">{{this.tencent}}</td>
+			</tr>
+		{{/each}}
+	</tbody>
+</table>
