@@ -404,85 +404,114 @@ const meetingController = {
   },
   getFiveAnalysis: async (req, res, next) => {
     try {
+      const page = Number(req.query.page) || 1
+      const limit = Number(req.query.limit) || DEFAULT_LIMIT
+      const offset = getOffset(limit, page)
       const startDate = req.query.startDate || dayjs().format('YYYY-MM-DD')
       const endDate = req.query.endDate || dayjs().format('YYYY-MM-DD')
       const sender = req.query?.sender ? `%${req.query?.sender}%` : '%gov%'
-      const meetings = await sequelize.query(
-        `
-        SELECT C."name" AS country_name, COUNT(M."id") AS total,
-          (
-            SELECT COUNT(M1."id")
-            FROM "Meetings" AS M1
-            WHERE M1."platform_id" = 1
-            AND M1."country_id" = C."id"
-          ) AS zoom,
-          (
-            SELECT COUNT(M1."id")
-            FROM "Meetings" AS M1
-            WHERE M1."platform_id" = 1
-            AND M1."country_id" = C."id"
-            AND M1."sender" LIKE :sender
-          ) AS zoom_specify,
-          (
-            SELECT COUNT(M2."id")
-            FROM "Meetings" AS M2
-            WHERE M2."platform_id" = 2
-            AND M2."country_id" = C."id"
-          ) AS webex,
-          (
-            SELECT COUNT(M2."id")
-            FROM "Meetings" AS M2
-            WHERE M2."platform_id" = 2
-            AND M2."country_id" = C."id"
-            AND M2."sender" LIKE :sender
-          ) AS webex_specify,
-          (
-            SELECT COUNT(M3."id")
-            FROM "Meetings" AS M3
-            WHERE M3."platform_id" = 3
-            AND M3."country_id" = C."id"
-          ) AS tencent,
-          (
-            SELECT COUNT(M3."id")
-            FROM "Meetings" AS M3
-            WHERE M3."platform_id" = 3
-            AND M3."country_id" = C."id"
-            AND M3."sender" LIKE :sender
-          ) AS tencent_specify,
-          (
-            SELECT COUNT(M4."sender")
-            FROM "Meetings" AS M4
-            WHERE M4."country_id" = C."id"
-            AND M4."sender" LIKE :sender
-          ) AS total_specify
-        FROM "Meetings" AS M
-        LEFT JOIN "Countries" AS C
-          ON C."id" = M."country_id"
-        WHERE M."country_id" IN
-          (
-            SELECT "id" 
-            FROM "Countries"
-          )
-          AND M."meeting_date" >= :startDate
-          AND M."meeting_date" <= :endDate
-        GROUP BY c."id" 
-        `,
-        {
-          replacements: {
-            startDate: startDate,
-            endDate: endDate,
-            sender: sender
-          },
-          type: QueryTypes.SELECT
-        }
-      )
+      const [meetings, meetingsCount] = await Promise.all([
+        sequelize.query(
+          `
+          SELECT C."name" AS country_name, COUNT(M."id") AS total,
+            (
+              SELECT COUNT(M1."id")
+              FROM "Meetings" AS M1
+              WHERE M1."platform_id" = 1
+              AND M1."country_id" = C."id"
+            ) AS zoom,
+            (
+              SELECT COUNT(M1."id")
+              FROM "Meetings" AS M1
+              WHERE M1."platform_id" = 1
+              AND M1."country_id" = C."id"
+              AND M1."sender" LIKE :sender
+            ) AS zoom_specify,
+            (
+              SELECT COUNT(M2."id")
+              FROM "Meetings" AS M2
+              WHERE M2."platform_id" = 2
+              AND M2."country_id" = C."id"
+            ) AS webex,
+            (
+              SELECT COUNT(M2."id")
+              FROM "Meetings" AS M2
+              WHERE M2."platform_id" = 2
+              AND M2."country_id" = C."id"
+              AND M2."sender" LIKE :sender
+            ) AS webex_specify,
+            (
+              SELECT COUNT(M3."id")
+              FROM "Meetings" AS M3
+              WHERE M3."platform_id" = 3
+              AND M3."country_id" = C."id"
+            ) AS tencent,
+            (
+              SELECT COUNT(M3."id")
+              FROM "Meetings" AS M3
+              WHERE M3."platform_id" = 3
+              AND M3."country_id" = C."id"
+              AND M3."sender" LIKE :sender
+            ) AS tencent_specify,
+            (
+              SELECT COUNT(M4."sender")
+              FROM "Meetings" AS M4
+              WHERE M4."country_id" = C."id"
+              AND M4."sender" LIKE :sender
+            ) AS total_specify
+          FROM "Meetings" AS M
+          LEFT JOIN "Countries" AS C
+            ON C."id" = M."country_id"
+          WHERE M."country_id" IN
+            (
+              SELECT "id" 
+              FROM "Countries"
+            )
+            AND M."meeting_date" >= :startDate
+            AND M."meeting_date" <= :endDate
+          GROUP BY c."id"
+          LIMIT  :limit
+          OFFSET :offset
+          `,
+          {
+            replacements: {
+              startDate: startDate,
+              endDate: endDate,
+              sender: sender,
+              limit: limit,
+              offset: offset
+            },
+            type: QueryTypes.SELECT
+          }
+        ),
+        sequelize.query(
+          `
+          SELECT COUNT(M."id")
+          FROM "Meetings" AS M
+          LEFT JOIN "Countries" AS C
+            ON C."id" = M."country_id"
+          WHERE 
+            M."meeting_date" >= :startDate
+            AND M."meeting_date" <= :endDate
+          GROUP BY c."id" 
+          `,
+          {
+            replacements: {
+              startDate: startDate,
+              endDate: endDate
+            },
+            type: QueryTypes.SELECT
+          }
+        )
+      ])
 
       res.locals.layout = 'table.hbs'
       res.render('analysis', {
         meetings,
         startDate,
         endDate,
-        sender: req.query?.sender ? req.query.sender : 'gov'
+        sender: req.query?.sender ? req.query.sender : 'gov',
+        pagination: getPagination(limit, page, meetingsCount.length)
       })
     } catch (err) {
       next(err)
