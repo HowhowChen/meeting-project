@@ -404,6 +404,9 @@ const meetingController = {
   },
   getFiveAnalysis: async (req, res, next) => {
     try {
+      const startDate = req.query.startDate || dayjs().format('YYYY-MM-DD')
+      const endDate = req.query.endDate || dayjs().format('YYYY-MM-DD')
+      const sender = req.query?.sender ? `%${req.query?.sender}%` : '%gov%'
       const meetings = await sequelize.query(
         `
         SELECT C."name" AS country_name, COUNT(M."id") AS total,
@@ -418,7 +421,7 @@ const meetingController = {
             FROM "Meetings" AS M1
             WHERE M1."platform_id" = 1
             AND M1."country_id" = C."id"
-            AND M1."sender" LIKE '%gov%'
+            AND M1."sender" LIKE :sender
           ) AS zoom_specify,
           (
             SELECT COUNT(M2."id")
@@ -431,7 +434,7 @@ const meetingController = {
             FROM "Meetings" AS M2
             WHERE M2."platform_id" = 2
             AND M2."country_id" = C."id"
-            AND M2."sender" LIKE '%gov%'
+            AND M2."sender" LIKE :sender
           ) AS webex_specify,
           (
             SELECT COUNT(M3."id")
@@ -444,14 +447,14 @@ const meetingController = {
             FROM "Meetings" AS M3
             WHERE M3."platform_id" = 3
             AND M3."country_id" = C."id"
-            AND M3."sender" LIKE '%gov%'
+            AND M3."sender" LIKE :sender
           ) AS tencent_specify,
           (
             SELECT COUNT(M4."sender")
             FROM "Meetings" AS M4
             WHERE M4."country_id" = C."id"
-            AND M4."sender" LIKE '%gov%'
-          ) AS total_gov
+            AND M4."sender" LIKE :sender
+          ) AS total_specify
         FROM "Meetings" AS M
         LEFT JOIN "Countries" AS C
           ON C."id" = M."country_id"
@@ -460,17 +463,27 @@ const meetingController = {
             SELECT "id" 
             FROM "Countries"
           )
-          AND M."meeting_date" >= '2023-05-11'
-          AND M."meeting_date" <= '2023-05-13'
+          AND M."meeting_date" >= :startDate
+          AND M."meeting_date" <= :endDate
         GROUP BY c."id" 
         `,
         {
+          replacements: {
+            startDate: startDate,
+            endDate: endDate,
+            sender: sender
+          },
           type: QueryTypes.SELECT
         }
       )
 
       res.locals.layout = 'table.hbs'
-      res.render('analysis', { meetings })
+      res.render('analysis', {
+        meetings,
+        startDate,
+        endDate,
+        sender: req.query?.sender ? req.query.sender : 'gov'
+      })
     } catch (err) {
       next(err)
     }

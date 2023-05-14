@@ -1,4 +1,5 @@
 {{> meeting-5th-tabs route="analysis" }}
+{{> search-analysis}}
 
 <div class="mx-auto" style="width:90%;">
 	{{> messages}}
@@ -9,9 +10,13 @@
 		<tr>
 			<th><h1>國別</h1></th>
 			<th><h1>電郵總數</h1></th>
+      <th><h1>電郵總數_{{sender}}</h1></th>
 			<th><h1>Zoom</h1></th>
+      <th><h1>Zoom_{{sender}}</h1></th>
       <th><h1>Webex</h1></th>
+      <th><h1>Webex_{{sender}}</h1></th>
       <th><h1>Tencent</h1></th>
+      <th><h1>Tencent_{{sender}}</h1></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -19,9 +24,13 @@
 			<tr>
 				<td class="AutoNewline">{{this.country_name}}</td>
 				<td class="AutoNewline">{{this.total}}</td>
+        <td class="AutoNewline">{{this.total_specify}}</td>
         <td class="AutoNewline">{{this.zoom}}</td>
+        <td class="AutoNewline">{{this.zoom_specify}}</td>
         <td class="AutoNewline">{{this.webex}}</td>
+        <td class="AutoNewline">{{this.webex_specify}}</td>
         <td class="AutoNewline">{{this.tencent}}</td>
+        <td class="AutoNewline">{{this.tencent_specify}}</td>
 			</tr>
 		{{/each}}
 	</tbody>
