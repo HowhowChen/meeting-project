@@ -31,20 +31,29 @@ services:
   web:
     image: howhowchen/meetingweb
     build: ./
-    container_name: meetingweb
+    # container_name: meetingweb
     volumes:
       - type: bind
         source: /home/howhow/Documents/files
         target: /home/howhow/Documents/files
     restart: "always"
     ports:
-      - "3000:3000"
+      - "3000"
     environment:
       - DEV_DATABASE_URL=postgres://admin:password@postgressql/meeting_dev
     networks:
       - app-net
     depends_on:             
       - postgressql
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    networks:
+      - app-net
+    depends_on:             
+      - web
 
 volumes:
   postgressql:
