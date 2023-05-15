@@ -7,7 +7,9 @@ const express = require('express')
 const flash = require('connect-flash')
 const methodOverride = require('method-override')
 const session = require('express-session')
+const redisStore = require('./database/redis/config')
 const passport = require('./config/passport')
+
 const handlebarsHelpers = require('./helpers/handlebars-helpers')
 const routes = require('./routes')
 const { getUser } = require('./helpers/auth-helpers')
@@ -27,11 +29,19 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 //  middleware: session
-app.use(session({
-  secret: process.env.SESSION_SECRECT,
-  resave: false,
-  saveUninitialized: false
-}))
+app.use(
+  session({
+    store: redisStore,
+    secret: process.env.SESSION_SECRECT,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // if true only transmit cookie over https
+      httpOnly: false, // if true prevent client side JS from reading the cookie
+      maxAge: 1000 * 60 * 10 // session max age in milliseconds
+    }
+  })
+)
 
 // passport intialize, startup session
 app.use(passport.initialize())
