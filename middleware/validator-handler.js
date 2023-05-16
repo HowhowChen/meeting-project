@@ -31,7 +31,7 @@ module.exports = {
     const errors = validationResult(req)
     //  結果有錯
     if (!errors.isEmpty()) {
-      return res.status(422).render('admin/userNew', {
+      return res.status(422).render('admin/user-new', {
         errors: errors.array(),
         name,
         account,
@@ -54,7 +54,7 @@ module.exports = {
     const errors = validationResult(req)
     //  結果有錯
     if (!errors.isEmpty()) {
-      return res.status(422).render('admin/userEdit', {
+      return res.status(422).render('admin/user-edit', {
         errors: errors.array(),
         user
       })

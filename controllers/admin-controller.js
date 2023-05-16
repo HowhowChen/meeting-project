@@ -55,15 +55,20 @@ const adminController = {
       const { name, account, organization, group, role } = req.body
       //  check account and user
       const [checkAccount, user] = await Promise.all([
-        User.findOne({ where: { account } }),
+        User.findOne({
+          raw: true,
+          nest: true,
+          where: { account }
+        }),
         User.findByPk(id)
       ])
-      if (checkAccount) throw new Error('Account alreay exists!')
+
       if (!user) throw new Error("User didn't exists!")
+      if (!checkAccount) throw new Error("Account didn't exists!")
+      if (checkAccount.id !== Number(id)) throw new Error('edit User is not the same one')
 
       await user.update({
         name,
-        account,
         organization,
         group,
         role
