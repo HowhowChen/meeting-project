@@ -22,10 +22,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       content: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       uuid: {
         type: Sequelize.STRING
@@ -34,7 +34,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       receiver: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       meeting_date: {
         type: Sequelize.STRING

@@ -20,11 +20,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Meeting.init({
-    name: DataTypes.STRING,
-    content: DataTypes.STRING,
+    name: DataTypes.TEXT,
+    content: DataTypes.TEXT,
     uuid: DataTypes.STRING,
     sender: DataTypes.STRING,
-    receiver: DataTypes.STRING,
+    receiver: DataTypes.TEXT,
     categoryId: DataTypes.INTEGER,
     platformId: DataTypes.INTEGER,
     countryId: DataTypes.INTEGER,
