@@ -55,14 +55,14 @@
 					<div class="d-flex justify-content-around">
 						<form action="/meetings/value/{{this.id}}" method="POST">
 							<div class="checkbox-wrapper-42">
-								<input id="yes{{this.id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`Do you sure {{ this.name }} is hight value?`)" {{#ifMatch this.Values.isValue true}}checked{{/ifMatch}}/>
+								<input id="yes{{this.id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`確定錄存 {{ this.name }}`)" {{#ifMatch this.Values.isValue true}}checked{{/ifMatch}}/>
 								<label class="cbx" for="yes{{this.id}}"></label>
 								<label class="lbl" for="yes{{this.id}}">是</label>
 							</div>
 						</form>
 						<form action="/meetings/value/{{this.id}}?_method=DELETE" method="POST">
 								<div class="checkbox-wrapper-42">
-									<input id="{{this.id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`Do you sure delete {{ this.name }}'s hight value?`)" {{#ifMatch this.Values.isValue null}}checked{{/ifMatch}}/>
+									<input id="{{this.id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`取消錄存 {{ this.name }}`)" {{#ifMatch this.Values.isValue null}}checked{{/ifMatch}}/>
 									<label class="cbx" for="{{this.id}}"></label>
 									<label class="lbl" for="{{this.id}}">否</label>
 								</div>

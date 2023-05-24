@@ -726,8 +726,8 @@ const meetingController = {
           }
         )
       ])
-      if (!meeting.length) throw new Error("Meeting didn't exists!")
-      if (meetingValue.length) throw new Error('Meeting is already setted value')
+      if (!meeting.length) throw new Error('您點選之會議不存在！')
+      if (meetingValue.length) throw new Error('您點選之會議已錄存！')
 
       await sequelize.query(
         `
@@ -763,8 +763,8 @@ const meetingController = {
           }
         })
       ])
-      if (!meeting) throw new Error("Meeting didn't exists!")
-      if (!meetingValue) throw new Error("Meeting didn't be setted value")
+      if (!meeting) throw new Error('您點選之會議不存在！')
+      if (!meetingValue) throw new Error('您點選之會議尚未錄存！')
 
       await meetingValue.destroy()
       res.redirect('back')
