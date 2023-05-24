@@ -4,11 +4,14 @@
       <div class="mt-4 d-flex  justify-content-around  flex-wrap align-content-center fs-5">
         <div class="mb-4">
           <label for="startDate" class="mr-3">入庫日期(起)📆</label>&nbsp
-          <span><input name="startDate" id="startDate" type="date" onchange="form.submit()" value="{{startDate}}" />
+          <span><input name="startDate" id="startDate" type="date" value="{{startDate}}" />
         </div>
         <div class="mb-4">
           <label for="endDate">入庫日期(迄)📆</label>&nbsp
-          <span><input name="endDate" id="endDate" type="date" onchange="form.submit()" value="{{endDate}}" /></span>
+          <span><input name="endDate" id="endDate" type="date" value="{{endDate}}" /></span>
+        </div>
+        <div class="mb-4">
+          <button id="submitButton" type="submit" class="btn btn-outline-primary">查詢</button>
         </div>
       </div>
     </form>
