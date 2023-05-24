@@ -3,7 +3,7 @@
     <form action="/meetings/5th" method="GET">
       <div class="row mt-5">
         <div class="col">
-          <select class="rounded bg-light form-select" name="categoryId" onchange="form.submit()">
+          <select class="rounded bg-light form-select" name="categoryId">
             <option selected>會議類型(All)</option>
             {{#each categories}}
               <option value="{{this.id}}" {{#ifMatch this.id ../categoryId}}selected{{/ifMatch}}>{{this.name}}</option>
@@ -12,7 +12,7 @@
         </div>
 
         <div class="col">
-          <select class="rounded bg-light form-select" name="platformId" onchange="form.submit()">
+          <select class="rounded bg-light form-select" name="platformId">
             <option selected>會議平台(All)</option>
             {{#each platforms}}
               <option value="{{this.id}}" {{#ifMatch this.id ../platformId}}selected{{/ifMatch}}>{{this.name}}</option>
@@ -21,7 +21,7 @@
         </div>
 
         <div class="col">
-          <select class="rounded bg-light form-select" name="countryId" onchange="form.submit()">
+          <select class="rounded bg-light form-select" name="countryId">
             <option selected>國別(All)</option>
             {{#each countries}}
               <option value="{{this.id}}" {{#ifMatch this.id ../countryId}}selected{{/ifMatch}}>{{this.name}}</option>
@@ -47,17 +47,20 @@
             <option value="10" {{#ifMatch pagination.limit 10}}selected{{/ifMatch}}>10</option>
             <option value="20" {{#ifMatch pagination.limit 20}}selected{{/ifMatch}}>20</option>
           </select>
-        </div>
-      </div> --}}
+        </div>--}}
+      </div> 
 
       <div class="mt-4 d-flex  justify-content-around  flex-wrap align-content-center fs-5">
         <div class="mb-4">
           <label for="startDate" class="mr-3">會議日期(起)📆</label>&nbsp
-          <span><input name="startDate" id="startDate" type="date" onchange="form.submit()" value="{{startDate}}" />
+          <span><input name="startDate" id="startDate" type="date" value="{{startDate}}" />
         </div>
         <div class="mb-4">
           <label for="endDate">會議日期(迄)📆</label>&nbsp
-          <span><input name="endDate" id="endDate" type="date" onchange="form.submit()" value="{{endDate}}" /></span>
+          <span><input name="endDate" id="endDate" type="date" value="{{endDate}}" /></span>
+        </div>
+        <div class="mb-4">
+          <button id="submitButton" type="submit" class="btn btn-outline-primary">查詢</button>
         </div>
       </div>
     </form>
