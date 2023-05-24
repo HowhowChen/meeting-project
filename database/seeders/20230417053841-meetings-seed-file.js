@@ -36,7 +36,7 @@ module.exports = {
       organization: 'NSA',
       link: 'https://example.com',
       password: '12345678',
-      file_name: 'test',
+      file_name: 'test.eml',
       created_at: new Date(),
       updated_at: new Date()
     })))
