@@ -19,6 +19,7 @@ const meetingController = {
       const countryId = Number(req.query.countryId) || null
       const startDate = req.query.startDate || dayjs().format('YYYY-MM-DD')
       const endDate = req.query.endDate || dayjs().format('YYYY-MM-DD')
+      const selectDateType = req.query.selectDateType || 'meeting'
 
       const [meetings, meetingCount, categories, platforms, countries] = await Promise.all([
         sequelize.query(
@@ -39,8 +40,16 @@ const meetingController = {
             ON V."meeting_id" = M."id"
           LEFT JOIN "Platforms" AS P
             ON P."id" = M."platform_id"
-          WHERE M."meeting_date" >= :startDate
-          AND M."meeting_date" <= :endDate
+          WHERE 
+            (
+              CASE
+                WHEN :selectDateType = 'meeting'
+                THEN M."meeting_date" >= :startDate AND
+                    M."meeting_date" <= :endDate
+                ELSE M."acceptance_date" >= :startDate AND
+                    M."acceptance_date" <= :endDate
+              END
+            )
           AND
             (
               CASE
@@ -83,6 +92,7 @@ const meetingController = {
           `,
           {
             replacements: {
+              selectDateType: selectDateType,
               startDate: startDate,
               endDate: endDate,
               categoryId: categoryId,
@@ -98,8 +108,16 @@ const meetingController = {
           `
           SELECT COUNT(M."id")
           FROM "Meetings" AS M
-          WHERE M."meeting_date" >= :startDate
-          AND M."meeting_date" <= :endDate
+          WHERE 
+            (
+              CASE
+                WHEN :selectDateType = 'meeting'
+                THEN M."meeting_date" >= :startDate AND
+                    M."meeting_date" <= :endDate
+                ELSE M."acceptance_date" >= :startDate AND
+                    M."acceptance_date" <= :endDate
+              END
+            )
           AND
             (
               CASE
@@ -139,6 +157,7 @@ const meetingController = {
           `,
           {
             replacements: {
+              selectDateType: selectDateType,
               startDate: startDate,
               endDate: endDate,
               categoryId: categoryId,
@@ -195,6 +214,7 @@ const meetingController = {
         countryId,
         startDate,
         endDate,
+        selectDateType,
         pagination: getPagination(limit, page, meetingCount[0].count)
       })
     } catch (err) {

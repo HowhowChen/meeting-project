@@ -121,3 +121,10 @@ h2 a {
 .table-5th td:nth-child(4),
 .table-5th th:nth-child(4) { display: none; }
 }
+
+/* selectDateType */
+#startDate { opacity: 1; transition: all 0.5s; }
+#startDate.hide { opacity: 0; }
+#endDate { opacity: 1; transition: all 0.5s; }
+#endDate.hide { opacity: 0; }
+

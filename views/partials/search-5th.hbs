@@ -51,12 +51,33 @@
       </div> 
 
       <div class="mt-4 d-flex  justify-content-around  flex-wrap align-content-center fs-5">
+        <div class="d-flex align-content-center">
+          <div class="checkbox-wrapper-42">
+            <input id="meeting" type="checkbox" onclick="return confirm(`切換會議日期`)" {{#ifMatch selectDateType 'meeting'}}checked{{/ifMatch}}/>
+            <label class="cbx" for="meeting"></label>
+            <label class="lbl" for="meeting">會議日期</label>
+          </div>
+          &nbsp;&nbsp;
+          <div class="checkbox-wrapper-42">
+            <input id="acceptance" type="checkbox" onclick="return confirm(`切換來料日期`)" {{#ifMatch selectDateType 'acceptance'}}checked{{/ifMatch}}/>
+            <label class="cbx" for="acceptance"></label>
+            <label class="lbl" for="acceptance">來料日期</label>
+          </div>
+          <input type="hidden" id="selectDateType" name="selectDateType" value="{{selectDateType}}">
+        </div>
+        
         <div class="mb-4">
-          <label for="startDate" class="mr-3">會議日期(起)📆</label>&nbsp
+          <label for="startDate" class="mr-3" id="startDate">
+            {{#ifMatch selectDateType 'meeting'}}會議日期(起)📆{{/ifMatch}}
+            {{#ifMatch selectDateType 'acceptance'}}來料日期(起)📆{{/ifMatch}}
+          </label>&nbsp;
           <span><input name="startDate" id="startDate" type="date" value="{{startDate}}" />
         </div>
         <div class="mb-4">
-          <label for="endDate">會議日期(迄)📆</label>&nbsp
+          <label for="endDate" id="endDate">
+            {{#ifMatch selectDateType 'meeting'}}會議日期(迄)📆{{/ifMatch}}
+            {{#ifMatch selectDateType 'acceptance'}}來料日期(迄)📆{{/ifMatch}}
+          </label>&nbsp;
           <span><input name="endDate" id="endDate" type="date" value="{{endDate}}" /></span>
         </div>
         <div class="mb-4">
