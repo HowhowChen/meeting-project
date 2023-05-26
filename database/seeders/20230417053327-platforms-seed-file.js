@@ -4,7 +4,7 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Platforms',
-      ['Zoom', 'Webex', '騰訊']
+      ['ZOOM', 'WEBEX', 'TENCENT']
         .map(item => ({
           name: item,
           created_at: new Date(),
