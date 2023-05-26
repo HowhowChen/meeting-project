@@ -439,6 +439,8 @@ const meetingController = {
               FROM "Meetings" AS M1
               WHERE M1."platform_id" = 1
               AND M1."country_id" = C."id"
+              AND M1."meeting_date" >= :startDate
+              AND M1."meeting_date" <= :endDate
             ) AS zoom,
             (
               SELECT COUNT(M1."id")
@@ -446,12 +448,16 @@ const meetingController = {
               WHERE M1."platform_id" = 1
               AND M1."country_id" = C."id"
               AND M1."sender" LIKE :sender
+              AND M1."meeting_date" >= :startDate
+              AND M1."meeting_date" <= :endDate
             ) AS zoom_specify,
             (
               SELECT COUNT(M2."id")
               FROM "Meetings" AS M2
               WHERE M2."platform_id" = 2
               AND M2."country_id" = C."id"
+              AND M2."meeting_date" >= :startDate
+              AND M2."meeting_date" <= :endDate
             ) AS webex,
             (
               SELECT COUNT(M2."id")
@@ -459,12 +465,16 @@ const meetingController = {
               WHERE M2."platform_id" = 2
               AND M2."country_id" = C."id"
               AND M2."sender" LIKE :sender
+              AND M2."meeting_date" >= :startDate
+              AND M2."meeting_date" <= :endDate
             ) AS webex_specify,
             (
               SELECT COUNT(M3."id")
               FROM "Meetings" AS M3
               WHERE M3."platform_id" = 3
               AND M3."country_id" = C."id"
+              AND M3."meeting_date" >= :startDate
+              AND M3."meeting_date" <= :endDate
             ) AS tencent,
             (
               SELECT COUNT(M3."id")
@@ -472,12 +482,16 @@ const meetingController = {
               WHERE M3."platform_id" = 3
               AND M3."country_id" = C."id"
               AND M3."sender" LIKE :sender
+              AND M3."meeting_date" >= :startDate
+              AND M3."meeting_date" <= :endDate
             ) AS tencent_specify,
             (
               SELECT COUNT(M4."sender")
               FROM "Meetings" AS M4
               WHERE M4."country_id" = C."id"
               AND M4."sender" LIKE :sender
+              AND M4."meeting_date" >= :startDate
+              AND M4."meeting_date" <= :endDate
             ) AS total_specify
           FROM "Meetings" AS M
           LEFT JOIN "Countries" AS C
