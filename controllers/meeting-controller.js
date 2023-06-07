@@ -614,6 +614,7 @@ const meetingController = {
       // convert date format
       const newMeetings = meetings.rows.map(meeting => ({
         ...meeting,
+        receiver: meeting.receiver.substring(0, 50) + '...',
         meetingDate: dayjs(meeting.meetingDate).format('YYYY-MM-DD'),
         acceptanceDate: dayjs(meeting.acceptanceDate).format('YYYY-MM-DD')
       }))
