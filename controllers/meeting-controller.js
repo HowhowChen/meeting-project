@@ -644,6 +644,7 @@ const meetingController = {
         SELECT
           M."id",
           M."name",
+          M."receiver",
           M."uuid",
           M."content" AS meeting_content, 
           C."content" AS comment_content 
