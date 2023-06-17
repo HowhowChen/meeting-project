@@ -52,7 +52,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       link: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       password: {
         type: Sequelize.STRING

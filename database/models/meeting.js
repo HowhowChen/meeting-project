@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     importDate: DataTypes.STRING,
     exportDate: DataTypes.STRING,
     organization: DataTypes.STRING,
-    link: DataTypes.STRING,
+    link: DataTypes.TEXT,
     password: DataTypes.STRING,
     fileName: DataTypes.STRING
   }, {
