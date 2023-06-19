@@ -55,7 +55,7 @@ module.exports = {
         type: Sequelize.TEXT
       },
       password: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       file_name: {
         type: Sequelize.STRING
