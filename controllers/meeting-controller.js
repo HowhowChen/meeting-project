@@ -199,6 +199,8 @@ const meetingController = {
       // convert date format
       const newMeetings = meetings.map(meeting => ({
         ...meeting,
+        name: meeting.name.length > 50 ? meeting.name.substring(0, 50) + '...' : meeting.name,
+        link: meeting.link.length > 50 ? meeting.link.substring(0, 50) + '...' : meeting.link,
         meeting_date: dayjs(meeting.meeting_date).format('YYYY-MM-DD'),
         acceptance_date: dayjs(meeting.acceptance_date).format('YYYY-MM-DD')
       }))
@@ -407,6 +409,7 @@ const meetingController = {
       // convert date format
       const newMeetings = meetings.map(meeting => ({
         ...meeting,
+        name: meeting.name.length > 50 ? meeting.name.substring(0, 50) + '...' : meeting.name,
         meeting_date: dayjs(meeting.meeting_date).format('YYYY-MM-DD'),
         acceptance_date: dayjs(meeting.acceptance_date).format('YYYY-MM-DD')
       }))
@@ -614,7 +617,8 @@ const meetingController = {
       // convert date format
       const newMeetings = meetings.rows.map(meeting => ({
         ...meeting,
-        receiver: meeting.receiver.substring(0, 50) + '...',
+        name: meeting.name.length > 50 ? meeting.name.substring(0, 50) + '...' : meeting.name,
+        receiver: meeting.receiver.length > 50 ? meeting.receiver.substring(0, 50) + '...' : meeting.receiver,
         meetingDate: dayjs(meeting.meetingDate).format('YYYY-MM-DD'),
         acceptanceDate: dayjs(meeting.acceptanceDate).format('YYYY-MM-DD')
       }))
