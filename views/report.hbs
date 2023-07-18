@@ -16,7 +16,8 @@
 			<th><h1>會議主旨</h1></th>
 			<th><h1>會議單位</h1></th>
 			<th><h1>第六組評選</h1></th>
-			<th><h1>報局情形</h1></th>
+			<th><h1>報局日期</h1></th>
+			<th><h1>科情編號</h1></th>
 			<th><h1>備註(符合情蒐)</h1></th>
 		</tr>
 	</thead>
@@ -34,6 +35,7 @@
 					{{#ifMatch this.is_value true}}V{{/ifMatch}}
 				</td>
 				<td class="AutoNewline">{{this.export_date}}</td>
+				<td class="AutoNewLine">{{this.uuid}}</td>
 				<td class="AutoNewline">{{this.comment_content}}</td>
 			</tr>
 		{{/each}}

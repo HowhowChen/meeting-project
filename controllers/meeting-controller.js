@@ -355,6 +355,7 @@ const meetingController = {
             M."meeting_date",
             M."name",
             M."organization",
+            M."uuid",
             C."name" AS country_name,
             P."name" AS platform_name,
             V."is_value",

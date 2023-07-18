@@ -147,6 +147,13 @@
         </div> --}}
 
         <div class="row align-items-center mb-5 h3">
+          <label for="uuid" class="col-3 text-white">報號/來源:</label>
+          <div class="col-9">
+            <input id="uuid" name="uuid" type="text" class="form-control" value="{{ meeting.uuid }}">
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
           <label for="issue" class="col-3 text-white">Issue:</label>
           <div class="col-9">
             <input type="hidden" id="issueId" name="issueId">
