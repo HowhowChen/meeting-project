@@ -5,7 +5,7 @@ const path = require('path')
 const { QueryTypes } = require('sequelize')
 const { getUser } = require('../helpers/auth-helpers')
 const { getOffset, getPagination } = require('../helpers/pagination-helper')
-const { Meeting, Platform, Category, Country, Comment, Value, Issue, MeetingIssue, sequelize } = require('../database/models')
+const { Meeting, Platform, Category, Country, Comment, Value, Issue, MeetingIssue, Minute, sequelize } = require('../database/models')
 const DEFAULT_LIMIT = 7
 
 const meetingController = {
@@ -1176,6 +1176,81 @@ const meetingController = {
       if (!meetingValue) throw new Error('您點選之會議尚未錄存！')
 
       await meetingValue.destroy()
+      res.redirect('back')
+    } catch (err) {
+      next(err)
+    }
+  },
+  postMinutes: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const userId = Number(getUser(req).id)
+
+      const [meeting, meetingMinutes] = await Promise.all([
+        sequelize.query(
+          `
+          SELECT "id"
+          FROM "Meetings"
+          `,
+          {
+            type: QueryTypes.SELECT
+          }
+        ),
+        sequelize.query(
+          `
+          SELECT "id"
+          FROM "Minutes"
+          WHERE "meeting_id" = :meetingId
+          `,
+          {
+            replacements: { meetingId: Number(id) },
+            type: QueryTypes.SELECT
+          }
+        )
+      ])
+
+      if (!meeting.length) throw new Error('您點選之會議不存在！')
+      if (meetingMinutes.length) throw new Error('您點選之會議已有會議紀錄文本！')
+
+      await sequelize.query(
+        `
+        INSERT INTO "Minutes"
+          ("user_id", "meeting_id", "is_done", "created_at", "updated_at")
+        VALUES (:userId, :meetingId, :isDone, :createdAt, :updatedAt)
+        `,
+        {
+          replacements: {
+            userId: userId,
+            meetingId: id,
+            isDone: true,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          },
+          type: QueryTypes.INSERT
+        }
+      )
+      res.redirect('back')
+    } catch (err) {
+      next(err)
+    }
+  },
+  deleteMinutes: async (req, res, next) => {
+    try {
+      const { id } = req.params
+
+      const [meeting, meetingMinutes] = await Promise.all([
+        Meeting.findByPk(id),
+        Minute.findOne({
+          where: {
+            meetingId: Number(id),
+            isDone: true
+          }
+        })
+      ])
+      if (!meeting) throw new Error('您點選之會議不存在！')
+      if (!meetingMinutes) throw new Error('您點選之會議尚未擁有會議紀錄文本！')
+
+      await meetingMinutes.destroy()
       res.redirect('back')
     } catch (err) {
       next(err)

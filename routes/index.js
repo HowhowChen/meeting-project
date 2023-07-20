@@ -19,6 +19,8 @@ router.put('/users/:id', authenticatedUser, putUserValidator, userController.put
 router.get('/meetings/files/:fileDate/:fileName', authenticated, meetingController.getFileDownload)
 router.post('/meetings/value/:id', authenticated, meetingController.postValue)
 router.delete('/meetings/value/:id', authenticated, meetingController.deleteValue)
+router.post('/meetings/minutes/:id', authenticated, meetingController.postMinutes)
+router.delete('/meetings/minutes/:id', authenticated, meetingController.deleteMinutes)
 router.get('/meetings/5th/analysis', authenticated, authenticatedFiveClass, meetingController.getFiveAnalysis)
 router.get('/meetings/5th/report', authenticated, authenticatedFiveClass, meetingController.getFiveReport)
 router.get('/meetings/5th/:id', authenticated, authenticatedFiveClass, meetingController.getFiveMeeting)
