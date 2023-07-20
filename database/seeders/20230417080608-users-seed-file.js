@@ -26,6 +26,16 @@ module.exports = {
           updated_at: new Date()
         },
         {
+          name: 'user3',
+          account: 'user3',
+          password: bcrypt.hashSync(process.env.DEFAULT_PASSWORD, bcrypt.genSaltSync(10)),
+          organization: 'the 7th class',
+          group: '7th',
+          role: 'user',
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
           name: 'root',
           account: 'root',
           password: bcrypt.hashSync(process.env.DEFAULT_PASSWORD, bcrypt.genSaltSync(10)),
