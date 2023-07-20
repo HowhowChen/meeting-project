@@ -1070,6 +1070,50 @@ const meetingController = {
       next(err)
     }
   },
+  getSevenMeeting: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const meeting = await sequelize.query(
+        `
+        SELECT
+          M."id",
+          M."name",
+          M."receiver",
+          M."uuid",
+          M."content" AS meeting_content,
+          (
+            SELECT CM."content"
+            FROM "Comments" AS CM
+            RIGHT JOIN "Users" AS U
+            ON U."id" = CM."user_id"
+            WHERE CM."meeting_id" = M."id"
+            AND CM."group" = '5th'
+          ) AS comment_content_5th,
+          (
+            SELECT CM."content"
+            FROM "Comments" AS CM
+            RIGHT JOIN "Users" AS U
+            ON U."id" = CM."user_id"
+            WHERE CM."meeting_id" = M."id"
+            AND CM."group" = '6th'
+          ) AS comment_content_6th
+        FROM "Meetings" AS M
+        LEFT JOIN "Comments" AS C
+          ON C."meeting_id" = M."id"
+        WHERE M."id" = :id
+        `,
+        {
+          replacements: { id: id },
+          type: QueryTypes.SELECT
+        }
+      )
+      if (!meeting.length) throw new Error("Meeting didn't exist!")
+
+      res.render('meeting-7th', { meeting: meeting[0] })
+    } catch (err) {
+      next(err)
+    }
+  },
   getGroupPage: (req, res) => {
     const { group } = getUser(req)
     switch (group) {

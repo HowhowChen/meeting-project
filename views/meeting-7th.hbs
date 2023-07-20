@@ -1,0 +1,75 @@
+<form novalidate id="form" action="/meetings/7th/{{ meeting.id }}?_method=PUT" method="POST">
+  <div class="row mt-5">
+      <div class="">
+        <div class="row align-items-center mb-5">
+          <div class="col-3 text-danger">
+            *Required Input
+          </div>
+          <h1 class="col-9 text-center text-secondary">
+            編輯會議內容
+          </h1>
+        </div>
+
+        {{> messages}}
+        
+        <div class="row align-items-center mb-5 h3">
+          <label for="name" class="col-3 text-white">會議主旨:</label>
+          <div class="col-9">
+            <input id="content" name="name" type="name" class="form-control" value="{{ meeting.name }}" disabled>
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="content" class="col-3 text-white">會議內容:</label>
+          <div class="col-9">
+            <textarea class="form-control" id="content" name="content" rows="3" disabled>{{ meeting.meeting_content }}</textarea>
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="content" class="col-3 text-white">收件者:</label>
+          <div class="col-9">
+            <textarea class="form-control" id="content" name="content" rows="3" disabled>{{ meeting.receiver }}</textarea>
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="comment" class="col-3 text-white">第五組評論:</label>
+          <div class="col-9">
+            <input class="form-control" id="comment" name="comment" rows="3" disabled>{{ meeting.comment_content_5th }}</input>
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="comment" class="col-3 text-white">第六組評論:</label>
+          <div class="col-9">
+            <input class="form-control" id="comment" name="comment" rows="3" disabled>{{ meeting.comment_content_6th }}</input>
+          </div>
+        </div>
+
+        <div class="row align-items-center mb-5 h3">
+          <label for="uuid" class="col-3 text-white"><span class="text-danger">*</span>報號/來源:</label>
+          <div class="col-9">
+            <input id="uuid" name="uuid" type="text" class="form-control" value="{{ meeting.uuid }}">
+          </div>
+        </div>
+
+
+
+
+        <div class="row align-items-center mb-5 h3">
+          <div class="col-3 ">
+            <a class="btn btn-outline-success" href="javascript:history.back()">🔙back to previous page</a>
+          </div>
+          <div class="col-9">
+            <div class="d-flex justify-content-center">
+              <button type="reset" class="btn btn-danger">重設</button>&nbsp
+              <button id="submitButton" type="submit" class="btn btn-primary">送出</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>
