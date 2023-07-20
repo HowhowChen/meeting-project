@@ -227,33 +227,55 @@ const meetingController = {
     try {
       const { id } = req.params
       const [meeting, categories, platforms, countries, issues] = await Promise.all([
-        Meeting.findOne({
-          raw: true,
-          nest: true,
-          where: { id },
-          include: [
-            {
-              model: Platform,
-              attributes: ['name']
-            },
-            {
-              model: Category,
-              attributes: ['name']
-            },
-            {
-              model: Country,
-              attributes: ['name']
-            },
-            {
-              model: Comment,
-              attributes: ['content']
-            },
-            {
-              model: MeetingIssue,
-              include: [Issue]
-            }
-          ]
-        }),
+        sequelize.query(
+          `
+          SELECT 
+            M."id",
+            M."name",
+            M."content",
+            M."organization",
+            M."sender",
+            M."receiver",
+            M."meeting_date",
+            M."acceptance_date",
+            M."import_date",
+            M."export_date",
+            M."link",
+            M."password",
+            M."file_name",
+            M."uuid",
+            CA."name" AS category_name,
+            P."name" AS platform_name,
+            C."name" AS country_name,
+            (
+              SELECT I."name" AS issue_name
+              FROM "Issues" AS I
+              WHERE I."id" = MI."issue_id"
+            ),
+            (
+              SELECT CM."content"
+              FROM "Comments" AS CM
+              RIGHT JOIN "Users" AS U
+              ON U."id" = CM."user_id"
+              WHERE CM."meeting_id" = M."id"
+              AND CM."group" = '5th'
+            ) AS comment_content_5th
+          FROM "Meetings" AS M
+          LEFT JOIN "Categories" AS CA
+          ON CA."id" = M."category_id"
+          LEFT JOIN "Platforms" AS P
+          ON P."id" = M."platform_id"
+          LEFT JOIN "Countries" AS C
+          ON C."id" = M."country_id"
+          LEFT JOIN "MeetingIssues" AS MI
+          ON MI."meeting_id" = M."id"
+          WHERE M."id" = :id
+          `,
+          {
+            replacements: { id: id },
+            type: QueryTypes.SELECT
+          }
+        ),
         Category.findAll({ raw: true }),
         Platform.findAll({ raw: true }),
         Country.findAll({ raw: true }),
@@ -263,7 +285,7 @@ const meetingController = {
       if (!meeting) throw new Error("Meeting didn't exist!")
       res.locals.layout = 'meeting-update.hbs'
       res.render('meeting-5th', {
-        meeting,
+        meeting: meeting[0],
         categories,
         platforms,
         countries,
@@ -275,21 +297,25 @@ const meetingController = {
   },
   putFiveMeeting: async (req, res, next) => {
     try {
+      const userId = Number(getUser(req).id)
       const { id } = req.params
-      const issueId = Number(req.body.issueId)
       const {
         category,
         platform,
         country
       } = req.body
-      const [meeting, issue, meetingIssue] = await Promise.all([
+      const issueId = Number(req.body.issueId)
+      const commentContent = req.body.comment
+
+      const [meeting, issue, meetingIssue, comment] = await Promise.all([
         Meeting.findByPk(id),
         Issue.findByPk(issueId),
         MeetingIssue.findOne({
           where: {
             meetingId: id
           }
-        })
+        }),
+        Comment.findOne({ where: { meetingId: id, group: '5th' } })
       ])
 
       if (!meeting) throw new Error("Meeting can't find!")
@@ -300,9 +326,25 @@ const meetingController = {
           platformId: platform,
           countryId: country
         })
+
+        if (!comment) {
+          await Comment.create({
+            userId,
+            meetingId: id,
+            group: '5th',
+            content: commentContent
+          })
+        } else {
+          await comment.update({
+            userId,
+            content: commentContent
+          })
+        }
+
         req.flash('success_messages', 'Success Update!')
         return res.redirect(`/meetings/5th/${id}`)
       }
+
       if (!meetingIssue) {
         await Promise.all([
           meeting.update({
@@ -329,6 +371,20 @@ const meetingController = {
             issueId
           })
         ])
+      }
+
+      if (!comment) {
+        await Comment.create({
+          userId,
+          meetingId: id,
+          group: '5th',
+          content: commentContent
+        })
+      } else {
+        await comment.update({
+          userId,
+          content: commentContent
+        })
       }
 
       req.flash('success_messages', 'Success Update!')
