@@ -15,6 +15,9 @@ const userController = {
       case '6th':
         res.redirect('/meetings/6th')
         break
+      case '7th':
+        res.redirect('/meetings/7th')
+        break
       default:
         res.redirect('/meetings/5th')
     }

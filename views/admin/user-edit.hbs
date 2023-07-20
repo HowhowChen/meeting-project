@@ -36,6 +36,7 @@
             <select id="organization" name="organization" list="organizations" class="form-control"  required>
               <option {{#ifMatch user.organization 'the 5th class'}}selected{{/ifMatch}}>the 5th class</option>
               <option {{#ifMatch user.organization 'the 6th class'}}selected{{/ifMatch}}>the 6th class</option>
+              <option {{#ifMatch user.organization 'the 7th class'}}selected{{/ifMatch}}>the 7th class</option>
             </select>
             <div class="valid-feedback">Good!</div>
             <div class="invalid-feedback">This field is required</div>
@@ -48,6 +49,7 @@
             <select id="group" name="group" list="groups" class="form-control"  required>
               <option {{#ifMatch user.group '5th'}}selected{{/ifMatch}}>5th</option>
               <option {{#ifMatch user.group '6th'}}selected{{/ifMatch}}>6th</option>
+              <option {{#ifMatch user.group '7th'}}selected{{/ifMatch}}>7th</option>
             </select>
             <div class="valid-feedback">Good!</div>
             <div class="invalid-feedback">This field is required</div>

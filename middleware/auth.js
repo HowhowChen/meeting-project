@@ -30,6 +30,14 @@ module.exports = {
       res.redirect('/users/login')
     }
   },
+  authenticatedSevenClass: (req, res, next) => {
+    if (helpers.ensureAuthenticated(req)) {
+      if (helpers.getUser(req)?.group === '7th' || helpers.getUser(req)?.role === 'admin') return next()
+      res.redirect('/')
+    } else {
+      res.redirect('/users/login')
+    }
+  },
   authenticatedUser: (req, res, next) => {
     const { id } = req.params
     if (helpers.ensureAuthenticated(req)) {
