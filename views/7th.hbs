@@ -1,0 +1,102 @@
+{{> search-7th}}
+<div class="mx-auto" style="width:90%;">
+	{{> messages}}
+</div>
+
+<div class="text-primary text-secondary text-end mb-1 mx-auto fs-5" style="width:90%;">
+    頁數<span id="current-page">{{pagination.currentPage}}</span>/{{pagination.totalPage}}
+</div>
+
+<table class="table-5th table-striped">
+	<thead>
+		<tr>
+			<th><h1>會議日期</h1></th>
+			<th><h1>報局/來源</h1></th>
+			<th><h1>國別</h1></th>
+			<th><h1>會議平台</h1></th>
+			<th><h1>會議主旨</h1></th>
+			<th><h1>會議單位</h1></th>
+			<th><h1>寄件者</h1></th>
+			<th><h1>收件者</h1></th>
+			<th><h1>會議類型<h1></th>
+			<th><h1>已蒐錄會議紀錄文本</h1></th>
+			<th><h1>編輯</h1></th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each meetings}}
+			<tr>
+				<td class="AutoNewline">{{this.meeting_date}}</td>
+				<td class="AutoNewline">{{this.uuid}}</td>
+				<td class="AutoNewline">{{this.country_name}}</td>
+				<td class="AutoNewline">{{this.platform_name}}</td>
+				<td class="AutoNewline">{{this.name}}</td>
+				<td class="AutoNewline">{{this.organization}}</td>
+				<td class="AutoNewline">{{this.sender}}</td>
+				<td class="AutoNewline">{{this.receiver}}</td>
+				<td class="AutoNewline">{{this.category_name}}</td>
+				<td class="AutoNewline">
+					{{!-- {{#ifMatch this.Values.isValue true}}
+            <form action="/meetings/value/{{this.id}}?_method=DELETE" method="POST">
+              <button type="submit" class="btn btn-outline-danger" onclick="return confirm(`Do you sure delete {{ this.name }}'s hight value?`)">
+                取消價值
+              </button>
+            </form>
+          {{/ifMatch}}
+          {{#ifMatch this.Values.isValue null}}
+            <form action="/meetings/value/{{this.id}}" method="POST">
+              <button type="submit" class="btn btn-outline-success" style="width:100px;" onclick="return confirm(`Do you sure {{ this.name }} is hight value?`)">
+                新增價值
+              </button>
+            </form>
+          {{/ifMatch}} --}}
+					<div class="d-flex justify-content-around">
+						<form action="/meetings/minutes/{{this.id}}" method="POST">
+							<div class="checkbox-wrapper-42">
+								<input id="yes{{this.id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`確定錄存 {{ this.name }}`)" {{#ifMatch this.is_done true}}checked{{/ifMatch}}/>
+								<label class="cbx" for="yes{{this.id}}"></label>
+								<label class="lbl" for="yes{{this.id}}">是</label>
+							</div>
+						</form>
+						<form action="/meetings/minutes/{{this.id}}?_method=DELETE" method="POST">
+								<div class="checkbox-wrapper-42">
+									<input id="{{this.id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`取消錄存 {{ this.name }}`)" {{#ifMatch this.is_done null}}checked{{/ifMatch}}/>
+									<label class="cbx" for="{{this.id}}"></label>
+									<label class="lbl" for="{{this.id}}">否</label>
+								</div>
+						</form>
+					</div>
+				</td>
+				<td class="AutoNewline ">
+					<a class="btn btn-outline-warning" href="/meetings/7th/{{this.id}}">✍Edit</a>
+				</td>
+			</tr>
+		{{/each}}
+	</tbody>
+</table>
+
+{{#if pagination.pages}}
+	<nav class="mt-5 d-flex justify-content-center fs-4 " aria-label="page navigation">
+		<ul class="pagination">
+			<li class="page-item {{#ifMatch pagination.currentPage 1}}disabled{{/ifMatch}}">
+				<a class="page-link" href="/meetings/7th?page={{pagination.prev}}&categoryId={{categoryId}}&platformId={{platformId}}&countryId={{countryId}}&startDate={{startDate}}&endDate={{endDate}}" aria-label="Previous">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+			</li>
+			{{#each pagination.pages}}
+				{{#ifMatch this.page  ../pagination.currentPage}}
+					<li class="page-item active"><a class="page-link" href="#">{{this.page }}</a></li>
+				{{else}}
+					<li class="page-item">
+						<a class="page-link" href="/meetings/7th?page={{this.page }}&categoryId={{../categoryId}}&platformId={{../platformId}}&countryId={{../countryId}}&startDate={{../startDate}}&endDate={{../endDate}}">{{this.page }}</a>
+					</li>
+				{{/ifMatch}}
+			{{/each}}
+			<li class="page-item {{#ifMatch pagination.currentPage pagination.totalPage}}disabled{{/ifMatch}}">
+				<a class="page-link" href="/meetings/7th?page={{pagination.next}}&categoryId={{categoryId}}&platformId={{platformId}}&countryId={{countryId}}&startDate={{startDate}}&endDate={{endDate}}" aria-label="Next">
+					<span aria-hidden="true">&raquo;</span>
+				</a>
+			</li>
+		</ul>
+	</nav>
+{{/if}}

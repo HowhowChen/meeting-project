@@ -882,6 +882,194 @@ const meetingController = {
       next(err)
     }
   },
+  getSevenPage: async (req, res, next) => {
+    try {
+      const page = Number(req.query.page) || 1
+      const limit = Number(req.query.limit) || DEFAULT_LIMIT
+      const offset = getOffset(limit, page)
+      const categoryId = Number(req.query.categoryId) || null
+      const platformId = Number(req.query.platformId) || null
+      const countryId = Number(req.query.countryId) || null
+      const startDate = req.query.startDate || dayjs().format('YYYY-MM-DD')
+      const endDate = req.query.endDate || dayjs().format('YYYY-MM-DD')
+
+      const [meetings, meetingCount, categories, platforms, countries] = await Promise.all([
+        sequelize.query(
+          `
+          SELECT 
+            M."id",
+            M."meeting_date",
+            M."uuid",
+            C."name" AS country_name,
+            P."name" AS platform_name,
+            M."name",
+            M."organization",
+            M."sender",
+            M."receiver",
+            CA."name" AS category_name,
+            MI."is_done",
+            (
+              SELECT CM."content"
+              FROM "Comments" AS CM
+              RIGHT JOIN "Users" AS U
+              ON U."id" = CM."user_id"
+              WHERE CM."meeting_id" = M."id"
+              AND CM."group" = '6th'
+            ) AS comment_content_6th
+          FROM "Meetings" AS M
+          LEFT JOIN "Minutes" AS MI
+            ON MI."meeting_id" = M."id"
+          LEFT JOIN "Countries" AS C
+            ON C."id" = M."country_id"
+          LEFT JOIN "Platforms" AS P
+            ON P."id" = M."platform_id"
+          LEFT JOIN "Categories" AS CA
+            ON CA."id" = M."category_id"
+          WHERE 
+            (
+              M."meeting_date" >= :startDate AND
+              M."meeting_date" <= :endDate
+            )
+          AND
+            (
+              CASE
+                WHEN :categoryId IS NOT NULL
+                THEN M."category_id" = :categoryId
+                ELSE M."category_id" in
+                (
+                  SELECT "id"
+                  FROM "Categories"
+                )
+              END
+            )
+          AND 
+            (
+              CASE
+                WHEN :platformId IS NOT NULL 
+                  THEN M."platform_id" = :platformId
+                  ELSE M."platform_id" in 
+                  (
+                  SELECT "id"
+                  FROM "Platforms"
+                )
+                END
+            )
+          AND
+            (
+              CASE
+                WHEN :countryId IS NOT NULL
+                THEN M."country_id" = :countryId
+                ELSE M."country_id" in
+                (
+                  SELECT "id"
+                  FROM "Countries"
+                )
+              END
+            )
+          ORDER BY M."meeting_date" DESC
+          LIMIT  :limit
+          OFFSET :offset
+          `,
+          {
+            replacements: {
+              startDate: startDate,
+              endDate: endDate,
+              categoryId: categoryId,
+              platformId: platformId,
+              countryId: countryId,
+              limit: limit,
+              offset: offset
+            },
+            type: QueryTypes.SELECT
+          }
+        ),
+        sequelize.query(
+          `
+          SELECT COUNT(M."id")
+          FROM "Meetings" AS M
+          WHERE 
+            (
+              M."meeting_date" >= :startDate AND
+              M."meeting_date" <= :endDate
+            )
+          AND
+            (
+              CASE
+                WHEN :categoryId IS NOT NULL
+                THEN M."category_id" = :categoryId
+                ELSE M."category_id" in
+                (
+                  SELECT "id"
+                  FROM "Categories"
+                )
+              END
+            )
+          AND 
+            (
+              CASE
+                WHEN :platformId IS NOT NULL 
+                  THEN M."platform_id" = :platformId
+                  ELSE M."platform_id" in 
+                  (
+                  SELECT "id"
+                  FROM "Platforms"
+                )
+                END
+            )
+          AND
+            (
+              CASE
+                WHEN :countryId IS NOT NULL
+                THEN M."country_id" = :countryId
+                ELSE M."country_id" in
+                (
+                  SELECT "id"
+                  FROM "Countries"
+                )
+              END
+            )
+          `,
+          {
+            replacements: {
+              startDate: startDate,
+              endDate: endDate,
+              categoryId: categoryId,
+              platformId: platformId,
+              countryId: countryId
+            },
+            type: QueryTypes.SELECT
+          }
+        ),
+        Category.findAll({ raw: true }),
+        Platform.findAll({ raw: true }),
+        Country.findAll({ raw: true })
+      ])
+
+      // convert date format
+      const newMeetings = meetings.map(meeting => ({
+        ...meeting,
+        name: meeting.name.length > 50 ? meeting.name.substring(0, 50) + '...' : meeting.name,
+        receiver: meeting.receiver.length > 50 ? meeting.receiver.substring(0, 50) + '...' : meeting.receiver,
+        meeting_date: dayjs(meeting.meeting_date).format('YYYY-MM-DD')
+      }))
+
+      res.locals.layout = 'table.hbs'
+      res.render('7th', {
+        meetings: newMeetings,
+        categories,
+        categoryId,
+        platforms,
+        platformId,
+        countries,
+        countryId,
+        startDate,
+        endDate,
+        pagination: getPagination(limit, page, meetingCount[0].count)
+      })
+    } catch (err) {
+      next(err)
+    }
+  },
   getGroupPage: (req, res) => {
     const { group } = getUser(req)
     switch (group) {
