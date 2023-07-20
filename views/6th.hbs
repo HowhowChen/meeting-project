@@ -28,15 +28,15 @@
 	<tbody>
 		{{#each meetings}}
 			<tr>
-				<td class="AutoNewline">{{this.meetingDate}}</td>
+				<td class="AutoNewline">{{this.meeting_date}}</td>
 				<td class="AutoNewline">{{this.uuid}}</td>
-				<td class="AutoNewline">{{this.Country.name}}</td>
-				<td class="AutoNewline">{{this.Platform.name}}</td>
+				<td class="AutoNewline">{{this.country_name}}</td>
+				<td class="AutoNewline">{{this.platform_name}}</td>
 				<td class="AutoNewline">{{this.name}}</td>
 				<td class="AutoNewline">{{this.organization}}</td>
 				<td class="AutoNewline">{{this.sender}}</td>
 				<td class="AutoNewline">{{this.receiver}}</td>
-				<td class="AutoNewline">{{this.Category.name}}</td>
+				<td class="AutoNewline">{{this.category_name}}</td>
 				<td class="AutoNewline">
 					{{!-- {{#ifMatch this.Values.isValue true}}
             <form action="/meetings/value/{{this.id}}?_method=DELETE" method="POST">
@@ -55,21 +55,21 @@
 					<div class="d-flex justify-content-around">
 						<form action="/meetings/value/{{this.id}}" method="POST">
 							<div class="checkbox-wrapper-42">
-								<input id="yes{{this.id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`確定錄存 {{ this.name }}`)" {{#ifMatch this.Values.isValue true}}checked{{/ifMatch}}/>
+								<input id="yes{{this.id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`確定錄存 {{ this.name }}`)" {{#ifMatch this.is_value true}}checked{{/ifMatch}}/>
 								<label class="cbx" for="yes{{this.id}}"></label>
 								<label class="lbl" for="yes{{this.id}}">是</label>
 							</div>
 						</form>
 						<form action="/meetings/value/{{this.id}}?_method=DELETE" method="POST">
 								<div class="checkbox-wrapper-42">
-									<input id="{{this.id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`取消錄存 {{ this.name }}`)" {{#ifMatch this.Values.isValue null}}checked{{/ifMatch}}/>
+									<input id="{{this.id}}" type="checkbox" onchange="form.submit()" onclick="return confirm(`取消錄存 {{ this.name }}`)" {{#ifMatch this.is_value null}}checked{{/ifMatch}}/>
 									<label class="cbx" for="{{this.id}}"></label>
 									<label class="lbl" for="{{this.id}}">否</label>
 								</div>
 						</form>
 					</div>
 				</td>
-				<td class="AutoNewline">{{this.Comments.content}}</td>
+				<td class="AutoNewline">{{this.comment_content_6th}}</td>
 				<td class="AutoNewline ">
 					<a class="btn btn-outline-warning" href="/meetings/6th/{{this.id}}">✍Edit</a>
 				</td>
