@@ -599,7 +599,8 @@ const meetingController = {
             {
               model: Comment,
               attributes: ['content'],
-              include: [{ model: User, attributes: ['name'] }]
+              include: [{ model: User, attributes: ['name'] }],
+              where: { group: '6th' }
             },
             {
               model: Value,
@@ -652,7 +653,7 @@ const meetingController = {
           M."receiver",
           M."uuid",
           M."content" AS meeting_content, 
-          C."content" AS comment_content 
+          C."content" AS comment_content
         FROM "Meetings" AS M
           LEFT JOIN "Comments" AS C
           ON C."meeting_id" = M."id"

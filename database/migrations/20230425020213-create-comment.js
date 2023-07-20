@@ -17,6 +17,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
+      group: {
+        type: Sequelize.STRING
+      },
       content: {
         type: Sequelize.STRING
       },

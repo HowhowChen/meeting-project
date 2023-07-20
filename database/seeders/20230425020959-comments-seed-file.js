@@ -28,6 +28,7 @@ module.exports = {
       return comments.push({
         user_id: Number(user[0].id),
         meeting_id: meetingId,
+        group: i % 2 === 0 ? '5th' : '6th',
         content: faker.lorem.sentences(2),
         created_at: new Date(),
         updated_at: new Date()
