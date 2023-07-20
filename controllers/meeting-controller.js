@@ -1114,6 +1114,21 @@ const meetingController = {
       next(err)
     }
   },
+  putSevenMeeting: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const uuid = req.body.uuid.trim()
+
+      const meeting = await Meeting.findByPk(id)
+      if (!meeting) throw new Error("User didn't exist!")
+
+      await meeting.update({ uuid })
+      req.flash('success_messages', 'Success Update!')
+      return res.redirect(`/meetings/7th/${id}`)
+    } catch (err) {
+      next(err)
+    }
+  },
   getGroupPage: (req, res) => {
     const { group } = getUser(req)
     switch (group) {
