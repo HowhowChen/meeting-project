@@ -299,13 +299,14 @@ const meetingController = {
     try {
       const userId = Number(getUser(req).id)
       const { id } = req.params
+
       const {
         category,
         platform,
         country
       } = req.body
       const issueId = Number(req.body.issueId)
-      const commentContent = req.body.comment
+      const content = req.body.comment.trim()
 
       const [meeting, issue, meetingIssue, comment] = await Promise.all([
         Meeting.findByPk(id),
@@ -332,12 +333,12 @@ const meetingController = {
             userId,
             meetingId: id,
             group: '5th',
-            content: commentContent
+            content
           })
         } else {
           await comment.update({
             userId,
-            content: commentContent
+            content
           })
         }
 
@@ -378,12 +379,12 @@ const meetingController = {
           userId,
           meetingId: id,
           group: '5th',
-          content: commentContent
+          content
         })
       } else {
         await comment.update({
           userId,
-          content: commentContent
+          content
         })
       }
 
@@ -716,10 +717,17 @@ const meetingController = {
           M."name",
           M."receiver",
           M."uuid",
-          M."content" AS meeting_content, 
-          C."content" AS comment_content
+          M."content" AS meeting_content,
+          (
+            SELECT CM."content"
+            FROM "Comments" AS CM
+            RIGHT JOIN "Users" AS U
+            ON U."id" = CM."user_id"
+            WHERE CM."meeting_id" = M."id"
+            AND CM."group" = '6th'
+          ) AS comment_content_6th
         FROM "Meetings" AS M
-          LEFT JOIN "Comments" AS C
+        LEFT JOIN "Comments" AS C
           ON C."meeting_id" = M."id"
         WHERE M."id" = :id
         `,
@@ -743,14 +751,16 @@ const meetingController = {
       const userId = Number(getUser(req).id)
       const [meeting, comment] = await Promise.all([
         Meeting.findByPk(id),
-        Comment.findOne({ where: { meetingId: id } })
+        Comment.findOne({ where: { meetingId: id, group: '6th' } })
       ])
+
       if (!meeting) throw new Error("User didn't exist!")
       if (!comment) {
         await Promise.all([
           meeting.update({ uuid }),
           Comment.create({
             userId,
+            group: '6th',
             meetingId: id,
             content
           })
@@ -759,13 +769,13 @@ const meetingController = {
         await Promise.all([
           meeting.update({ uuid }),
           comment.update({
-            userId,
-            meetingId: id,
             content
           })
         ])
       }
-      res.redirect('/meetings/6th')
+
+      req.flash('success_messages', 'Success Update!')
+      return res.redirect(`/meetings/6th/${id}`)
     } catch (err) {
       next(err)
     }
