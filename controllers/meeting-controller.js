@@ -365,7 +365,16 @@ const meetingController = {
               RIGHT JOIN "Users" AS U
               ON U."id" = CM."user_id"
               WHERE CM."meeting_id" = M."id"
-            ) AS comment_content
+              AND CM."group" = '5th'
+            ) AS comment_content_5th,
+            (
+              SELECT CM."content"
+              FROM "Comments" AS CM
+              RIGHT JOIN "Users" AS U
+              ON U."id" = CM."user_id"
+              WHERE CM."meeting_id" = M."id"
+              AND CM."group" = '6th'
+            ) AS comment_content_6th
           FROM "Meetings" AS M
           LEFT JOIN "Values" AS V
             ON V."meeting_id" = M."id"
@@ -599,8 +608,7 @@ const meetingController = {
             {
               model: Comment,
               attributes: ['content'],
-              include: [{ model: User, attributes: ['name'] }],
-              where: { group: '6th' }
+              include: [{ model: User, attributes: ['name'] }]
             },
             {
               model: Value,
