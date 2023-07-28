@@ -1114,6 +1114,13 @@ const meetingController = {
       next(err)
     }
   },
+  getMeetingPage: async (req, res, next) => {
+    try {
+      res.render('seven-meeting-new')
+    } catch (err) {
+      next(err)
+    }
+  },
   putSevenMeeting: async (req, res, next) => {
     try {
       const { id } = req.params

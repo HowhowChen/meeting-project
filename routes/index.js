@@ -31,6 +31,7 @@ router.get('/meetings/6th/meetingissue', authenticated, authenticatedSixClass, m
 router.get('/meetings/6th/:id', authenticated, authenticatedSixClass, meetingController.getSixMeeting)
 router.put('/meetings/6th/:id', authenticated, authenticatedSixClass, meetingController.putSixMeeting)
 router.get('/meetings/6th', authenticated, authenticatedSixClass, meetingController.getSixPage)
+router.get('/meetings/7th/new', authenticated, authenticatedSevenClass, meetingController.getMeetingPage)
 router.get('/meetings/7th/:id', authenticated, authenticatedSevenClass, meetingController.getSevenMeeting)
 router.put('/meetings/7th/:id', authenticated, authenticatedSevenClass, meetingController.putSevenMeeting)
 router.get('/meetings/7th', authenticated, authenticatedSevenClass, meetingController.getSevenPage)
