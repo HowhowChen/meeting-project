@@ -1121,6 +1121,23 @@ const meetingController = {
       next(err)
     }
   },
+  postSevenMeeting: async (req, res, next) => {
+    try {
+      const {
+        name,
+        country,
+        link,
+        password,
+        meetingDate,
+        acceptanceDate,
+        uuid
+      } = req.body
+
+      res.redirect('/meetings/7th')
+    } catch (err) {
+      next(err)
+    }
+  },
   putSevenMeeting: async (req, res, next) => {
     try {
       const { id } = req.params
