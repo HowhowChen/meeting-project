@@ -1,0 +1,18 @@
+body {
+  background: linear-gradient(#141e30, #243b55);
+}
+
+main {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.42em;
+  color:#A7A1AE;
+  background: linear-gradient(#141e30, #243b55);
+  min-height: 1100px;
+}
+
+.hidden { display: none; }
+#countryText { opacity: 1; transition: all 0.5s; }
+#hide { opacity: 0; }
+#countrySelect { opacity: 1; transition: all 0.5s; }
+#countrySelect.hide { opacity: 0; }

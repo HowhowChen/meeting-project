@@ -1116,7 +1116,17 @@ const meetingController = {
   },
   getSevenMeetingNewPage: async (req, res, next) => {
     try {
-      res.render('seven-meeting-new')
+      const [countries, categories, platforms] = await Promise.all([
+        Country.findAll({ raw: true }),
+        Category.findAll({ raw: true }),
+        Platform.findAll({ raw: true })
+      ])
+      res.locals.layout = 'meeting-new.hbs'
+      res.render('seven-meeting-new', {
+        countries,
+        categories,
+        platforms
+      })
     } catch (err) {
       next(err)
     }
@@ -1134,7 +1144,7 @@ const meetingController = {
         acceptanceDate,
         uuid
       } = req.body
-
+      console.log(req.body)
       const [[countryResult], [categoryResult], [platformResult]] = await Promise.all([
         Country.findOrCreate({
           where: { name: country },

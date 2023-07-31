@@ -23,20 +23,76 @@
 
       <div class="row align-items-center mb-5 h3">
         <label for="country" class="col-3 text-white"><span class="text-danger">*</span>國別:</label>
-        <div class="col-9">
-          <input id="country" name="country" type="text" class="form-control" value="" required>
+
+        <div class="col-6 hidden" id="countryText">
+          <input id="country" name="country" type="text" class="form-control" required>
           <div class="valid-feedback">很棒!</div>
           <div class="invalid-feedback">不能空白喔！</div>
         </div>
+
+        <div class="col-6" id="countrySelect">
+          <select id="country" name="country" list="countries" class="form-control"  required>
+            {{#each countries}}
+              <option value="{{this.id}}" {{#ifMatch this.name ../meeting.country_name}}selected{{/ifMatch}}>{{this.name}}</option>
+            {{/each}}
+          </select>
+          <div class="valid-feedback">很棒!</div>
+          <div class="invalid-feedback">不能空白喔！</div>
+        </div>
+
+        <div class="col-3 d-flex  justify-content-around  flex-wrap align-content-center fs-5">
+          <div class="d-flex align-content-center">
+            <div class="checkbox-wrapper-42">
+              <input id="countryIsTrue" type="checkbox" checked/>
+              <label class="cbx" for="countryIsTrue"></label>
+              <label class="lbl" for="countryIsTrue">已知國別</label>
+            </div>
+            &nbsp;&nbsp;
+            <div class="checkbox-wrapper-42">
+              <input id="countryIsFalse" type="checkbox"/>
+              <label class="cbx" for="countryIsFalse"></label>
+              <label class="lbl" for="countryIsFalse">未知國別</label>
+            </div>
+          </div>
+        </div>
+        
       </div>
 
       <div class="row align-items-center mb-5 h3">
         <label for="category" class="col-3 text-white"><span class="text-danger">*</span>會議類型:</label>
-        <div class="col-9">
-          <input id="category" name="category" type="text" class="form-control" value="" required>
+        
+        <div class="col-6 hidden" id="categoryText">
+          <input id="category" name="category" type="text" class="form-control">
           <div class="valid-feedback">很棒!</div>
           <div class="invalid-feedback">不能空白喔！</div>
         </div>
+
+        <div class="col-6" id="categorySelect">
+          <select id="category" name="category" list="countries" class="form-control" required>
+            {{#each categories}}
+              <option value="{{this.id}}" {{#ifMatch this.name ../meeting.category_name}}selected{{/ifMatch}}>{{this.name}}</option>
+            {{/each}}
+          </select>
+          <div class="valid-feedback">很棒!</div>
+          <div class="invalid-feedback">不能空白喔！</div>
+        </div>
+
+        <div class="col-3 d-flex  justify-content-around  flex-wrap align-content-center fs-5">
+          <div class="d-flex align-content-center">
+            <div class="checkbox-wrapper-42">
+              <input id="categoryIsTrue" type="checkbox" checked/>
+              <label class="cbx" for="categoryIsTrue"></label>
+              <label class="lbl" for="categoryIsTrue">已知類型</label>
+            </div>
+            &nbsp;&nbsp;
+            <div class="checkbox-wrapper-42">
+              <input id="categoryIsFalse" type="checkbox"/>
+              <label class="cbx" for="categoryIsFalse"></label>
+              <label class="lbl" for="categoryIsFalse">未知類型</label>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div class="row align-items-center mb-5 h3">
