@@ -1114,7 +1114,7 @@ const meetingController = {
       next(err)
     }
   },
-  getMeetingPage: async (req, res, next) => {
+  getSevenMeetingNewPage: async (req, res, next) => {
     try {
       res.render('seven-meeting-new')
     } catch (err) {
@@ -1126,12 +1126,42 @@ const meetingController = {
       const {
         name,
         country,
+        category,
+        platform,
         link,
         password,
         meetingDate,
         acceptanceDate,
         uuid
       } = req.body
+
+      const [[countryResult], [categoryResult], [platformResult]] = await Promise.all([
+        Country.findOrCreate({
+          where: { name: country },
+          raw: true
+        }),
+        Category.findOrCreate({
+          where: { name: category },
+          raw: true
+        }),
+        Platform.findOrCreate({
+          where: { name: platform },
+          raw: true
+        })
+      ])
+
+      await Meeting.create({
+        name: name.trim(),
+        countryId: countryResult.id,
+        categoryId: categoryResult.id,
+        platformId: platformResult.id,
+        link: link.trim(),
+        password: password.trim(),
+        meetingDate: meetingDate.trim(),
+        acceptanceDate: acceptanceDate.trim(),
+        uuid: uuid.trim(),
+        receiver: '未知'
+      })
 
       res.redirect('/meetings/7th')
     } catch (err) {
