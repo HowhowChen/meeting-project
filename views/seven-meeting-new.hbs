@@ -22,23 +22,24 @@
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="country" class="col-3 text-white"><span class="text-danger">*</span>國別:</label>
+        <label for="countryText" class="col-3 text-white"><span class="text-danger">*</span>國別:</label>
 
-        <div class="col-6 hidden" id="countryText">
-          <input id="country" name="country" type="text" class="form-control" required>
+        <div class="col-6" id="countryTextBlock">
+          <input id="countryText" type="text" class="form-control">
           <div class="valid-feedback">很棒!</div>
           <div class="invalid-feedback">不能空白喔！</div>
         </div>
 
-        <div class="col-6" id="countrySelect">
-          <select id="country" name="country" list="countries" class="form-control"  required>
+        <div class="col-6" id="countrySelectBlock">
+          <select id="countrySelect" list="countries" class="form-control"  required>
             {{#each countries}}
-              <option value="{{this.id}}" {{#ifMatch this.name ../meeting.country_name}}selected{{/ifMatch}}>{{this.name}}</option>
+              <option value="{{this.name}}" {{#ifMatch this.name ../meeting.country_name}}selected{{/ifMatch}}>{{this.name}}</option>
             {{/each}}
           </select>
           <div class="valid-feedback">很棒!</div>
           <div class="invalid-feedback">不能空白喔！</div>
         </div>
+        <input type="hidden" id="country" name="country" value="">
 
         <div class="col-3 d-flex  justify-content-around  flex-wrap align-content-center fs-5">
           <div class="d-flex align-content-center">
@@ -59,23 +60,24 @@
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="category" class="col-3 text-white"><span class="text-danger">*</span>會議類型:</label>
+        <label for="categoryText" class="col-3 text-white"><span class="text-danger">*</span>會議類型:</label>
         
-        <div class="col-6 hidden" id="categoryText">
-          <input id="category" name="category" type="text" class="form-control">
+        <div class="col-6" id="categoryTextBlock">
+          <input id="categoryText" type="text" class="form-control">
           <div class="valid-feedback">很棒!</div>
           <div class="invalid-feedback">不能空白喔！</div>
         </div>
 
-        <div class="col-6" id="categorySelect">
-          <select id="category" name="category" list="countries" class="form-control" required>
+        <div class="col-6" id="categorySelectBlock">
+          <select id="categorySelect" list="countries" class="form-control" required>
             {{#each categories}}
-              <option value="{{this.id}}" {{#ifMatch this.name ../meeting.category_name}}selected{{/ifMatch}}>{{this.name}}</option>
+              <option value="{{this.name}}" {{#ifMatch this.name ../meeting.category_name}}selected{{/ifMatch}}>{{this.name}}</option>
             {{/each}}
           </select>
           <div class="valid-feedback">很棒!</div>
           <div class="invalid-feedback">不能空白喔！</div>
         </div>
+        <input type="hidden" id="category" name="category" value="">
 
         <div class="col-3 d-flex  justify-content-around  flex-wrap align-content-center fs-5">
           <div class="d-flex align-content-center">
