@@ -14,13 +14,23 @@ const categoryIsTrue = document.querySelector('#categoryIsTrue')
 const categoryIsFalse = document.querySelector('#categoryIsFalse')
 const category = document.querySelector('#category')
 
+const platformTextBlock = document.querySelector('#platformTextBlock')
+const platformSelectBlock = document.querySelector('#platformSelectBlock')
+const platformText = document.querySelector('#platformText')
+const platformSelect = document.querySelector('#platformSelect')
+const platformIsTrue = document.querySelector('#platformIsTrue')
+const platformIsFalse = document.querySelector('#platformIsFalse')
+const platform = document.querySelector('#platform')
+
 try {
   // window load
   window.addEventListener('load', () => {
     country.value = countrySelect.value
     category.value = categorySelect.value
+    platform.value = platformSelect.value
     countryTextBlock.classList.add('hidden')
     categoryTextBlock.classList.add('hidden')
+    platformTextBlock.classList.add('hidden')
   })
 
   // country is true
@@ -98,8 +108,8 @@ try {
     e.target.checked = true
     categoryIsTrue.checked = false
 
-    categoryText.required = false
-    categorySelect.required = true
+    categoryText.required = true
+    categorySelect.required = false
 
     categoryTextBlock.classList.add('hide')
     categorySelectBlock.classList.add('hide')
@@ -111,15 +121,65 @@ try {
       categoryTextBlock.classList.remove('hide')
       categorySelectBlock.classList.remove('hide')
     }, 300)
+  })
+  // category select on change
+  categorySelect.addEventListener('change', e => {
+    category.value = e.target.value
+  })
 
-    // category select on change
-    categorySelect.addEventListener('change', e => {
-      category.value = e.target.value
-    })
+  // category text on change
+  categoryText.addEventListener('change', e => {
+    category.value = e.target.value
+  })
 
-    // category text on change
-    categoryText.addEventListener('change', e => {
-      category.value = e.target.value
-    })
+  // platform is true
+  platformIsTrue.addEventListener('change', e => {
+    e.target.checked = true
+    platformIsFalse.checked = false
+    platform.value = platformSelect.value
+
+    platformText.required = false
+    platformSelect.required = true
+
+    platformTextBlock.classList.add('hide')
+    platformSelectBlock.classList.add('hide')
+    setTimeout(() => {
+      platformSelectBlock.classList.remove('hidden')
+      platformTextBlock.classList.add('hidden')
+    }, 300)
+    setTimeout(() => {
+      platformTextBlock.classList.remove('hide')
+      platformSelectBlock.classList.remove('hide')
+    }, 300)
+  })
+
+  // platform is false
+  platformIsFalse.addEventListener('change', e => {
+    e.target.checked = true
+    platformIsTrue.checked = false
+
+    platformText.required = true
+    platformSelect.required = false
+
+    platformTextBlock.classList.add('hide')
+    platformSelectBlock.classList.add('hide')
+    setTimeout(() => {
+      platformTextBlock.classList.remove('hidden')
+      platformSelectBlock.classList.add('hidden')
+    }, 300)
+    setTimeout(() => {
+      platformTextBlock.classList.remove('hide')
+      platformSelectBlock.classList.remove('hide')
+    }, 300)
+  })
+
+  // platform select on change
+  platformSelect.addEventListener('change', e => {
+    platform.value = e.target.value
+  })
+
+  // platform text on change
+  platformText.addEventListener('change', e => {
+    platform.value = e.target.value
   })
 } catch {}

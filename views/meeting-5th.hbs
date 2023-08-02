@@ -13,91 +13,91 @@
       {{> messages}}
       
       <div class="row align-items-center mb-5 h3">
-        <label for="name" class="col-3 text-white">Name:</label>
+        <label for="name" class="col-3 text-white">會議主旨:</label>
         <div class="col-9">
           <input id="content" name="name" type="text" class="form-control" value="{{ meeting.name }}">
         </div>
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="content" class="col-3 text-white">Content:</label>
+        <label for="content" class="col-3 text-white">會議內容:</label>
         <div class="col-9">
           <textarea class="form-control" id="content" name="content" rows="3">{{ meeting.content }}</textarea>
         </div>
       </div>
       
       <div class="row align-items-center mb-5 h3">
-        <label for="organization" class="col-3 text-white">Organization:</label>
+        <label for="organization" class="col-3 text-white">會議單位:</label>
         <div class="col-9">
           <input id="organization" name="organization" type="text" class="form-control" value="{{ meeting.organization }}">
         </div>
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="sender" class="col-3 text-white">Sender:</label>
+        <label for="sender" class="col-3 text-white">寄件者:</label>
         <div class="col-9">
           <input id="sender" name="sender" type="text" class="form-control" value="{{ meeting.sender }}">
         </div>
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="receiver" class="col-3 text-white">Receiver:</label>
+        <label for="receiver" class="col-3 text-white">收件者:</label>
         <div class="col-9">
           <textarea class="form-control" id="receiver" name="receiver" rows="3">{{ meeting.receiver }}</textarea>
         </div>
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="meetingDate" class="col-3 text-white">Meeting Date:</label>
+        <label for="meetingDate" class="col-3 text-white">會議日期:</label>
         <div class="col-9">
           <input id="meetingDate" name="meetingDate" type="date" class="form-control" value="{{ meeting.meeting_date }}">
         </div>
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="acceptanceDate" class="col-3 text-white">Acceptance Date:</label>
+        <label for="acceptanceDate" class="col-3 text-white">來料日期:</label>
         <div class="col-9">
           <input id="acceptanceDate" name="acceptanceDate" type="date" class="form-control" value="{{ meeting.acceptance_date }}">
         </div>
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="importDate" class="col-3 text-white">Import Date:</label>
+        <label for="importDate" class="col-3 text-white">入庫日期:</label>
         <div class="col-9">
           <input id="importDate" name="importDate" type="date" class="form-control" value="{{ meeting.import_date }}">
         </div>
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="exportDate" class="col-3 text-white">Export Date:</label>
+        <label for="exportDate" class="col-3 text-white">報局日期:</label>
         <div class="col-9">
           <input id="exportDate" name="exportDate" type="date" class="form-control" value="{{ meeting.export_date }}">
         </div>
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="link" class="col-3 text-white">Link:</label>
+        <label for="link" class="col-3 text-white">會議連結:</label>
         <div class="col-9">
           <input id="link" name="link" type="text" class="form-control" value="{{ meeting.link }}">
         </div>
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="password" class="col-3 text-white">Password:</label>
+        <label for="password" class="col-3 text-white">會議ID\密碼:</label>
         <div class="col-9">
           <input id="password" name="password" type="text" class="form-control" value="{{ meeting.password }}">
         </div>
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="fileName" class="col-3 text-white">File Name:</label>
+        <label for="fileName" class="col-3 text-white">原件名稱:</label>
         <div class="col-9">
           <input id="fileName" name="fileName" type="text" class="form-control" value="{{ meeting.file_name }}">
         </div>
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="category" class="col-3 text-white"><span class="text-danger">*</span>Category:</label>
+        <label for="category" class="col-3 text-white"><span class="text-danger">*</span>會議類型:</label>
         <div class="col-9">
           <select id="category" name="category" list="categories" class="form-control"  required>
             {{#each categories}}
@@ -110,7 +110,7 @@
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="platform" class="col-3 text-white"><span class="text-danger">*</span>Platform:</label>
+        <label for="platform" class="col-3 text-white"><span class="text-danger">*</span>會議平台:</label>
         <div class="col-9">
           <select id="platform" name="platform" list="platfroms" class="form-control"  required>
             {{#each platforms}}
@@ -123,7 +123,7 @@
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="country" class="col-3 text-white"><span class="text-danger">*</span>Country:</label>
+        <label for="country" class="col-3 text-white"><span class="text-danger">*</span>國別:</label>
         <div class="col-9">
           <select id="country" name="country" list="countries" class="form-control"  required>
             {{#each countries}}
@@ -176,7 +176,7 @@
 
       <div class="row align-items-center mb-5 h3">
         <div class="col-3 ">
-          <a class="btn btn-outline-success" href="javascript:history.back()">🔙back to previous page</a>
+          <a class="btn btn-outline-success" href="javascript:history.back()">🔙上一頁</a>
         </div>
         <div class="col-9">
           <div class="d-flex justify-content-center">

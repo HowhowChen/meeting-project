@@ -1144,7 +1144,7 @@ const meetingController = {
         acceptanceDate,
         uuid
       } = req.body
-      console.log(req.body)
+
       const [[countryResult], [categoryResult], [platformResult]] = await Promise.all([
         Country.findOrCreate({
           where: { name: country },

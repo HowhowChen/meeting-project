@@ -69,7 +69,7 @@
         </div>
 
         <div class="col-6" id="categorySelectBlock">
-          <select id="categorySelect" list="countries" class="form-control" required>
+          <select id="categorySelect" list="categories" class="form-control" required>
             {{#each categories}}
               <option value="{{this.name}}" {{#ifMatch this.name ../meeting.category_name}}selected{{/ifMatch}}>{{this.name}}</option>
             {{/each}}
@@ -98,12 +98,41 @@
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="platform" class="col-3 text-white"><span class="text-danger">*</span>會議平台:</label>
-        <div class="col-9">
-          <input id="platform" name="platform" type="text" class="form-control" value="" required>
+        <label for="platformText" class="col-3 text-white"><span class="text-danger">*</span>會議平台:</label>
+
+        <div class="col-6" id="platformTextBlock">
+          <input id="platformText" type="text" class="form-control">
           <div class="valid-feedback">很棒!</div>
           <div class="invalid-feedback">不能空白喔！</div>
         </div>
+
+        <div class="col-6" id="platformSelectBlock">
+          <select id="platformSelect" list="platforms" class="form-control" required>
+            {{#each platforms}}
+              <option value="{{this.name}}" {{#ifMatch this.name ../meeting.platform_name}}selected{{/ifMatch}}>{{this.name}}</option>
+            {{/each}}
+          </select>
+          <div class="valid-feedback">很棒!</div>
+          <div class="invalid-feedback">不能空白喔！</div>
+        </div>
+        <input type="hidden" id="platform" name="platform" value="">
+
+        <div class="col-3 d-flex  justify-content-around  flex-wrap align-content-center fs-5">
+          <div class="d-flex align-content-center">
+            <div class="checkbox-wrapper-42">
+              <input id="platformIsTrue" type="checkbox" checked/>
+              <label class="cbx" for="platformIsTrue"></label>
+              <label class="lbl" for="platformIsTrue">已知平台</label>
+            </div>
+            &nbsp;&nbsp;
+            <div class="checkbox-wrapper-42">
+              <input id="platformIsFalse" type="checkbox"/>
+              <label class="cbx" for="platformIsFalse"></label>
+              <label class="lbl" for="platformIsFalse">未知平台</label>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div class="row align-items-center mb-5 h3">
