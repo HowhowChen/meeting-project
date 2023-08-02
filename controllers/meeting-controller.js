@@ -26,6 +26,7 @@ const meetingController = {
           `
           SELECT 
             M."id",
+            MI."is_done",
             V."is_value",
             M."acceptance_date",
             M."meeting_date",
@@ -36,6 +37,8 @@ const meetingController = {
             M."password",
             M."file_name"
           FROM "Meetings" AS M
+          LEFT JOIN "Minutes" AS MI
+            ON MI."meeting_id" = M."id"
           LEFT JOIN "Values" AS V
             ON V."meeting_id" = M."id"
           LEFT JOIN "Platforms" AS P
