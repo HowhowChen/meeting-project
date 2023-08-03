@@ -15,7 +15,7 @@
       <div class="row align-items-center mb-5 h3">
         <label for="name" class="col-3 text-white"><span class="text-danger">*</span>會議主旨:</label>
         <div class="col-9">
-          <input id="content" name="name" type="text" class="form-control" value="" required>
+          <input id="content" name="name" type="text" class="form-control" value="{{ meeting.name }}" required>
           <div class="valid-feedback">很棒!</div>
           <div class="invalid-feedback">不能空白喔！</div>
         </div>
@@ -33,7 +33,7 @@
         <div class="col-6" id="countrySelectBlock">
           <select id="countrySelect" list="countries" class="form-control"  required>
             {{#each countries}}
-              <option value="{{this.name}}" {{#ifMatch this.name ../meeting.country_name}}selected{{/ifMatch}}>{{this.name}}</option>
+              <option value="{{this.name}}" {{#ifMatch this.name ../meeting.country}}selected{{/ifMatch}}>{{this.name}}</option>
             {{/each}}
           </select>
           <div class="valid-feedback">很棒!</div>
@@ -71,7 +71,7 @@
         <div class="col-6" id="categorySelectBlock">
           <select id="categorySelect" list="categories" class="form-control" required>
             {{#each categories}}
-              <option value="{{this.name}}" {{#ifMatch this.name ../meeting.category_name}}selected{{/ifMatch}}>{{this.name}}</option>
+              <option value="{{this.name}}" {{#ifMatch this.name ../meeting.category}}selected{{/ifMatch}}>{{this.name}}</option>
             {{/each}}
           </select>
           <div class="valid-feedback">很棒!</div>
@@ -109,7 +109,7 @@
         <div class="col-6" id="platformSelectBlock">
           <select id="platformSelect" list="platforms" class="form-control" required>
             {{#each platforms}}
-              <option value="{{this.name}}" {{#ifMatch this.name ../meeting.platform_name}}selected{{/ifMatch}}>{{this.name}}</option>
+              <option value="{{this.name}}" {{#ifMatch this.name ../meeting.platform}}selected{{/ifMatch}}>{{this.name}}</option>
             {{/each}}
           </select>
           <div class="valid-feedback">很棒!</div>
@@ -138,16 +138,16 @@
       <div class="row align-items-center mb-5 h3">
         <label for="link" class="col-3 text-white"><span class="text-danger">*</span>會議連結:</label>
         <div class="col-9">
-          <input id="link" name="link" type="text" class="form-control" value="" required>
+          <input id="link" name="link" type="text" class="form-control" value="{{ meeting.link }}" required>
           <div class="valid-feedback">很棒!</div>
           <div class="invalid-feedback">不能空白喔！</div>
         </div>
       </div>
 
       <div class="row align-items-center mb-5 h3">
-        <label for="password" class="col-3 text-white"><span class="text-danger">*</span>會議ID\密碼:</label>
+        <label for="password" class="col-3 text-white"><span class="text-danger">*</span>會議ID/密碼:</label>
         <div class="col-9">
-          <input id="password" name="password" type="text" class="form-control" value="" required>
+          <input id="password" name="password" type="text" class="form-control" value="{{ meeting.password }}" required>
           <div class="valid-feedback">很棒!</div>
           <div class="invalid-feedback">不能空白喔！</div>
         </div>
@@ -156,7 +156,7 @@
       <div class="row align-items-center mb-5 h3">
         <label for="meetingDate" class="col-3 text-white"><span class="text-danger">*</span>會議日期:</label>
         <div class="col-9">
-          <input id="meetingDate" name="meetingDate" type="date" class="form-control" value="" required>
+          <input id="meetingDate" name="meetingDate" type="date" class="form-control" value="{{ meeting.meetingDate }}" required>
           <div class="valid-feedback">很棒!</div>
           <div class="invalid-feedback">不能空白喔！</div>
         </div>
@@ -165,7 +165,7 @@
       <div class="row align-items-center mb-5 h3">
         <label for="acceptanceDate" class="col-3 text-white"><span class="text-danger">*</span>來料日期:</label>
         <div class="col-9">
-          <input id="acceptanceDate" name="acceptanceDate" type="date" class="form-control" value="" required>
+          <input id="acceptanceDate" name="acceptanceDate" type="date" class="form-control" value="{{ meeting.acceptanceDate }}" required>
           <div class="valid-feedback">很棒!</div>
           <div class="invalid-feedback">不能空白喔！</div>
         </div>
@@ -174,7 +174,7 @@
       <div class="row align-items-center mb-5 h3">
         <label for="uuid" class="col-3 text-white"><span class="text-danger">*</span>報號/來源:</label>
         <div class="col-9">
-          <input id="uuid" name="uuid" type="text" class="form-control" value="" required>
+          <input id="uuid" name="uuid" type="text" class="form-control" value="{{ meeting.uuid }}" required>
           <div class="valid-feedback">很棒!</div>
           <div class="invalid-feedback">不能空白喔！</div>
         </div>

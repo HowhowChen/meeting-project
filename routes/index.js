@@ -6,7 +6,7 @@ const userController = require('../controllers/user-controller')
 const meetingController = require('../controllers/meeting-controller')
 const { generalErrorHandler } = require('../middleware/error-handler')
 const { authenticated, authenticatedAdmin, authenticatedFiveClass, authenticatedSixClass, authenticatedSevenClass, authenticatedUser } = require('../middleware/auth')
-const { putUserValidator } = require('../middleware/validator-handler')
+const { putUserValidator, postSevenMeetingValidator } = require('../middleware/validator-handler')
 
 router.use('/admin', authenticatedAdmin, admin)
 
@@ -34,7 +34,7 @@ router.get('/meetings/6th', authenticated, authenticatedSixClass, meetingControl
 router.get('/meetings/7th/new', authenticated, authenticatedSevenClass, meetingController.getSevenMeetingNewPage)
 router.get('/meetings/7th/:id', authenticated, authenticatedSevenClass, meetingController.getSevenMeeting)
 router.put('/meetings/7th/:id', authenticated, authenticatedSevenClass, meetingController.putSevenMeeting)
-router.post('/meetings/7th', authenticated, authenticatedSevenClass, meetingController.postSevenMeeting)
+router.post('/meetings/7th', authenticated, authenticatedSevenClass, postSevenMeetingValidator, meetingController.postSevenMeeting)
 router.get('/meetings/7th', authenticated, authenticatedSevenClass, meetingController.getSevenPage)
 router.get('/meetings', authenticated, meetingController.getGroupPage)
 
