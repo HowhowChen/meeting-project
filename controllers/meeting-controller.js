@@ -1083,23 +1083,7 @@ const meetingController = {
           M."name",
           M."receiver",
           M."uuid",
-          M."content" AS meeting_content,
-          (
-            SELECT CM."content"
-            FROM "Comments" AS CM
-            RIGHT JOIN "Users" AS U
-            ON U."id" = CM."user_id"
-            WHERE CM."meeting_id" = M."id"
-            AND CM."group" = '5th'
-          ) AS comment_content_5th,
-          (
-            SELECT CM."content"
-            FROM "Comments" AS CM
-            RIGHT JOIN "Users" AS U
-            ON U."id" = CM."user_id"
-            WHERE CM."meeting_id" = M."id"
-            AND CM."group" = '6th'
-          ) AS comment_content_6th
+          M."content" AS meeting_content
         FROM "Meetings" AS M
         LEFT JOIN "Comments" AS C
           ON C."meeting_id" = M."id"
